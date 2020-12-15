@@ -1,0 +1,117 @@
+* {
+
+    box-sizing: border-box;
+    cursor: pointer;
+}
+html, body{
+
+    overflow-x: hidden;
+}
+body{
+
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+h1, 
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+  font-weight: 500;
+}
+section {
+
+ .background-clipped {
+
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+      background: linear-gradient(rgba(255, 230, 0, 0.4) 50%, (rgba(255, 230, 0, 0.4) 100%)), url('../media/desert-dunes-morocco.jpg') center/100% 100% no-repeat;
+  
+    
+    img {
+
+      height: 20em;
+      
+    }
+
+    @media screen and(min-width:768px) {
+        
+        clip-path: url('#path833');
+    }
+
+    @media screen and (min-width:992px) {
+        
+        img{
+
+            height: 35em;
+        }
+    }
+
+
+
+   p {
+
+    display: inline-block;
+    width: 20em;
+    font-weight: 300;
+   }
+    .heading {
+
+        border-radius: 10px;
+      
+        padding: 1em;
+
+      
+        
+    
+   .sub-heading {
+
+    font-size: 24px;
+    font-weight: 300;
+    text-transform: uppercase;
+   }
+
+   h1 {
+
+    margin: .1em 0;
+    text-transform: uppercase;
+   }
+
+
+.button{
+
+    margin-top: 1.5em;
+    border-radius: 0;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 1em 2em;
+    background-color: #2792f0;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    width: 15em;
+    border-radius: .8em;
+
+  
+
+&:hover {
+   background: white;
+   border-color: #2792f0;
+   color: black;
+}
+
+}
+
+}
+
+}
+}
+.row {
+
+    margin: 0;
+}

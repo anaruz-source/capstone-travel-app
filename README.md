@@ -1,5 +1,5 @@
 # Capstone travel app
-
+This app structure is built from scratch piece by piece, brick by brick
 ## References
 1. [zimmo twig loader](https://github.com/zimmo-be/twig-loader)
 2. [twig npmjs](https://github.com/twigjs/twig.js/)

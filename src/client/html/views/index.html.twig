@@ -1,0 +1,88 @@
+{% extends "./layout.html.twig" %}
+{% block head  %}
+{{parent()}}
+
+
+  
+  
+<title>Capstone trip travel app home page</title>
+
+{% endblock %}}
+
+
+{% block body %}
+
+   {{parent()}}
+        <section>
+       
+            <div class="search-bar container">
+              <form action="" method="post">
+                     
+                   <div class="inputs-container d-flex justify-content-center flex-wrap">
+                     <div class="input d-flex flex-column col col-12 col-md-3">
+                       <label for="destination">Where?</label>
+                       <input type="text" name="" id="destination" placeholder="destination">
+                      </div>
+                     <div class="input d-flex flex-column col col-12 col-md-3">
+                       <label for="start-date">Trip start</label>
+                       <input type="text" name="" id="start-date" placeholder="MM/DD/YYYY">
+                      </div>
+                     <div class="input d-flex flex-column col col-12 col-md-3">
+                       <label for="end-date">Trip end</label>
+                       <input type="text" name="" id="end-date" placeholder="MM/DD/YYYY">
+                      </div>
+                     <div class="input col col-12 col-md-1"><button id="search-button"><img src="media/magnifier.svg" alt="search"></button></div>
+                   </div>
+              </form>
+            </div>
+            <article class="background-clipped">
+                   <svg height="0" width="0">
+                                      
+                      <defs
+                        id="defs2" />
+                      <g
+                        id="layer1">
+
+                        <clipPath id="path833" >
+                        <path
+                         
+                          d="M -39.722083,523.88742 -45.035033,-10.092165 2036.9966,-12.055563 2025.972,386.23592 C 1718.7928,669.67971 292.08629,329.45333 -39.722083,523.88742 Z"
+                        />
+                      </clipPath>
+
+
+                        <clipPath id="path834" >
+                        <path
+                         
+                          d="M -39.722083,663.59059 -45.035033,-9.6930855 2036.9966,-12.168693 2025.972,490.0287 C 1718.7928,847.41704 292.08629,418.43272 -39.722083,663.59059 Z"
+                        />
+                      </clipPath>
+                  
+                  
+                      </g>
+                </svg>
+
+                <div class="container">
+                  <div class=" d-flex flex-wrap justify-content-center align-items-center">
+                    
+                  <div class="heading col col-12 col-md-6 d-flex flex-column">
+                    <div class="sub-heading">Captrip a huge panel of choices</div>
+                    <h1>Travel abroad and Turn the page</h1>
+                    <p>Many use our app to book their flights, book yours today and  make savings for others valuable things</p>
+
+                    <a class="button">Book a trip now!</a>
+                  </div>
+
+                   <div class="col col-12 col-md-6">
+                     <img src="media/page-curl.svg" alt="">
+                   </div>
+                  </div>
+                  
+                </div>
+  
+            
+
+            </article>
+        </section>
+        
+{% endblock %}

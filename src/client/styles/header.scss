@@ -1,0 +1,29 @@
+header {
+  
+     background: #37d5b1;
+     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    img { 
+
+        height: 80px;
+    }
+
+    nav > div > {
+
+        div {
+
+            margin: 0 0.5em;
+            padding: 0.5em;
+            color: white;
+        }
+         div:last-child {
+
+             margin: 0 1em;
+             padding: 0.5em;
+             border-left: 1px solid rgba(0, 0, 0, 0.04);
+             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+
+    }
+}

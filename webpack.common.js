@@ -7,6 +7,10 @@ module.exports = {
     entry: {
         app: './src/client/index.js',
     },
+    output: {
+        libraryTarget: 'var',
+        library: 'Client'
+    },
     plugins: [
         // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
         new CleanWebpackPlugin({
@@ -21,25 +25,36 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: 'development',
-            template:'./src/client/views/layout.html.twig',
-            filename:'./layout.html.twig'
+            template:'./src/client/html/views/index.html.twig',
+            filename:'./index.html'
         }),
     ],
     module: {
         rules: [
-            {
+            {   
                 test: /\.twig$/,
-                use: {
+                use: [
+                    {
                     loader: 'twig-loader',
                     options: {
                         // See options section below
                     },
-                }
+                }]
             },
             {
                 test: '/\.js$/',
                 exclude: /node_modules/,
                 loader: "babel-loader"
+            },
+            {
+                test: /\.(png|jp(e*)g|svg|ico)$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        limit: 8000, // Convert images < 8kb to base64 strings
+                        name: 'media/[name].[ext]'
+                    }
+                }]
             }
         ]
     },

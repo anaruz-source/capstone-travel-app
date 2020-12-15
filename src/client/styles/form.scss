@@ -1,0 +1,103 @@
+.search-bar {
+
+    form {
+
+    padding: .5em;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    max-width: calc(720em/16);
+    margin: 2em auto;
+    border-radius: 3em;
+    font-weight: 300;
+
+    .input {
+       input {
+
+             border: none;
+             outline: none;
+       }
+        
+      label {
+
+        font-size: .8em;
+        font-weight: 600;
+      }
+      
+       margin-right: 0.2em;
+       padding: .6em;
+       
+       &:not(:last-child){
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 3em;
+       }
+
+       @media screen and (min-width:768px) {
+           &:not(:last-child){
+             border: none;
+            border-right: 1px solid rgba(0, 0, 0, 0.04);
+             border-radius: 0;
+       }
+       }
+        &:hover, &:focus {
+
+        background: #eee;
+         border-radius: 2em;
+
+         label {
+
+          color: #37d5b1;
+         }
+
+        input {
+
+             background: #eee;
+        }
+
+    
+    }
+    &:last-child {
+
+      width: 2.8em;
+      height: 2.8em;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: .5em;
+    }
+    }
+
+   #search-button {
+border-radius: 50%;
+    background: yellow;
+    height: 2.5em;
+    width: 2.5em;
+    border: none;
+
+      img {    
+        height: 2.8em;
+    width: 2.8em;}
+   }
+}
+    }
+
+// https://css-tricks.com/almanac/selectors/p/placeholder/
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: pink;
+  font-size: .8em;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: pink;
+   font-size: .8em;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: pink;
+   font-size: .8em;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: pink;
+   font-size: .8em;
+}
+::placeholder { /* Newer*/
+  color: pink;
+   font-size: .8em;
+}

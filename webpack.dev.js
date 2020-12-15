@@ -3,9 +3,22 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
     mode: 'development',
-    devtool: 'inline-source-map',
-    stats: verbose,
-    devServer: {
-        contentBase: './dist',
-    },
+    devtool: 'source-map',
+    module: {
+        rules: [// ...
+            {
+                test: /\.(scss)$/,
+                use: [{
+                    // inject CSS to page
+                    loader: 'style-loader'
+                }, {
+                    // translates CSS into CommonJS modules
+                    loader: 'css-loader'
+                }, {
+                    // compiles Sass to CSS
+                    loader: 'sass-loader'
+                }]
+            }
+         ]
+    }
 });
