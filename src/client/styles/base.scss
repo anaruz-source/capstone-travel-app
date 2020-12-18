@@ -89,7 +89,6 @@ section {
     text-transform: uppercase;
     display: inline-block;
     padding: 1em 2em;
-    background-color: #2792f0;
     color: white;
     border: 2px solid white;
     text-decoration: none;
@@ -101,7 +100,7 @@ section {
 
 &:hover {
    background: white;
-   border-color: #2792f0;
+   border-color: yellow;
    color: black;
 }
 

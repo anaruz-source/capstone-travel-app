@@ -9,26 +9,11 @@ module.exports = {
     },
     output: {
         libraryTarget: 'var',
-        library: 'Client'
+        library: 'Client',
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist'),
     },
-    plugins: [
-        // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
-        new CleanWebpackPlugin({
-            title: 'development',
-            // Simulate the removal of files
-            dry: true,
-            // Write Logs to Console
-            verbose: true,
-            // Automatically remove all unused webpack assets on rebuild
-            cleanStaleWebpackAssets: true,
-            protectWebpackAssets: false
-        }),
-        new HtmlWebpackPlugin({
-            title: 'development',
-            template:'./src/client/html/views/index.html.twig',
-            filename:'./index.html'
-        }),
-    ],
+  
     module: {
         rules: [
             {   
@@ -58,12 +43,27 @@ module.exports = {
             }
         ]
     },
-
+    
+    plugins: [
+        // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
+        new CleanWebpackPlugin({
+            title: 'development',
+            // Simulate the removal of files
+            dry: true,
+            // Write Logs to Console
+            verbose: true,
+            // Automatically remove all unused webpack assets on rebuild
+            cleanStaleWebpackAssets: true,
+            protectWebpackAssets: false
+        }),
+        new HtmlWebpackPlugin({
+            title: 'development',
+            template: './src/client/html/views/index.html.twig',
+            filename: './index.html'
+        }),
+    ],
     node: {
         fs: "empty" // avoids error messages
     },
-    output: {
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-    },
+ 
 };

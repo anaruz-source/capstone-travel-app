@@ -1,103 +1,162 @@
 .search-bar {
 
+
+  display: flex;
+
     form {
 
-    padding: .5em;
+   
     border: 1px solid rgba(0, 0, 0, 0.04);
-    max-width: calc(720em/16);
+    max-width: fit-content;
     margin: 2em auto;
     border-radius: 3em;
     font-weight: 300;
+    padding: 0.5em;
+
 
     .input {
-       input {
 
-             border: none;
-             outline: none;
-       }
+       position: relative;
+       border: 1px solid rgba(0, 0, 0, 0.04);
+       border-radius: 2em;
+       margin: 0.2em 0;
+      
+
+      
+
         
       label {
 
         font-size: .8em;
         font-weight: 600;
+        color: lightcoral;
       }
       
-       margin-right: 0.2em;
+      
        padding: .6em;
        
-       &:not(:last-child){
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            border-radius: 3em;
-       }
 
-       @media screen and (min-width:768px) {
-           &:not(:last-child){
-             border: none;
-            border-right: 1px solid rgba(0, 0, 0, 0.04);
-             border-radius: 0;
-       }
-       }
         &:hover, &:focus {
 
         background: #eee;
          border-radius: 2em;
 
-         label {
-
-          color: #37d5b1;
-         }
-
         input {
 
-             background: #eee;
+        background: #eee;
+       
+            
         }
 
     
     }
+
     &:last-child {
 
-      width: 2.8em;
-      height: 2.8em;
-      display: flex;
+ 
+    display: flex;
     align-items: center;
     justify-content: center;
-    margin: .5em;
+   
     }
-    }
+    
 
    #search-button {
-border-radius: 50%;
+    border-radius: 50%;
     background: yellow;
     height: 2.5em;
     width: 2.5em;
     border: none;
+    overflow: hidden;
+    outline: none;
 
       img {    
         height: 2.8em;
     width: 2.8em;}
    }
-}
-    }
 
+    
+ input {
+
+             border: none;
+             outline: none;
+              font-size: .8em;
+        color: #ddd;
+
+             
 // https://css-tricks.com/almanac/selectors/p/placeholder/
 
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: pink;
   font-size: .8em;
 }
-::-moz-placeholder { /* Firefox 19+ */
+&::-moz-placeholder { /* Firefox 19+ */
   color: pink;
    font-size: .8em;
 }
-:-ms-input-placeholder { /* IE 10+ */
+&:-ms-input-placeholder { /* IE 10+ */
   color: pink;
    font-size: .8em;
 }
-:-moz-placeholder { /* Firefox 18- */
+&:-moz-placeholder { /* Firefox 18- */
   color: pink;
    font-size: .8em;
 }
-::placeholder { /* Newer*/
+&::placeholder { /* Newer*/
   color: pink;
    font-size: .8em;
+}
+
+}
+
+
+
+    @media screen and (min-width: 768px) {
+       
+    &:not(:last-child)::after {
+          content: '';
+           position: absolute;
+          height: 50%;
+          width: 0;
+          border-right: 1px solid rgba(0, 0, 0, 0.04);
+          left: 100%;
+          top: 1em;
+   
+   
+        }
+
+
+
+
+  }
+  
+    }
+  @media screen and(min-width:768px) {
+          
+      .input {
+
+        border: none;
+        margin: 0;
+      
+      }
+
+      &:hover div::after {
+        
+        display: none;
+      }
+
+
+    }
+
+  
+
+
+}
+
+@media screen  and (min-width: 768px){
+   form {
+
+    padding: 0;
+   }
+}
 }
