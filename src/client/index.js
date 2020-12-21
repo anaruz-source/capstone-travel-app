@@ -1,5 +1,6 @@
-import { findReplace, fetchAny, dtPicker } from './js/helpers';
+import { findReplace, fetchAny, dtPicker, appendTag } from './js/helpers';
 import { handleFormSubmission, handleDate } from './js/app.js';
+import {googleSignInLib as Glib, onSignIn, signOut} from './js/googleClientSideSignin'
 
 import datepickr from 'js-datepicker';
 
@@ -18,6 +19,7 @@ import './media/favicon.ico';
 import './media/page-curl.svg';
 import './media/magnifier.svg';
 import './media/sign-up.svg';
+import './media/family-vacation.png';
 
 
 
@@ -30,5 +32,16 @@ button.addEventListener('click', handleFormSubmission)
 form.addEventListener('mouseover', handleDate, {once: true})
 
 
+window.addEventListener('DOMContentLoaded', async (e) => {
 
-export { findReplace, fetchAny, datepickr, dtPicker}
+    appendTag(Glib.meta, document.head)
+    appendTag(Glib.script, document.head)
+
+    const onSignInScript = document.createElement('script')
+          onSignInScript.textContent = 'function onSignIn(googleUser){ Client.onSignIn(googleUser)}'
+
+    document.head.appendChild(onSignInScript)
+  
+})
+
+export { findReplace, fetchAny, datepickr, dtPicker, appendTag, onSignIn, signOut}

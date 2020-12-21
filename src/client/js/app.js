@@ -10,28 +10,30 @@ let placeHolder = {
                     trips: [],
                 },  
    
-    geoUrl = 'http://api.geonames.org/searchJSON?q=&username=senyur',
+    options = {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: undefined
+    },
  
     weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
-    weatherBitHistUrl = 'https://api.weatherbit.io/v2.0/history/daily?lat=&lon=&start_date=&end_date=&key='+weatherBitKey,
+    pixaKey = '9323775-fe8ad975fc3aebdc3d5c7875e',
+  
+    geoUrl = 'http://api.geonames.org/searchJSON?q=&username=senyur',
     
-    weatherBitCurUrl = 'https://api.weatherbit.io/v2.0/forcast/daily?lat=&lon=&key='+weatherBitKey,
+    weatherBitHistUrl = 'https://api.weatherbit.io/v2.0/history/daily?lat=&lon=&start_date=&end_date=&key=',
     
-    pixaUrl = 'GEThttps://pixabay.com/api/key=9323775-fe8ad975fc3aebdc3d5c7875e',
+    weatherBitCurUrl = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=&lon=&key=',
     
+    pixaUrl = 'https://pixabay.com/api/?key=&q=&safesearch=true&image_type=photo&order=popular'
 
-options = {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: undefined
-}
-
-
-function handleFormSubmission (event){
+ 
+ 
+    async function handleFormSubmission (event){ //using Async to have acess to await, try, catch
   
     event.preventDefault()
 
@@ -43,21 +45,49 @@ function handleFormSubmission (event){
     const start = document.getElementById('start-date').value
     const end = document.getElementById('end-date').value
 
-    const geoNewUrl = findReplace.call(geoUrl, `q=${location}`)
+    const geoNewUrl = findReplace.call(geoUrl,  `q=${encodeURIComponent(location)}`)
+
+    const pixaNewUrl = findReplace.call(pixaUrl, `key=${pixaKey}`, `q=${encodeURIComponent(location)}`)
        
+    try {
 
-    fetchAny(geoNewUrl)
+     
+        const data = await fetchAny(geoNewUrl)
+
+        const weatherBitNewUrl = findReplace.call(weatherBitCurUrl, `key=${weatherBitKey}`, `lon=${data.geonames[0].lng}`, `lat=${data.geonames[0].lat}`) //reconstructing the weatherbit query string
+
+      
+
+        const dataPix = await fetchAny(pixaNewUrl)
+
+        console.log(dataPix)
+
+        const dataW = await fetchAny(weatherBitNewUrl)
+
+        options.body = JSON.stringify({
+
+            title: location,
+
+            description: `Trip to ${location} starting from ${start} and ending in ${end}`, // default could be updated later on by the owner end user
+            
+            startDate: start,
+
+            endDate: end,
+
+            userId:'0'
+
+        })
+
+        await fetchAny ('/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
+
+
+        
+    } catch(err){
+
+        console.log(err)
+    }
    
-    .then(function(data) {
-   
-     const   weatherBitNewUrl = findReplace.call(weatherBitUrl, `lon=${data.geonames[0].lng}`, `lat=${data.geonames[0].lat}`, `start_date=${start}`, `end_date=${end}`) //reconstructing the weatherbit query string
 
-
-        fetchAny(weatherBitNewUrl).
-
-        then(data => console.log(data))
-
-})
 }
 
 

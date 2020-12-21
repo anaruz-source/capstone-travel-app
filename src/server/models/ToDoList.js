@@ -37,4 +37,4 @@ const TodoSchema = new Schema({ // Schema instantiation
 })
 
 
-module.exports = mongoose.model('Todo', TodoSchema)
+module.exports = mongoose.model('Todos', TodoSchema)

@@ -13,22 +13,49 @@ const UserSchema = new Schema({ // Schema instantiation
 
     username: {
         type: String,
-        required: true
+        default: ''
     },
     password: {
         type: String,
+        default: ''
+    },
+
+    name: {
+        type: String,
         required: true
     },
-    startDate: {
-        date: Date,
+    email: {
+        type: String,
         required: true
     },
-    endDate: {
-        date: Date,
-        required: true
+
+    avatar: {
+
+        type: String,
+        default: ''
     },
+    inscriptionDate: {
+        type: Date,
+       
+        default: Date.now
+    },
+    role: {
+        type: String,
+        default: ''
+       },
+
+        group: {
+            type: String,
+            default: ''
+    },
+    locked: {
+        type: Boolean,
+        default: false
+    },
+
+    authType: ''
 
 }) 
 
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('Users', UserSchema)

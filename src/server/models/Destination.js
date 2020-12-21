@@ -45,4 +45,4 @@ const DestinationSchema = new Schema({ // Schema instantiation
 })
 
 
-module.exports = mongoose.model('Destination', DestinationSchema)
+module.exports = mongoose.model('Destinations', DestinationSchema)

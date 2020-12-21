@@ -13,34 +13,38 @@ const TripSchema = new Schema({ // Schema instantiation
 
      title: {
          type: String,
-        required: true
+        required: true,
+        trim: true
         },
-     description: {
+    
+        description: {
          type: String,
-         required: true
+            required: true,
+            trim: true
         },
-    startDate: {
-        date: Date,
-        required: true
+    
+        startDate: {
+            type: Date,
+            default: Date.now
     },
+
     endDate: {
-        date: Date,
-        required: true
+        type: Date,
+        default: Date.now
+        
     },
 
     expired: {
         type: Boolean,
-        default: false,
-        required: true
+        default: false
     },
 
-    userId: {
+    userId: {  // owner id of the trip
         type: String,
-        required: true,
         default: 'unknown'
     }
 
 }) 
 
 
-module.exports = mongoose.model('Trip', TripSchema)
+module.exports = mongoose.model('Trips', TripSchema)
