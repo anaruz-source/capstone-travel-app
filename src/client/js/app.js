@@ -5,9 +5,7 @@ import { fetchAny } from "./helpers"
 
 
 let placeHolder = { 
-                    username:'',
-                    password: '',
-                    trips: [],
+                    
                 },  
    
     options = {
@@ -29,11 +27,11 @@ let placeHolder = {
     
     weatherBitCurUrl = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=&lon=&key=',
     
-    pixaUrl = 'https://pixabay.com/api/?key=&q=&safesearch=true&image_type=photo&order=popular'
+    pixaUrl = 'https://pixabay.com/api/?key=&q=&safesearch=true&image_type=photo&order=popular',
 
  
  
-    async function handleFormSubmission (event){ //using Async to have acess to await, try, catch
+    handleFormSubmission = async (event) =>{ //using Async to have acess to await, try, catch
   
     event.preventDefault()
 
@@ -88,17 +86,85 @@ let placeHolder = {
     }
    
 
-}
+},
 
 
 // using https://www.npmjs.com/package/js-datepicker
 
-function handleDate (){
+ handleDate = () => {
 
   
     const start = Client.dtPicker('#start-date', new Date())
     const end = Client.dtPicker('#end-date', new Date())
 
 
-}
-export {handleFormSubmission, handleDate}
+},
+
+handleTabsSwitching = (e) => {
+
+    // aliases for Lib functions in js folder
+    
+         const hasClassName = Client.hasClassName,
+               hide = Client.hide,
+               show = Client.show
+        // make sure that a div with signin or signup className is clicked, others do nothing
+
+        if (!hasClassName(e.target, 'signin') && !hasClassName(e.target, 'signup')) return
+
+        // if div with id clicked so hide and hide currently active tab, show the other => 
+        const signupTab = document.getElementsByClassName('signup')[0] // sign up tab
+        const signinTab = document.getElementsByClassName('signin')[0] // sign in tab
+
+        const signupElm = document.getElementById('signup-with-email')
+        const signinElm = document.getElementById('signin-with-email')
+
+        if ((hasClassName(signupTab, 'active'))) { // signup tab is active, toggline between active and inactive
+
+            signinTab.classList.add('active')
+            signupTab.classList.remove('active')
+            hide(signupElm)
+            show(signinElm)
+        } else if (hasClassName(signinTab, 'active')) {
+
+            signinTab.classList.remove('active')
+            signupTab.classList.add('active')
+            show(signupElm)
+            hide(signinElm)
+        }
+
+    },
+
+    documentLoaderListener = async (e) => {
+        
+        // aliases creations for library variables
+
+        const appendTag = Client.appendTag,
+              Glib = Client.Glib
+        
+
+            appendTag(Glib.meta, document.head)
+            appendTag(Glib.script, document.head)
+
+            const onSignInScript = document.createElement('script')
+            onSignInScript.textContent = 'function onSignIn(googleUser){ Client.onSignIn(googleUser)}'
+
+            document.head.appendChild(onSignInScript)
+
+        
+    },
+
+    handleUserCreation = (e) => { 
+
+        const inputs = document.getElementsByTagName('input')
+       for(let input of inputs) {
+
+           if( input.value !== '') {
+
+            placeHolder[input.name] = input.value
+           }
+       }
+     console.log(placeHolder)   
+
+    }
+
+export {handleFormSubmission, documentLoaderListener, handleTabsSwitching, handleUserCreation}

@@ -26,7 +26,8 @@ const UserSchema = new Schema({ // Schema instantiation
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true // uniquness in the databse, prevent to reuse the same email address
     },
 
     avatar: {

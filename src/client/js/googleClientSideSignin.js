@@ -1,6 +1,5 @@
 // https://developers.google.com/identity/sign-in/web/sign-in
 
-import fetchAny from './helpers'
 
 const googleSignInLib =  { //creating script and meta tags to append, we use ',' operateur which is retunning the last value
 
@@ -34,6 +33,9 @@ onSignIn = async (googleUser) => {
 
     const idToken = googleUser.getAuthResponse().id_token; // token verification 
 
+
+
+
     const options = {
         method: 'POST',
         credentials: 'same-origin',
@@ -48,7 +50,7 @@ onSignIn = async (googleUser) => {
         })
     }
     try {
-        const data = await fetchAny('/users/outer', options)
+        const data = await Client.fetchAny('http://localhost:3030/users/outer', options)
 
         console.log(data)
     } catch (error) {

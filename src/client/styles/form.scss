@@ -160,3 +160,85 @@
    }
 }
 }
+
+
+
+#sign {
+
+  border: 1px solid yellow;
+  padding: 0.5em 0;
+  border-radius: 0.8em;
+  max-width: 25em;
+  margin: 0 auto;
+  background: white;
+
+  input:not([type="submit"]):not([type="reset"]) {
+       
+    border: none;
+    border: 1px solid #eee;
+    padding: .3em;
+    border-radius: 6px;
+    width: 15em;
+    margin: 0.2em 0  0.5em 0
+  }
+
+  label {
+
+    margin: 0 0.5em;
+    padding: 0.5em;
+    color: #5555ff;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: .8em;
+  }
+
+  input[type="submit"], input[type="reset"] {
+
+      
+    text-transform: uppercase;
+    display: inline-block;
+    padding: .5em 1em;
+    color: black;
+    font-size: .8em;
+    border: none;
+    margin: .1em;
+    
+    &:hover {
+
+         box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+    }
+
+  }
+
+  .signin, .signup {
+
+    padding: .5em;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    color: blue;
+    font-size: .8em;
+    text-transform: uppercase;
+
+    &.active {
+
+
+    background: yellow;
+    }
+
+  }
+
+  .form-header {
+
+    text-align: center;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+    padding: .5em;
+    background: yellow;
+    color: darkgray;
+  }
+  
+  hr {
+
+    opacity: 0;
+  }
+
+}

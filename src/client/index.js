@@ -1,11 +1,9 @@
-import { findReplace, fetchAny, dtPicker, appendTag } from './js/helpers';
-import { handleFormSubmission, handleDate } from './js/app.js';
+// Modules import
+import { findReplace, fetchAny, dtPicker, handleDate , appendTag, show, hide, hasClassName } from './js/helpers';
+import { handleFormSubmission, documentLoaderListener, handleUserCreation, handleTbasSwitching, handleTabsSwitching} from './js/app.js';
 import {googleSignInLib as Glib, onSignIn, signOut} from './js/googleClientSideSignin'
 
-import datepickr from 'js-datepicker';
-
-
-
+// SCSS files import
 
 import './styles/normalize.scss';
 import './styles/_custom.scss';
@@ -14,12 +12,15 @@ import './styles/header.scss';
 import './styles/form.scss';
 import './styles/footer.scss';
 
+// images files  import
+
 import './media/captrip-logo.svg';
 import './media/favicon.ico';
 import './media/page-curl.svg';
 import './media/magnifier.svg';
 import './media/sign-up.svg';
 import './media/family-vacation.png';
+import './media/menu-bars.svg'
 
 
 
@@ -27,21 +28,27 @@ const button  = document.getElementById('search-button'),
 
       form = document.getElementsByTagName('form')[0]// delegate event on form
 
+// sign in form event delegation of sign in/up tabs
+
+document.getElementById('sign').addEventListener('click', handleTabsSwitching)
+
 button.addEventListener('click', handleFormSubmission)
 
 form.addEventListener('mouseover', handleDate, {once: true})
 
+window.addEventListener('DOMContentLoaded', documentLoaderListener) // make sure that DOM is loaded before manipulating it
 
-window.addEventListener('DOMContentLoaded', async (e) => {
 
-    appendTag(Glib.meta, document.head)
-    appendTag(Glib.script, document.head)
+const submitConnexion = document.getElementById('signin-sub')
+const submitRegister = document.getElementById('register-sub')
 
-    const onSignInScript = document.createElement('script')
-          onSignInScript.textContent = 'function onSignIn(googleUser){ Client.onSignIn(googleUser)}'
+// using same event listener and filtering empty inputs
 
-    document.head.appendChild(onSignInScript)
-  
-})
+submitConnexion.addEventListener('click', handleUserCreation)
+submitRegister.addEventListener('click', handleUserCreation)
 
-export { findReplace, fetchAny, datepickr, dtPicker, appendTag, onSignIn, signOut}
+
+
+
+
+export { findReplace, fetchAny,  dtPicker, appendTag, onSignIn, signOut, show, hide, hasClassName, Glib}

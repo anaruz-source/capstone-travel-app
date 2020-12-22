@@ -10,6 +10,8 @@ const usersRoutes =require('./routes/users')
 
 const dotenv = require('dotenv')
 
+const placeHolders = {} // this will contain active users connection info 
+
 dotenv.config()
 
 app.use(express.static('dist'))

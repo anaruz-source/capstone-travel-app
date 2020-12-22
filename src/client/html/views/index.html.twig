@@ -37,33 +37,9 @@
                    </div>
               </form>
             </div>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div><div><a href="#" onclick="Client.signOut();">Sign out</a></div>
+           
             <article class="background-clipped">
-                   <svg height="0" width="0">
-                                      
-                      <defs
-                        id="defs2" />
-                      <g
-                        id="layer1">
-
-                        <clipPath id="path833" >
-                        <path
-                         
-                          d="M -39.722083,523.88742 -45.035033,-10.092165 2036.9966,-12.055563 2025.972,386.23592 C 1718.7928,669.67971 292.08629,329.45333 -39.722083,523.88742 Z"
-                        />
-                      </clipPath>
-
-
-                        <clipPath id="path834" >
-                        <path
-                         
-                          d="M -39.722083,663.59059 -45.035033,-9.6930855 2036.9966,-12.168693 2025.972,490.0287 C 1718.7928,847.41704 292.08629,418.43272 -39.722083,663.59059 Z"
-                        />
-                      </clipPath>
-                  
-                  
-                      </g>
-                </svg>
+              
 
                 <div class="container">
                   <div class=" d-flex flex-wrap justify-content-center align-items-center">
@@ -85,6 +61,82 @@
   
             
 
+            </article>
+
+            <article>
+                              <div class="container">
+                                <form  id="sign" method="post" accept-charset="UTF-8">
+                                  <div class="d-flex justify-content-center align-items-center">
+                                    <div class="signin active">Sign in</div>
+                                    <div class="signup">Sign up</div>
+                                  </div>
+                                  <div id="signup-with-email" class="d-none">
+
+                                     <div class="form-header">Email sign up</div>
+                                     <div class="d-flex flex-column justify-content-center align-items-center">
+                                  
+                                    <div class="d-flex flex-column justify-content-center align-items-center">
+                                  <input type="hidden" name="action" value="users/save-user">
+                  
+                              
+                                  <label for="username" class="text-left">Username</label>
+                                  <input id="username" type="text" name="username">
+                              
+                                  <label for="email">Email</label>
+                                  <input id="email" type="text" name="email">
+                              
+               
+                              
+                                  <label for="password">Password</label>
+                                  <input id="password" type="password" name="password">
+                                  
+                                  <label for="confirm">Confirm Password</label>
+                                  <input id="confirm" type="password" name="confirm">
+                                  <div>
+                                      <input type="submit" value="Register" id="register-sub"> <input type="reset" value="wipe out">
+                                  </div>
+                                 
+                                </div>
+
+                                 
+                              </div>
+                                  </div>
+
+                                    <div id="signin-with-email" class="d-block">
+                                        <div class="form-header">Email sign in</div>
+                                    <div class="d-flex flex-column justify-content-center align-items-center">
+                                 
+                                  <label for="emailin">Email</label>
+                                  <input id="emailin" type="text" name="email">
+                              
+               
+                              
+                                  <label for="passwordin">Password</label>
+                                  <input id="passwordin" type="password" name="password">
+                                               <div>
+                                      <input type="submit" value="Sign in" id="signin-sub"> <input type="reset" value="wipe out">
+                                  </div>
+                              </div>
+
+                                    </div>
+                                
+                                    <hr>
+
+                              <div class="signin-with-google" class="d-none active">
+
+                                    <div class="form-header">Google Sign in/up</div>
+                                    <hr>
+                                    <div class="d-flex justify-content-center">
+                                      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                      
+                                    </div>
+                                
+
+                              </div>
+                              </form>
+         
+                          
+                           </div>
             </article>
         </section>
         

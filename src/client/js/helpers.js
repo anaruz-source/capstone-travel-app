@@ -1,3 +1,4 @@
+import datepickr from 'js-datepicker';
 function findReplace(...args){ // inserts parameters on required place in the url string
     
     let copy = this.slice() // making a copy of a string reference by this
@@ -48,7 +49,6 @@ const  fetchAny = async (url, options) => {
 
 dtPicker = (selector, minDate) => {
 
-const datepickr = Client.datepickr 
 
     const datepicker = datepickr(selector, {  
         
@@ -59,8 +59,6 @@ const datepickr = Client.datepickr
             const value = revertDate(new Intl.DateTimeFormat('en-US').format(date).replaceAll('/', '-')) // construct an en-US date, then convert it to YYYY-MM-DD
             input.value = value                                       
         },
-
-        position: 'c',
 
         id: 1 // id used to link start and end dates 
     })
@@ -153,6 +151,47 @@ function isEmptyObj(obj) {
     return true
 }
 
+// show/hide adds bootstrap css class d-block and d-none to display and hide elements
+
+// Copied from the previous project weather app
+
+const hide = (elm) => {
+
+    if (elm.className.indexOf('d-block') > -1) {
+
+        elm.classList.replace('d-block', 'd-none')
+    } else {
+
+        elm.classList.add('d-none')
+    }
+
+},
+
+show = (elm) => {
+
+
+    if (elm.className.indexOf('d-none') > -1) {
+
+        elm.classList.replace('d-none', 'd-block')
+    } else {
+
+        elm.classList.add('d-block')
+    }
+
+},
+
+ hasClassName = (elem, className) => {
+    
+    return elem.className.indexOf(className) > -1 // element has className 
+},
+handleDate = () => {
+
+
+    const start = Client.dtPicker('#start-date', new Date())
+    const end = Client.dtPicker('#end-date', new Date())
+
+
+}
 export {
     
     findReplace,
@@ -162,8 +201,10 @@ export {
     isEmptyObj,
     inputValidator,
     isInputText,
-    appendTag
-
-
+    appendTag,
+    show,
+    hide,
+    hasClassName,
+    handleDate
 }
 
