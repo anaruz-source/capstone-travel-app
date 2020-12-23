@@ -182,9 +182,12 @@ handleTabsSwitching = (e) => {
         if(!regex.exec(e.target.value)){ // email not well formatted 
 
             show(errElm)
+        } else {
+
+            hide(errElm)
         }
 
-        hide(errElm)
+      
     },
 
     handlePasswordsValidation = (e) => { // a Strong password must contain the following
