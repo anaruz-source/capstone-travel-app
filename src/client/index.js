@@ -1,6 +1,6 @@
 // Modules import
 import { findReplace, fetchAny, dtPicker, handleDate , appendTag, show, hide, hasClassName } from './js/helpers';
-import { handleFormSubmission, documentLoaderListener, handleUserCreation, handleTbasSwitching, handleTabsSwitching} from './js/app.js';
+import { handleFormSubmission, documentLoaderListener, handleUserCreation, handleTabsSwitching, handlePasswordsValidation, handleEmailValidation} from './js/app.js';
 import {googleSignInLib as Glib, onSignIn, signOut} from './js/googleClientSideSignin'
 
 // SCSS files import
@@ -34,7 +34,7 @@ document.getElementById('sign').addEventListener('click', handleTabsSwitching)
 
 button.addEventListener('click', handleFormSubmission)
 
-form.addEventListener('mouseover', handleDate, {once: true})
+form.addEventListener('mouseover', handleDate, {once: true}) // adding eventListener only once!
 
 window.addEventListener('DOMContentLoaded', documentLoaderListener) // make sure that DOM is loaded before manipulating it
 
@@ -48,6 +48,17 @@ submitConnexion.addEventListener('click', handleUserCreation)
 submitRegister.addEventListener('click', handleUserCreation)
 
 
+const pwd = document.getElementById('password'), // sign up check
+      email = document.getElementById('email'), // sign up  check
+      emailIn = document.getElementById('emailin'), // sign in check
+      errConf = document.getElementById('errConf') // signup check
+
+      // check inputs values when losing focus
+
+email.addEventListener('keyup', handleEmailValidation)
+emailIn.addEventListener('keyup', handleEmailValidation)
+pwd.addEventListener('keyup', handlePasswordsValidation)
+errConf.addEventListener('keyup', handlePasswordsValidation)
 
 
 

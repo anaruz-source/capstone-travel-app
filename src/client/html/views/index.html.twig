@@ -83,17 +83,20 @@
                                   <input id="username" type="text" name="username">
                               
                                   <label for="email">Email</label>
-                                  <input id="email" type="text" name="email">
+                                  <input id="email" type="email" name="email">
+                                  <div id="errEmail" class="d-none">Enter well formatted email, could contain _- maj, min chars</div>
                               
                
                               
                                   <label for="password">Password</label>
                                   <input id="password" type="password" name="password">
+                                  <div id="errPwd" class="d-none" class="d-none"></div>
                                   
                                   <label for="confirm">Confirm Password</label>
                                   <input id="confirm" type="password" name="confirm">
+                                  <div id="errConf" class="d-none">Passwords don't match!</div>
                                   <div>
-                                      <input type="submit" value="Register" id="register-sub"> <input type="reset" value="wipe out">
+                                      <input type="submit" value="Register" id="register-sub"> <input type="reset" value="wipe away">
                                   </div>
                                  
                                 </div>
@@ -108,14 +111,16 @@
                                  
                                   <label for="emailin">Email</label>
                                   <input id="emailin" type="text" name="email">
+
+                                  <div id="errEmailIn" class="d-none">Email format error! use minus/maj ._-</div>
                               
                
                               
                                   <label for="passwordin">Password</label>
                                   <input id="passwordin" type="password" name="password">
-                                               <div>
-                                      <input type="submit" value="Sign in" id="signin-sub"> <input type="reset" value="wipe out">
-                                  </div>
+                                  <div>
+                                       <input type="submit" value="Sign in" id="signin-sub"> <input type="reset" value="wipe away">
+                                   </div>
                               </div>
 
                                     </div>

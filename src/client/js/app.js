@@ -1,6 +1,6 @@
 // http://www.geonames.org/export/geonames-search.html 
 
-import { fetchAny } from "./helpers"
+import { fetchAny, hide, show } from "./helpers"
 
 
 
@@ -136,7 +136,7 @@ handleTabsSwitching = (e) => {
 
     documentLoaderListener = async (e) => {
         
-        // aliases creations for library variables
+        // aliases creations for Client library variables
 
         const appendTag = Client.appendTag,
               Glib = Client.Glib
@@ -155,6 +155,8 @@ handleTabsSwitching = (e) => {
 
     handleUserCreation = (e) => { 
 
+        e.preventDefault()
+
         const inputs = document.getElementsByTagName('input')
        for(let input of inputs) {
 
@@ -165,6 +167,88 @@ handleTabsSwitching = (e) => {
        }
      console.log(placeHolder)   
 
+    },
+
+    handleEmailValidation = (e) => {
+
+        const regex = /[a-z_.-]+@[a-z_.-]+/i, // email correct format regex 
+              
+             // pick sign in div error tag ou sign up one
+
+              errElm = e.target.id == 'emailin' ? document.getElementById('errEmailIn'): document.getElementById('errEmail')
+
+              console.log(regex.exec(e.target.value))
+
+        if(!regex.exec(e.target.value)){ // email not well formatted 
+
+            show(errElm)
+        }
+
+        hide(errElm)
+    },
+
+    handlePasswordsValidation = (e) => { // a Strong password must contain the following
+
+        const rMin = /[a-z]+/, // miniscules checker
+         rMaj =/[A-Z]+/,   // Majs checher
+         rNum = /[0-9]+/, // numbers checker
+         rSpec =  /[&ù\*!\:"';?{}\[\]\(\)~#%@\+-\/\\\x20$µ£<>¨\^§=_.-]+/ // special chars checker
+
+         let errMsg = ' Weak PWD. USE: ',
+             err = false
+
+        const errPwd = document.getElementById('errPwd'),
+              errConf = document.getElementById('errConf')     
+
+         if(!rMin.exec(e.target.value)){
+
+            errMsg += '- minus chars';
+            err= true
+         } 
+
+         if(!rMaj.exec(e.target.value)){
+             errMsg += '- Majs '
+             err = true
+         }
+
+
+        if (!rNum.exec(e.target.value)) {
+            errMsg += '- Numbers '
+            err = true
+        }
+
+
+        if (!rSpec.exec(e.target.value)) {
+            errMsg += '- Specials '
+            err = true
+        }
+
+        const pwd = document.getElementById('password')
+     
+        if( e.target.value !== pwd.value) {
+
+            show(errConf)
+
+            err = false // ignore password input when we're on confirmation password
+
+        } else {
+
+            hide(errConf)
+        }
+
+        if(err) {// there's an error in creating STRONG Password 
+
+      
+            errPwd.textContent = errMsg
+        
+            show(errPwd)
+
+
+          } else {
+
+            hide(errPwd)
+          }
+       
     }
 
-export {handleFormSubmission, documentLoaderListener, handleTabsSwitching, handleUserCreation}
+export {handleFormSubmission, documentLoaderListener, handleTabsSwitching, handleUserCreation, handleEmailValidation, handlePasswordsValidation}

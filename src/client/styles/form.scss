@@ -241,4 +241,24 @@
     opacity: 0;
   }
 
+  // Google sign in button Re-styling
+
+  .abcRioButtonContents {
+
+    font-size: .8em !important;
+    line-height: 34px;
+    text-transform: uppercase;
+    font-family: inherit;
+  }
+
+  #errEmail,
+  #errPwd,
+  #errConf,
+  #errEmailIn {
+
+    font-size: .6em;
+    color: red;
+    background: rgba(255, 0, 0, 0.2)
+  }
+
 }
