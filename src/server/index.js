@@ -4,13 +4,11 @@ const cors = require('cors')
 const app = express()
 const path = require('path')
 const mongoose = require('mongoose')
-const tripsRoutes =require('./routes/trips')
-const usersRoutes =require('./routes/users')
-
+const tripsRoutes = require('./routes/trips')
+const usersRoutes = require('./routes/users')
 
 const dotenv = require('dotenv')
 
-const placeHolders = {} // this will contain active users connection info 
 
 dotenv.config()
 
@@ -32,7 +30,8 @@ app.get('/', (req, res) => res.send('dist/index.html'))
 
 // Connect to the Mongo Atlas noSQL Document DataBase, using the link stored in the .env folder for security
 
-mongoose.connect(process.env.MONGO_ATLAS_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true }, ()=>{
+mongoose.connect(process.env.MONGO_ATLAS_CONNECT, {
+    useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true}, ()=>{
 
     console.log('connection established!')
 })

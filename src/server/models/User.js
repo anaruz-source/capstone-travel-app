@@ -22,7 +22,7 @@ const UserSchema = new Schema({ // Schema instantiation
 
     name: {
         type: String,
-        required: true
+        default:''
     },
     email: {
         type: String,
@@ -53,6 +53,11 @@ const UserSchema = new Schema({ // Schema instantiation
         type: Boolean,
         default: false
     },
+
+    status: { 
+          type: String,
+           default:'offline'
+        },
 
     authType: ''
 

@@ -51,14 +51,14 @@ submitRegister.addEventListener('click', handleUserCreation)
 const pwd = document.getElementById('password'), // sign up check
       email = document.getElementById('email'), // sign up  check
       emailIn = document.getElementById('emailin'), // sign in check
-      errConf = document.getElementById('errConf') // signup check
+      conf = document.getElementById('confirm') // signup check
 
       // check inputs values when losing focus
 
 email.addEventListener('keyup', handleEmailValidation)
 emailIn.addEventListener('keyup', handleEmailValidation)
 pwd.addEventListener('keyup', handlePasswordsValidation)
-errConf.addEventListener('keyup', handlePasswordsValidation)
+conf.addEventListener('keyup', handlePasswordsValidation)
 
 
 

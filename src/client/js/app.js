@@ -1,10 +1,8 @@
 // http://www.geonames.org/export/geonames-search.html 
 
-import { fetchAny, hide, show } from "./helpers"
 
 
-
-let placeHolder = { 
+let placeHolder = { // place holder to contain info to send to the node js server
                     
                 },  
    
@@ -35,9 +33,12 @@ let placeHolder = {
   
     event.preventDefault()
 
-   const findReplace = Client.findReplace //Creating a shortcut for this function to alleviate usage of invoking long functions names
+    //Creating a shortcuts/aliases for these functions to alleviate usage of invoking long functions' names
+
+   const findReplace = Client.findReplace 
 
     const fetchAny = Client.fetchAny
+
 
     const location = document.getElementById('destination').value
     const start = document.getElementById('start-date').value
@@ -102,7 +103,7 @@ let placeHolder = {
 
 handleTabsSwitching = (e) => {
 
-    // aliases for Lib functions in js folder
+    // aliases for Lib Client functions in js folder
     
          const hasClassName = Client.hasClassName,
                hide = Client.hide,
@@ -153,9 +154,11 @@ handleTabsSwitching = (e) => {
         
     },
 
-    handleUserCreation = (e) => { 
+    handleUserCreation = async (e) => { 
 
         e.preventDefault()
+       
+        const fetchAny = Client.fetchAny
 
         const inputs = document.getElementsByTagName('input')
        for(let input of inputs) {
@@ -165,13 +168,33 @@ handleTabsSwitching = (e) => {
             placeHolder[input.name] = input.value
            }
        }
-     console.log(placeHolder)   
+     
+     try {
+        
+        options.body = JSON.stringify(placeHolder)
+
+        const data = await fetchAny('http://localhost:3030/users/inner', options)
+
+        console.log('savedUser', data)
+
+     } catch (err) {
+
+        console.log(err)
+     }
 
     },
 
     handleEmailValidation = (e) => {
 
-        const regex = /[a-z_.-]+@[a-z_.-]+/i, // email correct format regex 
+
+        //Creating a shortcuts/aliases for these functions to alleviate usage of invoking long functions' names
+
+
+        const show = Client.show
+
+        const hide = Client.hide
+
+        const regex = /[a-z_.-]+@[a-z_.-]+\.[a-z]+/i, // email correct format regex  
               
              // pick sign in div error tag ou sign up one
 
@@ -192,17 +215,29 @@ handleTabsSwitching = (e) => {
 
     handlePasswordsValidation = (e) => { // a Strong password must contain the following
 
+        //Creating a shortcuts/aliases for these functions to alleviate usage of invoking long functions' names
+
+  
+        const show = Client.show
+
+        const hide = Client.hide
+
         const rMin = /[a-z]+/, // miniscules checker
          rMaj =/[A-Z]+/,   // Majs checher
          rNum = /[0-9]+/, // numbers checker
          rSpec =  /[&ù\*!\:"';?{}\[\]\(\)~#%@\+-\/\\\x20$µ£<>¨\^§=_.-]+/ // special chars checker
 
-         let errMsg = ' Weak PWD. USE: ',
+        let errMsg = '&times; Weak PWD. USE: ',
              err = false
 
         const errPwd = document.getElementById('errPwd'),
+              strongPwd = document.getElementById('strongPwd'),
               errConf = document.getElementById('errConf')     
 
+         if(e.target.value.length < 8) { // no short passwords accepted
+             errMsg += '- num of ch < 8'
+             err = true
+         }
          if(!rMin.exec(e.target.value)){
 
             errMsg += '- minus chars';
@@ -230,6 +265,7 @@ handleTabsSwitching = (e) => {
      
         if( e.target.value !== pwd.value) {
 
+
             show(errConf)
 
             err = false // ignore password input when we're on confirmation password
@@ -245,11 +281,12 @@ handleTabsSwitching = (e) => {
             errPwd.textContent = errMsg
         
             show(errPwd)
+            hide(strongPwd)
 
-
-          } else {
+          } else if(e.target.id !== 'confirm') {
 
             hide(errPwd)
+            show(strongPwd)
           }
        
     }

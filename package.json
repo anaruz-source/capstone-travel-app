@@ -23,6 +23,7 @@
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.8",
     "nodemon": "^2.0.6",
+    "password-hash": "^1.2.2",
     "twig": "^1.15.4",
     "twig-loader": "^0.5.5",
     "webpack": "^4.43.0",
