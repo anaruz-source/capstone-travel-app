@@ -1,7 +1,7 @@
 // https://developers.google.com/identity/sign-in/web/sign-in
 
 
-const googleSignInLib =  { //creating script and meta tags to append, we use ',' operateur which is retunning the last value
+const googleSignInLib =  { //creating script and meta tags to append
 
         script : (function () { const script = document.createElement('script')
                                 script.src = 'https://apis.google.com/js/platform.js'
@@ -34,8 +34,6 @@ onSignIn = async (googleUser) => {
     const idToken = googleUser.getAuthResponse().id_token; // token verification 
 
 
-
-
     const options = {
         method: 'POST',
         credentials: 'same-origin',
@@ -51,8 +49,12 @@ onSignIn = async (googleUser) => {
     }
     try {
         const data = await Client.fetchAny('http://localhost:3030/users/outer', options)
+      
+        // Using Client Library
 
-        console.log(data)
+        Client.addItem('user', data) // saving user locally
+        Client.addItem('userId', data._id) // saving Id for trips bindings
+        
     } catch (error) {
         console.log(error)
     }

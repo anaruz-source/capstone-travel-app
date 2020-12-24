@@ -1,5 +1,7 @@
 // http://www.geonames.org/export/geonames-search.html 
 
+import { addItem } from "./localStorage"
+
 
 
 let placeHolder = { // place holder to contain info to send to the node js server
@@ -154,7 +156,7 @@ handleTabsSwitching = (e) => {
         
     },
 
-    handleUserCreation = async (e) => { 
+    handleUserSession = async (e) => { 
 
         e.preventDefault()
        
@@ -163,7 +165,7 @@ handleTabsSwitching = (e) => {
         const inputs = document.getElementsByTagName('input')
        for(let input of inputs) {
 
-           if( input.value !== '') {
+           if( input.value !== '' && input.type !== 'reset' && input.type !='submit') {
 
             placeHolder[input.name] = input.value
            }
@@ -174,8 +176,11 @@ handleTabsSwitching = (e) => {
         options.body = JSON.stringify(placeHolder)
 
         const data = await fetchAny('http://localhost:3030/users/inner', options)
+      
+        // Using Client Library
 
-        console.log('savedUser', data)
+        Client.addItem('user', data) // saving user locally
+        Client.addItem('userId', data._id) // saving Id for trips bindings
 
      } catch (err) {
 
@@ -200,11 +205,10 @@ handleTabsSwitching = (e) => {
 
               errElm = e.target.id == 'emailin' ? document.getElementById('errEmailIn'): document.getElementById('errEmail')
 
-              console.log(regex.exec(e.target.value))
-
-        if(!regex.exec(e.target.value)){ // email not well formatted 
+        if(!regex.exec(e.target.value)) { // email not well formatted 
 
             show(errElm)
+
         } else {
 
             hide(errElm)
@@ -291,4 +295,4 @@ handleTabsSwitching = (e) => {
        
     }
 
-export {handleFormSubmission, documentLoaderListener, handleTabsSwitching, handleUserCreation, handleEmailValidation, handlePasswordsValidation}
+export {handleFormSubmission, documentLoaderListener, handleTabsSwitching, handleUserSession, handleEmailValidation, handlePasswordsValidation}

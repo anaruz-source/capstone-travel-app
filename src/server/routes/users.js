@@ -13,57 +13,99 @@ const hasher = require('crypto') // to hash password using SHA1, server side usa
 const placeHolders = {} // this will contain active users connection info 
 
 Router.post('/outer', async (req, res) => { 
-
-
+   
     try {
-
         await verifyToken(req.body.idToken) // if the verification passes, we move on, otherwise, it throws error 
 
-        const user = new User( { // Instantiate User Schema Object 
+        const usr = await User.findOne({ email: req.body.email }) 
+
+        if (usr) { // signin process, user is in mongodb atlas 
+
+            usr.status = 'online'
+
+            placeHolders[usr._id] = usr
+
+            res.send(usr)
+        } else { // sign up if not found by precedent query
+
+            const user = new User({ // Instantiate User Schema Object 
                 name: req.body.name,
                 email: req.body.email,
                 username: req.body.email, // set to be email default in case of thirdparty auth (Google)
                 avatar: req.body.avatar,
                 authType: 'outer'
-        })
+            })
 
-        const savedUser = await user.save() // save to Mongodb Atlas
+            const savedUser = await user.save() // save to Mongodb Atlas
 
-        res.send(savedUser) // send back to user to store locally
+            res.send(savedUser) // send back to user to store locally
+        }
+
+
+
+    } catch (err) {
         
-    } catch (error) {
-        
-        res.send({msg: error})
+        res.send({err})
     }
-    
+
+
+
 })
 
 Router.post('/inner', async (req, res) => {
     // https://www.npmjs.com/package/password-hash
 
+
     const hashed = hasher    // createHmac defaults to SHA1 hash function
-                          .createHmac('sha1', 'password')
-                          .update(req.body.password)
-                          .digest('hex') 
+        .createHmac('sha1', 'password')
+        .update(req.body.password)
+        .digest('hex') 
 
-    const user = new User({ // Instantiate User Schema Object 
-        name: req.body.name,
-        email: req.body.email,
-        username: req.body.username, 
-        authType: 'inner',
-        password: hashed
-    })
-    try {
+   try {
 
-        const savedUser = await user.save() // save to Mongodb Atlas
-        savedUser.password = undefined // deleting user token from being sent back to the user (security breach)
-        savedUser.status = 'online'
-        res.send(savedUser) // send back to user to store locally
 
-    } catch(err) {
+       if (Object.keys(req.body).length == 2) { // email or username and password
 
-    res.send({err})
-    }
+
+           const searchKey = req.body.email.indexOf('@') > -1 ? 'email' : 'username'
+
+           const user = await User.findOne({ [searchKey]: req.body.email })
+
+           console.log({ [searchKey]: req.body.email })
+
+           if(hashed === user.password) {
+
+            user.password = undefined // delete password token
+            user.status = 'online'
+            
+               res.send(user)
+
+           } else {
+
+            throw new Error('Wrong Credentials!!')
+           }
+
+           
+       } else {
+           const user = new User({ // Instantiate User Schema Object 
+               name: req.body.name,
+               email: req.body.email,
+               username: req.body.username,
+               authType: 'inner',
+               password: hashed
+           })
+
+
+           const savedUser = await user.save() // save to Mongodb Atlas
+           savedUser.password = undefined // deleting user token from being sent back to the user (security breach)
+           savedUser.status = 'online'
+           res.send(savedUser) // send back to user to store locally
+       }
+       
+   } catch (err) {
+       
+      res.send({err})
+   }
 
 
 })

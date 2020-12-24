@@ -171,7 +171,11 @@
   max-width: 25em;
   margin: 0 auto;
   background: white;
+  .in-container {
 
+    display: flex;
+    flex-direction: column;
+  }
   input:not([type="submit"]):not([type="reset"]) {
        
     border: none;
@@ -179,17 +183,43 @@
     padding: .3em;
     border-radius: 6px;
     width: 15em;
-    margin: 0.2em 0  0.5em 0
+    margin: 0.2em 0  0.5em 0;
+
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: pink;
+  font-size: .8em;
+}
+&::-moz-placeholder { /* Firefox 19+ */
+  color: pink;
+   font-size: .8em;
+}
+&:-ms-input-placeholder { /* IE 10+ */
+  color: pink;
+   font-size: .8em;
+}
+&:-moz-placeholder { /* Firefox 18- */
+  color: pink;
+   font-size: .8em;
+}
+&::placeholder { /* Newer*/
+  color: pink;
+   font-size: .8em;
+}
+
   }
 
   label {
-
-    margin: 0 0.5em;
-    padding: 0.5em;
+  
+    padding: 0.5em 0;
     color: #5555ff;
     font-weight: 300;
-    text-transform: uppercase;
     font-size: .8em;
+    text-align: left;
+    display: inline;
+    width: inherit;
+    background: white;
+    position: relative;
+    top: 1em;
   }
 
   input[type="submit"], input[type="reset"] {

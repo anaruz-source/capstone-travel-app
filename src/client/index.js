@@ -1,7 +1,8 @@
 // Modules import
 import { findReplace, fetchAny, dtPicker, handleDate , appendTag, show, hide, hasClassName } from './js/helpers';
-import { handleFormSubmission, documentLoaderListener, handleUserCreation, handleTabsSwitching, handlePasswordsValidation, handleEmailValidation} from './js/app.js';
+import { handleFormSubmission, documentLoaderListener, handleUserSession, handleTabsSwitching, handlePasswordsValidation, handleEmailValidation} from './js/app.js';
 import {googleSignInLib as Glib, onSignIn, signOut} from './js/googleClientSideSignin'
+import {addItem, removeItem, getItem, clearAll} from './js/localStorage'
 
 // SCSS files import
 
@@ -44,22 +45,23 @@ const submitRegister = document.getElementById('register-sub')
 
 // using same event listener and filtering empty inputs
 
-submitConnexion.addEventListener('click', handleUserCreation)
-submitRegister.addEventListener('click', handleUserCreation)
+submitConnexion.addEventListener('click', handleUserSession)
+submitRegister.addEventListener('click', handleUserSession)
 
 
 const pwd = document.getElementById('password'), // sign up check
       email = document.getElementById('email'), // sign up  check
-      emailIn = document.getElementById('emailin'), // sign in check
       conf = document.getElementById('confirm') // signup check
 
-      // check inputs values when losing focus
+// check inputs values when losing focus
 
 email.addEventListener('keyup', handleEmailValidation)
-emailIn.addEventListener('keyup', handleEmailValidation)
 pwd.addEventListener('keyup', handlePasswordsValidation)
 conf.addEventListener('keyup', handlePasswordsValidation)
 
+// setting a placeholder in the sessionstorage by default
 
+addItem('user')
+addItem('userId')
 
-export { findReplace, fetchAny,  dtPicker, appendTag, onSignIn, signOut, show, hide, hasClassName, Glib}
+export { findReplace, fetchAny,  dtPicker, appendTag, onSignIn, signOut, show, hide, hasClassName, addItem, removeItem, getItem, Glib}

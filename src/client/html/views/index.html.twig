@@ -76,25 +76,33 @@
                                      <div class="d-flex flex-column justify-content-center align-items-center">
                                   
                                     <div class="d-flex flex-column justify-content-center align-items-center">
-                                  <input type="hidden" name="action" value="users/save-user">
+                                  
                   
-                              
-                                  <label for="username" class="text-left">Username</label>
+                              <div class="in-container">
+                                                                  <label for="username" class="text-left">Username</label>
                                   <input id="username" type="text" name="username">
+                              </div>
+
                               
-                                  <label for="email">Email</label>
+                                 <div class="in-container">
+                                                 <label for="email">Email</label>
                                   <input id="email" type="email" name="email">
+                                 </div>
                                   <div id="errEmail" class="d-none">&times; Enter well formatted email, could contain _- maj, min chars</div>
                               
-               
-                              
+                                  <div class="in-container">
+                                                                  
                                   <label for="password">Password</label>
                                   <input id="password" type="password" name="password">
+                                  </div>
+
                                   <div id="errPwd" class="d-none" class="d-none"></div>
                                   <div id="strongPwd" class="d-none">&#x2713; Great Password. Confirm it below!</div>
                                   
-                                  <label for="confirm">Confirm Password</label>
+                                  <div class="in-container">
+                                                                      <label for="confirm">Confirm Password</label>
                                   <input id="confirm" type="password" name="confirm">
+                                  </div>
                                   <div id="errConf" class="d-none">&times; Passwords don't match!</div>
                                   <div>
                                       <input type="submit" value="Register" id="register-sub"> <input type="reset" value="wipe away">
@@ -109,16 +117,20 @@
                                     <div id="signin-with-email" class="d-block">
                                         <div class="form-header">Email sign in</div>
                                     <div class="d-flex flex-column justify-content-center align-items-center">
-                                 
-                                  <label for="emailin">Email</label>
-                                  <input id="emailin" type="text" name="email">
+                                 <div class="in-container">
+                                                                      <label for="emailin">Email</label>
+                                  <input id="emailin" type="email" name="email" placeholder="Type in @email or username">
+                                 </div>
+
 
                                   <div id="errEmailIn" class="d-none">Email format error! use minus/maj ._-</div>
                               
                
-                              
-                                  <label for="passwordin">Password</label>
+                              <div class="in-container">
+                                         <label for="passwordin">Password</label>
                                   <input id="passwordin" type="password" name="password">
+                              </div>
+                           
                                   <div>
                                        <input type="submit" value="Sign in" id="signin-sub"> <input type="reset" value="wipe away">
                                    </div>
