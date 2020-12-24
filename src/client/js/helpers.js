@@ -25,12 +25,6 @@ const  fetchAny = async (url, options) => {
     try {
 
         const data = await response.json();
-
-
-        if ((data.cod && data.cod != '200') || (data[0] && data[0].cod && data[0].cod != '200')) throw new Error(data.message); // fetch doesn't throw in case a city not found! we don't want to fill endpoint with empty data:
-
-
-     
          
         console.log('data', data)
 

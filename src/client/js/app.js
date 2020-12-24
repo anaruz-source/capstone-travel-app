@@ -78,7 +78,7 @@ let placeHolder = { // place holder to contain info to send to the node js serve
 
         })
 
-        await fetchAny ('/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
+     const dataN =    await fetchAny ('http://localhost:3030/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
 
 
         
