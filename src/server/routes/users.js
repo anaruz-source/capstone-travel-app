@@ -69,9 +69,7 @@ Router.post('/inner', async (req, res) => {
 
            const searchKey = req.body.email.indexOf('@') > -1 ? 'email' : 'username'
 
-           const user = await User.findOne({ [searchKey]: req.body.email })
-
-           console.log({ [searchKey]: req.body.email })
+           const user = await User.findOne({ [searchKey]: req.body.email }) // we want the value of searchKey as key not the literal searchKey, thus  [] used
 
            if(hashed === user.password) {
 

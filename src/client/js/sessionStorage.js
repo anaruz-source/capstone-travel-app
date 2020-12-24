@@ -6,9 +6,11 @@ const session = window.sessionStorage
 
 const addItem = (key, value) => {
 
-    // argument value is defined and it's different thant unknown, so do nothing, else set the localSession to contain value for key, else set it to unkown
+    // argument value is defined and it's different thant unknown, and the unknown's userId (set in Mongodb for the sake of reviewing) so do nothing, else set the localSession to contain value for key, else set it to unkown
+    const item = JSON.parse(session.getItem(key))
 
-  value ? session.getItem(key) !== 'unknown' ? '' : session.setItem(key, JSON.stringify(value)) : session.setItem(key, 'unknown')
+    value ? item &&  typeof item === 'string' &&  item !== '5fe50c91439a70514ae0e339' 
+          ? '' : session.setItem(key, JSON.stringify(value)) : session.setItem(key, JSON.stringify('unknown'))
 },
 
 removeItem = (key) => {

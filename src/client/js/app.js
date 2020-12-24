@@ -1,6 +1,5 @@
 // http://www.geonames.org/export/geonames-search.html 
 
-import { addItem } from "./localStorage"
 
 
 
@@ -75,7 +74,7 @@ let placeHolder = { // place holder to contain info to send to the node js serve
 
             endDate: end,
 
-            userId:'0'
+            userId: JSON.parse(Client.getItem('userId')) // parse userId store locally of the connected user
 
         })
 

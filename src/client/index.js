@@ -2,7 +2,7 @@
 import { findReplace, fetchAny, dtPicker, handleDate , appendTag, show, hide, hasClassName } from './js/helpers';
 import { handleFormSubmission, documentLoaderListener, handleUserSession, handleTabsSwitching, handlePasswordsValidation, handleEmailValidation} from './js/app.js';
 import {googleSignInLib as Glib, onSignIn, signOut} from './js/googleClientSideSignin'
-import {addItem, removeItem, getItem, clearAll} from './js/localStorage'
+import {addItem, removeItem, getItem, clearAll} from './js/sessionStorage'
 
 // SCSS files import
 
@@ -62,6 +62,6 @@ conf.addEventListener('keyup', handlePasswordsValidation)
 // setting a placeholder in the sessionstorage by default
 
 addItem('user')
-addItem('userId')
+addItem('userId','5fe50c91439a70514ae0e339')
 
 export { findReplace, fetchAny,  dtPicker, appendTag, onSignIn, signOut, show, hide, hasClassName, addItem, removeItem, getItem, Glib}

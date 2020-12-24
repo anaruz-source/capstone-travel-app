@@ -40,7 +40,7 @@ const TripSchema = new Schema({ // Schema instantiation
     },
 
     userId: {  // owner id of the trip
-        type: String,
+        type: Schema.Types.ObjectId,
         default: 'unknown'
     }
 

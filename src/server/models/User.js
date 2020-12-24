@@ -13,6 +13,7 @@ const UserSchema = new Schema({ // Schema instantiation
 
     username: {
         type: String,
+        unique: true, // uniquness in the databse, prevent to reuse the same username
         default: ''
     },
     password: {
