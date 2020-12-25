@@ -1,6 +1,6 @@
 // Modules import
 import { findReplace, fetchAny, dtPicker, handleDate , appendTag, show, hide, hasClassName } from './js/helpers';
-import { handleFormSubmission, documentLoaderListener, handleUserSession, handleTabsSwitching, handlePasswordsValidation, handleEmailValidation} from './js/app.js';
+import { handleFormSubmission, documentLoadedListener, handleUserSession, handleTabsSwitching, handlePasswordsValidation, handleEmailValidation} from './js/app.js';
 import {googleSignInLib as Glib, onSignIn, signOut} from './js/googleClientSideSignin'
 import {addItem, removeItem, getItem, clearAll} from './js/sessionStorage'
 
@@ -37,7 +37,7 @@ button.addEventListener('click', handleFormSubmission)
 
 form.addEventListener('mouseover', handleDate, {once: true}) // adding eventListener only once!
 
-window.addEventListener('DOMContentLoaded', documentLoaderListener) // make sure that DOM is loaded before manipulating it
+window.addEventListener('DOMContentLoaded', documentLoadedListener) // make sure that DOM is loaded before manipulating it
 
 
 const submitConnexion = document.getElementById('signin-sub')

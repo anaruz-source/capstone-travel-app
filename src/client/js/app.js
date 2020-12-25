@@ -136,7 +136,7 @@ handleTabsSwitching = (e) => {
 
     },
 
-    documentLoaderListener = async (e) => {
+    documentLoadedListener = async (e) => {
         
         // aliases creations for Client library variables
 
@@ -148,10 +148,16 @@ handleTabsSwitching = (e) => {
             appendTag(Glib.script, document.head)
 
             const onSignInScript = document.createElement('script')
-            onSignInScript.textContent = 'function onSignIn(googleUser){ Client.onSignIn(googleUser)}'
+            onSignInScript.textContent = 'function onSignIn(googleUser){ Client.onSignIn(googleUser)}' // appending Google auth script on the head to be Global
 
-            document.head.appendChild(onSignInScript)
+            appendTag(onSignInScript, document.head)
 
+
+        const base = document.createElement('base') // creating and  // ading base  tag dynamically base on the location.href
+
+        base.href = location.href
+
+        appendTag(base, document.head)
         
     },
 
@@ -294,4 +300,4 @@ handleTabsSwitching = (e) => {
        
     }
 
-export {handleFormSubmission, documentLoaderListener, handleTabsSwitching, handleUserSession, handleEmailValidation, handlePasswordsValidation}
+export {handleFormSubmission, documentLoadedListener, handleTabsSwitching, handleUserSession, handleEmailValidation, handlePasswordsValidation}
