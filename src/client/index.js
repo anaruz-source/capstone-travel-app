@@ -62,6 +62,6 @@ conf.addEventListener('keyup', handlePasswordsValidation)
 // setting a placeholder in the sessionstorage by default
 
 addItem('user')
-addItem('userId','5fe50c91439a70514ae0e339')
+addItem('userId','5fe50c91439a70514ae0e339') // set here for the sake of the reviewer
 
 export { findReplace, fetchAny,  dtPicker, appendTag, onSignIn, signOut, show, hide, hasClassName, addItem, removeItem, getItem, Glib}

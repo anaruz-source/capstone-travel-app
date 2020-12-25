@@ -1,1 +1,34 @@
 {% extends "./layout.html.twig" %}
+{% block head  %}
+{{parent()}}
+
+
+
+
+  
+<title>Capstone trips display</title>
+
+{% endblock %}}
+
+
+{% block body %}
+   {{parent()}}
+<section class="trips">
+  {% for trip in trips %}
+     <div class="d-flex d-column">
+         <h4 class="trip-header">{{ trip.title|e }}</h4>
+         <div class="trip-body">
+             <p><span>Description</span>{{trip.description|e}}</p>
+             <p><span>Start Date</span><time>{{trip.startDate}}</time></p>
+             <p><span>End Date</span><time>{{trip.endDate}}</time></p>
+             <p><span>Duration</span><time>{{trip.duration}}</time></p>
+         </div>
+
+     </div>   
+    
+
+    {% endfor %}
+
+</section>
+
+{% endblock %}

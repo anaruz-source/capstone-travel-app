@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     entry: {
@@ -61,9 +62,24 @@ module.exports = {
             template: './src/client/html/views/index.html.twig',
             filename: './index.html'
         }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src/client/html/views'),
+                    to: path.resolve(__dirname, 'dist/templates'),
+               
+               
+                    globOptions: {
+                        dot: true,
+                        ignore: ['**/index.*']
+                    },
+             
+                }
+            ]
+        })
     ],
     node: {
         fs: "empty" // avoids error messages
-    },
+    }
  
 };
