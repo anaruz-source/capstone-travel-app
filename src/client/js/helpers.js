@@ -199,10 +199,10 @@ show = (elm) => {
     },
     
 
-countDays = (start, end) => {
+countDays = (start, now) => {
 
     const st = new Date(start)
-    const ed = new Date(end)
+    const ed = new Date(now)
 
     const diff = ed.getTime() - st.getTime()
 

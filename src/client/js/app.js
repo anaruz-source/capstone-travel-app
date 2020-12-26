@@ -1,5 +1,7 @@
 // http://www.geonames.org/export/geonames-search.html 
 
+import { ContextExclusionPlugin } from "webpack"
+
 
     let dataHolder = {}, // to store data of the trip
 
@@ -77,7 +79,10 @@
 
         })
 
-     const dataN =    await fetchAny ('http://localhost:3030/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
+
+        ContextExclusionPlugin.log(dataHolder)
+        
+    // const dataN =    await fetchAny ('http://localhost:3030/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
 
 
         

@@ -45,14 +45,38 @@ pixaAPICall = async (url, key,  loc, countryName) => { // old Url and new Url
 
 weatherbitAPICall = async(cUrl, hUrl,  key , start, end, lng, lat) => { // cUrl (16days forecast API), hUrl (history API, only 1 day for free plan) of weatherbit API, and it's key, start and end dates, longitude, latitude,
 
-
-    if (Client.countDays(start, end) <= 7) {
+const days = []
+    if (Client.countDays(start, Client.toEnUsDate(new Date())) <= 7) { // if trips start in 7 days or less
 
         nUrl = Client.findReplace.call(cUrl, `key=${key}`, `lon=${lng}`, `lat=${lat}`) //reconstructing the weatherbit query string
        
         const data = await Client.fetchAny(nUrl)
+
+        data.data.forEach(e => {
+
+            if(e.valid_date === start) {  // store only forecast starting from the trip's starting date
+                                          // NOTE: I don't see any benefit  storing weather forecasts as they're subject of change
+                                          // however for th sake of this app, let's do so
+
+                const day = { [e.valid_date]: {} } // entries by date
+
+                day[e.valid_date].avgTemp = e.temp
+                day[e.valid_date].windSpd = e.wind_spd
+                day[e.valid_date].description = e.weather.description
+                day[e.valid_date].icon = e.weather.icon
+                day[e.valid_date].precip = e.precip
+                
+
+             days.push( day)
+
+             
+
+            }
+        })
     
-    } else {
+        return days
+
+    } else {  // get a forecast in the future
 
         const d = new Date(start)
 
@@ -61,8 +85,24 @@ weatherbitAPICall = async(cUrl, hUrl,  key , start, end, lng, lat) => { // cUrl 
 
         newEnd = Client.revertDate(Client.toEnUsDate(newEnd)) // convert it to weatherbit required format
 
-        weatherBitNewUrl = Client.findReplace.call(hUrl, `key=${key}`, `lon=${lng}`, `lat=${lat}`, `start_date=${start}`, `end_date=${newEnd}`)
+        const url = Client.findReplace.call(hUrl, `key=${key}`, `lon=${lng}`, `lat=${lat}`, `start_date=${start}`, `end_date=${newEnd}`)
+
+        const data = await Client.fetchAny(url)
+
+        const day = { [data[0].valid_date]: {} } // entries by date (only one available for free plan)
+
+        day[e.valid_date].avgTemp = e.temp
+        day[e.valid_date].windSpd = e.wind_spd
+        day[e.valid_date].description = e.weather.description
+        day[e.valid_date].icon = e.weather.icon
+        day[e.valid_date].precip = e.precip
+
+
+        days.push(day)
+
+        return days
     }
+
 
 }
 
