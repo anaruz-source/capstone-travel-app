@@ -8,6 +8,6 @@ const { addTripsController, getTripsController} = require('../controllers/tripsC
 
 Router.post('/', addTripsController )
 
-Router.get('/:userId', getTripsController )
+Router.get('/userId/:userId', getTripsController )
 
 module.exports = Router

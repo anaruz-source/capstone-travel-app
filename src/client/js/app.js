@@ -1,9 +1,9 @@
 // http://www.geonames.org/export/geonames-search.html 
 
 
+    let dataHolder = {}, // to store data of the trip
 
-
-let placeHolder = { // place holder to contain info to send to the node js server
+    placeHolder = { // place holder to contain user info to send to the node js server
                     
                 },  
    
@@ -14,19 +14,21 @@ let placeHolder = { // place holder to contain info to send to the node js serve
             'Content-Type': 'application/json'
         },
         body: undefined
-    },
- 
-    weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
+    }
+
+   const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
     pixaKey = '9323775-fe8ad975fc3aebdc3d5c7875e',
   
     geoUrl = 'http://api.geonames.org/searchJSON?q=&username=senyur',
     
-    weatherBitHistUrl = 'https://api.weatherbit.io/v2.0/history/daily?lat=&lon=&start_date=&end_date=&key=',
+    weatherBitHistUrl = 'https://api.weatherbit.io/v2.0/history/daily?lat=&lon=&start_date=&end_date=&key=', // for future weather forecast
     
-    weatherBitCurUrl = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=&lon=&key=',
+    weatherBitCurUrl = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=&lon=&key=', // for 7 days forecast
     
     pixaUrl = 'https://pixabay.com/api/?key=&q=&safesearch=true&image_type=photo&order=popular',
+
+    restCountriesUrl = 'https://restcountries.eu/rest/v2/name/', 
 
  
  
@@ -47,22 +49,19 @@ let placeHolder = { // place holder to contain info to send to the node js serve
 
     const geoNewUrl = findReplace.call(geoUrl,  `q=${encodeURIComponent(location)}`)
 
-    const pixaNewUrl = findReplace.call(pixaUrl, `key=${pixaKey}`, `q=${encodeURIComponent(location)}`)
+    
        
     try {
 
      
         const data = await fetchAny(geoNewUrl)
+       
 
-        const weatherBitNewUrl = findReplace.call(weatherBitCurUrl, `key=${weatherBitKey}`, `lon=${data.geonames[0].lng}`, `lat=${data.geonames[0].lat}`) //reconstructing the weatherbit query string
+        dataHolder.countryInfo = await Client.restCountriesAPICall(restCountriesUrl, data.countryName) // rest countries API
+   
+        dataHolder.pix = await Client.pixAPICall(pixaUrl, pixaKey, location,  data.countryName)
 
-      
-
-        const dataPix = await fetchAny(pixaNewUrl)
-
-        console.log(dataPix)
-
-        const dataW = await fetchAny(weatherBitNewUrl)
+        dataHolder.weather = await Client.weatherbitAPICall(weatherBitCurUrl, weatherBitHistUrl, weatherBitKey, start, end, data.geonames[0].lng, data.geonames[0].lat) // fetching weatherbit
 
         options.body = JSON.stringify({
 
@@ -91,17 +90,6 @@ let placeHolder = { // place holder to contain info to send to the node js serve
 },
 
 
-// using https://www.npmjs.com/package/js-datepicker
-
- handleDate = () => {
-
-  
-    const start = Client.dtPicker('#start-date', new Date())
-    const end = Client.dtPicker('#end-date', new Date())
-
-
-},
-
 handleTabsSwitching = (e) => {
 
     // aliases for Lib Client functions in js folder
@@ -120,12 +108,13 @@ handleTabsSwitching = (e) => {
         const signupElm = document.getElementById('signup-with-email')
         const signinElm = document.getElementById('signin-with-email')
 
-        if ((hasClassName(signupTab, 'active'))) { // signup tab is active, toggline between active and inactive
+        if ((hasClassName(signupTab, 'active'))) { // signup tab is active, toggling between active and inactive
 
             signinTab.classList.add('active')
             signupTab.classList.remove('active')
             hide(signupElm)
             show(signinElm)
+
         } else if (hasClassName(signinTab, 'active')) {
 
             signinTab.classList.remove('active')
@@ -158,6 +147,10 @@ handleTabsSwitching = (e) => {
         base.href = location.href
 
         appendTag(base, document.head)
+
+        const link1 = document.getElementsByClassName('item1')[0]
+
+              link1.firstElementChild.href = `/trips/userId/${JSON.parse(Client.getItem('userId'))}`
         
     },
 
@@ -234,7 +227,7 @@ handleTabsSwitching = (e) => {
         const rMin = /[a-z]+/, // miniscules checker
          rMaj =/[A-Z]+/,   // Majs checher
          rNum = /[0-9]+/, // numbers checker
-         rSpec =  /[&ù\*!\:"';?{}\[\]\(\)~#%@\+-\/\\\x20$µ£<>¨\^§=_.-]+/ // special chars checker
+         rSpec =  /[&ù\*!\:"';?{}\[\]\(\)~#%@\+-\/\\\x20$µ£<>¨\^§=_.-]+/ // special chars checker | \x20 space hex code
 
         let errMsg = '&times; Weak PWD. USE: ',
              err = false

@@ -19,8 +19,8 @@
          <h4 class="trip-header">{{ trip.title|e }}</h4>
          <div class="trip-body">
              <p><span>Description</span>{{trip.description|e}}</p>
-             <p><span>Start Date</span><time>{{trip.startDate}}</time></p>
-             <p><span>End Date</span><time>{{trip.endDate}}</time></p>
+             <p><span>Start Date</span><time>{{trip.startDate|date('Y/m/d')}}</time></p>
+             <p><span>End Date</span><time>{{trip.endDate|date('Y/m/d')}}</time></p>
              <p><span>Duration</span><time>{{trip.duration}}</time></p>
          </div>
 

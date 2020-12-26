@@ -39,6 +39,12 @@ const  fetchAny = async (url, options) => {
     }
 },
 
+toEnUSDate = (d) => {
+
+    const value = revertDate(new Intl.DateTimeFormat('en-US').format(d).replaceAll('/', '-')) // construct an en-US date, then convert it to YYYY-MM-DD
+
+    return value
+},
 
 
 dtPicker = (selector, minDate) => {
@@ -50,8 +56,10 @@ dtPicker = (selector, minDate) => {
              // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
              // convert to en-US format MM-DD-YYYY
              // then convert to suited format to weatherbit.com YYYY-MM-DD
-            const value = revertDate(new Intl.DateTimeFormat('en-US').format(date).replaceAll('/', '-')) // construct an en-US date, then convert it to YYYY-MM-DD
-            input.value = value                                       
+            
+             const value = Client.toEnUSDate(date)
+
+            input.value = Client.revertDate(value)                                       
         },
 
         id: 1 // id used to link start and end dates 
@@ -66,7 +74,7 @@ dtPicker = (selector, minDate) => {
 
  revertDate = (str) => {
     
-    let m = str.match(/\d+/g)
+    const m = str.match(/\d+/g)
      
     return `${m[2]}-${m[0]}-${m[1]}`
 },
@@ -178,12 +186,27 @@ show = (elm) => {
     
     return elem.className.indexOf(className) > -1 // element has className 
 },
-handleDate = () => {
+
+// using https://www.npmjs.com/package/js-datepicker
+
+    handleDate = () => {
 
 
-    const start = Client.dtPicker('#start-date', new Date())
-    const end = Client.dtPicker('#end-date', new Date())
+        const start = Client.dtPicker('#start-date', new Date())
+        const end = Client.dtPicker('#end-date', new Date())
 
+
+    },
+    
+
+countDays = (start, end) => {
+
+    const st = new Date(start)
+    const ed = new Date(end)
+
+    const diff = ed.getTime() - st.getTime()
+
+    return diff / (1000 * 60 * 60 * 24) // convert ms to days
 
 }
 export {
@@ -191,6 +214,7 @@ export {
     findReplace,
     fetchAny,
     revertDate,
+    toEnUSDate,
     dtPicker,
     isEmptyObj,
     inputValidator,
@@ -199,6 +223,7 @@ export {
     show,
     hide,
     hasClassName,
-    handleDate
+    handleDate,
+    countDays
 }
 

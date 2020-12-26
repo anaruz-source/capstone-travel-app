@@ -34,6 +34,11 @@ const TripSchema = new Schema({ // Schema instantiation
         
     },
 
+    duration: {
+        type: Number,
+        required: true
+    },
+
     expired: {
         type: Boolean,
         default: false
