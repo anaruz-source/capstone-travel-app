@@ -43,12 +43,13 @@ const DestinationSchema = new Schema({ // Schema instantiation
     },
 
     tripId: {
-        type: String,
-        required: true,
-        
+
+        // owner id of the destination
+            type: Schema.Types.ObjectId,
+            ref: 'Trip'
     }
 
 })
 
 
-module.exports = mongoose.model('Destinations', DestinationSchema)
+module.exports = mongoose.model('Destination', DestinationSchema)

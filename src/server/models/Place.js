@@ -29,8 +29,9 @@ const PlaceSchema = new Schema({ // Schema instantiation
     },
 
     destinationId: {
-        type: String,
-        required: true,
+  // owner id of the trip
+            type: Schema.Types.ObjectId,
+            ref: 'Destination'
 
     }
 

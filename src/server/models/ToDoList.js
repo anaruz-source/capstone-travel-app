@@ -29,12 +29,13 @@ const TodoSchema = new Schema({ // Schema instantiation
     },
 
     destinationId: {
-        type: String,
-        required: true,
+        // owner id of the trip
+        type: Schema.Types.ObjectId,
+        ref: 'Destination'
 
     }
 
 })
 
 
-module.exports = mongoose.model('Todos', TodoSchema)
+module.exports = mongoose.model('Todo', TodoSchema)

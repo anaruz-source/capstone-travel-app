@@ -46,7 +46,7 @@ const TripSchema = new Schema({ // Schema instantiation
 
     userId: {  // owner id of the trip
         type: Schema.Types.ObjectId,
-        default: 'unknown'
+        ref: 'User'
     }
 
 }) 
