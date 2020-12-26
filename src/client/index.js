@@ -1,9 +1,9 @@
 // Modules import
-import { findReplace, fetchAny, dtPicker, handleDate , appendTag, show, hide, hasClassName, revertDate, toEnUSDate, countDays } from './js/helpers';
+import { findReplace, fetchAny, dtPicker, handleDate , appendTag, show, hide, hasClassName, revertDate, toEnUSDate, countDays, getMaxLikesEntry, isEmptyObj } from './js/helpers';
 import { handleFormSubmission, documentLoadedListener, handleUserSession, handleTabsSwitching, handlePasswordsValidation, handleEmailValidation} from './js/app.js';
 import {googleSignInLib as Glib, onSignIn, signOut} from './js/googleClientSideSignin'
 import {addItem, removeItem, getItem, clearAll} from './js/sessionStorage'
-import {pixaAPICall, restCountriesAPICall, weatherbitAPICall} from './js/apisCallAndDataReformating'
+import {pixaAPICall, restCountriesAPICall, weatherbitAPICall, geonamesAPICall} from './js/apisCallAndDataReformating'
 
 // SCSS files import
 
@@ -65,4 +65,4 @@ conf.addEventListener('keyup', handlePasswordsValidation)
 addItem('user')
 addItem('userId','5fe50c91439a70514ae0e339') // set here for the sake of the reviewer
 
-export { findReplace, fetchAny,  dtPicker, appendTag, onSignIn, signOut, show, hide, hasClassName, addItem, removeItem, getItem, revertDate, toEnUSDate, pixaAPICall, restCountriesAPICall, weatherbitAPICall, Glib}
+export { findReplace, fetchAny,  dtPicker, appendTag, onSignIn, signOut, show, hide, hasClassName, addItem, removeItem, getItem, revertDate, toEnUSDate, isEmptyObj, countDays, pixaAPICall, restCountriesAPICall, weatherbitAPICall, geonamesAPICall, getMaxLikesEntry, Glib}

@@ -8,33 +8,31 @@ const mongoose = require('mongoose')
 
 
 /// -> Schema alias to alleviate burdern of  writing long names
+
 const { Schema } = mongoose
 
-const PlaceSchema = new Schema({ // Schema instantiation
+const PixaInfoSchema = new Schema({ // Schema instantiation
 
-    name: {
+    previewUrl: {
         type: String,
         required: true
     },
 
-    type: {
+    largeImageUrl: {
         type: String,
         required: true
     },
-
-    expired: {
-        type: Boolean,
-        default: false,
+    likes: {
+        type: Number,
         required: true
     },
-
-    destinationId: {
-        type: String,
-        required: true,
-
+    comments: {
+        type: Number,
+        required: true
     }
+
 
 })
 
 
-module.exports = mongoose.model('Place', PlaceSchema)
+module.exports = mongoose.model('PixaInfo', PixaInfoSchema)

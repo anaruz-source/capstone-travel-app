@@ -1,6 +1,5 @@
 // http://www.geonames.org/export/geonames-search.html 
 
-import { ContextExclusionPlugin } from "webpack"
 
 
     let dataHolder = {}, // to store data of the trip
@@ -38,32 +37,24 @@ import { ContextExclusionPlugin } from "webpack"
   
     event.preventDefault()
 
-    //Creating a shortcuts/aliases for these functions to alleviate usage of invoking long functions' names
-
-   const findReplace = Client.findReplace 
-
-    const fetchAny = Client.fetchAny
-
 
     const location = document.getElementById('destination').value
     const start = document.getElementById('start-date').value
     const end = document.getElementById('end-date').value
 
-    const geoNewUrl = findReplace.call(geoUrl,  `q=${encodeURIComponent(location)}`)
-
+   
     
        
     try {
 
      
-        const data = await fetchAny(geoNewUrl)
-       
+        const  geo = await Client.geonamesAPICall(geoUrl, location)
 
-        dataHolder.countryInfo = await Client.restCountriesAPICall(restCountriesUrl, data.countryName) // rest countries API
+        dataHolder.countryInfo = await Client.restCountriesAPICall(restCountriesUrl, geo.name) // rest countries API
    
-        dataHolder.pix = await Client.pixAPICall(pixaUrl, pixaKey, location,  data.countryName)
+        dataHolder.pixa = await Client.pixaAPICall(pixaUrl, pixaKey, location,  geo.name)
 
-        dataHolder.weather = await Client.weatherbitAPICall(weatherBitCurUrl, weatherBitHistUrl, weatherBitKey, start, end, data.geonames[0].lng, data.geonames[0].lat) // fetching weatherbit
+        dataHolder.weather = await Client.weatherbitAPICall(weatherBitCurUrl, weatherBitHistUrl, weatherBitKey, start, end, geo.lng, geo.lat) // fetching weatherbit
 
         options.body = JSON.stringify({
 
@@ -80,9 +71,9 @@ import { ContextExclusionPlugin } from "webpack"
         })
 
 
-        ContextExclusionPlugin.log(dataHolder)
-        
-    // const dataN =    await fetchAny ('http://localhost:3030/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
+     console.log(dataHolder)
+
+    // const dataN =    await Client.fetchAny ('http://localhost:3030/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
 
 
         

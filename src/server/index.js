@@ -27,7 +27,7 @@ app.use('/users', usersRoutes)
 
 app.get('/', (req, res) => res.send('dist/index.html'))
 
-
+app.get('/trips', (req, res) => {})
 
 // Connect to the Mongo Atlas noSQL Document DataBase, using the link stored in the .env folder for security
 

@@ -14,7 +14,7 @@ function findReplace(...args){ // inserts parameters on required place in the ur
         
     })
 
-    console.log('copy', copy)
+
     return copy
 }
 
@@ -41,10 +41,19 @@ const  fetchAny = async (url, options) => {
 
 toEnUSDate = (d) => {
 
-    const value = revertDate(new Intl.DateTimeFormat('en-US').format(d).replaceAll('/', '-')) // construct an en-US date, then convert it to YYYY-MM-DD
+    const value = new Intl.DateTimeFormat('en-US').format(d).replaceAll('/', '-') // construct an en-US date, then convert it to YYYY-MM-DD using revertDate function
 
     return value
 },
+
+    // used to transform an en-US date to YYYY-MM-DD to be used by weatherbit
+
+    revertDate = (str) => {
+
+        const m = str.match(/\d+/g)
+
+        return `${m[2]}-${m[0]}-${m[1]}`
+    },
 
 
 dtPicker = (selector, minDate) => {
@@ -57,9 +66,9 @@ dtPicker = (selector, minDate) => {
              // convert to en-US format MM-DD-YYYY
              // then convert to suited format to weatherbit.com YYYY-MM-DD
             
-             const value = Client.toEnUSDate(date)
+             const value = toEnUSDate(date)
 
-            input.value = Client.revertDate(value)                                       
+            input.value = revertDate(value)                                       
         },
 
         id: 1 // id used to link start and end dates 
@@ -70,14 +79,6 @@ dtPicker = (selector, minDate) => {
 },
 
 
-// used to transform an en-US date to YYYY-MM-DD to be used by weatherbit
-
- revertDate = (str) => {
-    
-    const m = str.match(/\d+/g)
-     
-    return `${m[2]}-${m[0]}-${m[1]}`
-},
 
 inputValidator = (...inputs) => {
 
@@ -208,6 +209,23 @@ countDays = (start, now) => {
 
     return diff / (1000 * 60 * 60 * 24) // convert ms to days
 
+},
+
+getMaxLikesEntry = ( hits = []) => { // function used in pixa bay to get the image which has most likes
+
+let max = hits[0].likes, // init with first hit's likes number
+    maxHit = hits[0]   // init with first hit
+
+hits.forEach(h => {
+
+    if (h.likes > max){ 
+        
+        max = h.likes
+        maxHit = h
+    }
+})
+
+return maxHit
 }
 export {
     
@@ -224,6 +242,7 @@ export {
     hide,
     hasClassName,
     handleDate,
-    countDays
+    countDays,
+    getMaxLikesEntry
 }
 

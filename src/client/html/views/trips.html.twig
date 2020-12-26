@@ -16,8 +16,8 @@
 <section class="trips">
   {% for trip in trips %}
      <div class="d-flex d-column">
-         <h4 class="trip-header">{{ trip.title|e }}</h4>
-         <div class="trip-body">
+         <h4 class="card-header">{{ trip.title|e }}</h4>
+         <div class="card-body">
              <p><span>Description</span>{{trip.description|e}}</p>
              <p><span>Start Date</span><time>{{trip.startDate|date('Y/m/d')}}</time></p>
              <p><span>End Date</span><time>{{trip.endDate|date('Y/m/d')}}</time></p>

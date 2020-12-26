@@ -11,24 +11,30 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
+// 
+const CountryInfo = require('../models/CountryInfo')
+const PixaInfo = require('../models/PixaInfo')
+const  weatherInfo = require('../models/WeatherInfo')
+
 const DestinationSchema = new Schema({ // Schema instantiation
 
-    title: {
+    name: {
         type: String,
         required: true
     },
-    description: {
-        type: String,
+    countryInfo: {
+        type: CountryInfo,
         required: true
     },
-    startDate: {
-        date: Date,
-        required: true
+    
+    pixaInfo: {
+      type: PixaInfo,
+      required: true
     },
-    endDate: {
-        date: Date,
-        required: true
-    },
+     weatherInfo: {
+         type: [weatherInfo],
+         required: true
+     },
 
     expired: {
         type: Boolean,
