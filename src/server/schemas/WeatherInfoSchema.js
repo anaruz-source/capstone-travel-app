@@ -11,7 +11,7 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
-const PixaInfoSchema = new Schema({ // Schema instantiation
+const WeatherInfoSchema = new Schema({ // Schema instantiation
 
     date: {
         type: Date,
@@ -23,10 +23,14 @@ const PixaInfoSchema = new Schema({ // Schema instantiation
         required: true
     },
     description: {
-        type: Number,
+        type: String,
         required: true
     },
     precip: {
+        type: Number,
+        required: true
+    },
+    windSpd: {
         type: Number,
         required: true
     },
@@ -35,7 +39,11 @@ const PixaInfoSchema = new Schema({ // Schema instantiation
         type: String,
         required: true
     },
+    timezone: {
+        type: String,
+        required: false
+    }
 })
 
 
-module.exports = mongoose.model('WeatherInfo', PixaInfoSchema)
+module.exports =  WeatherInfoSchema

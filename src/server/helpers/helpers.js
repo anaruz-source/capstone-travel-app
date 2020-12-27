@@ -20,6 +20,17 @@ const toEnUSDate = (d) => {
     return value
 },
 
+    countDays = (start, now) => {
+
+        const st = new Date(start)
+        const ed = new Date(now)
+
+        const diff = ed.getTime() - st.getTime()
+
+        return diff / (1000 * 60 * 60 * 24) // convert ms to days
+
+    },
+
 
     dtPicker = (selector, minDate) => {
 
@@ -44,4 +55,4 @@ const toEnUSDate = (d) => {
     }
 
 
-module.exports = {isEmptyObj, revertDate, toEnUSDate}
+module.exports = {isEmptyObj,  toEnUSDate, countDays}

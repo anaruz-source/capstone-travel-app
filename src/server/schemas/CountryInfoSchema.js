@@ -47,12 +47,13 @@ const CountryInfoSchema = new Schema({ // Schema instantiation
     },
 
     borders: {
-        type: [String],
-        required: true,
+        type: [String], // type Array<String>
+        default: []
+      
 
     }
 
 })
 
 
-module.exports = mongoose.model('CountryInfo', CountryInfoSchema)
+module.exports = CountryInfoSchema

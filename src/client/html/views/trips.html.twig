@@ -14,21 +14,71 @@
 {% block body %}
    {{parent()}}
 <section class="trips">
+    <div class="container">
+       
+
+         <h4 class="title">My Trips</h4> 
+ 
+    {% if trips is empty %}
+
+<div> Too Clean space, create some trips <a>HERE</a></div>
+{% endif %}
+
+
   {% for trip in trips %}
+   <div class="trip-card">
      <div class="d-flex d-column">
-         <h4 class="card-header">{{ trip.title|e }}</h4>
-         <div class="card-body">
-             <p><span>Description</span>{{trip.description|e}}</p>
-             <p><span>Start Date</span><time>{{trip.startDate|date('Y/m/d')}}</time></p>
-             <p><span>End Date</span><time>{{trip.endDate|date('Y/m/d')}}</time></p>
-             <p><span>Duration</span><time>{{trip.duration}}</time></p>
+         <h4 class="trip-card-header">{{ trip.title|e }}</h4>
+         <div class="trip-card-body">
+             <p><span class="entry-name">Description</span><span class="entry-details">{{trip.description|e}}</span></p>
+             <p><span class="entry-name">Start Date</span><time class="entry-details">{{trip.startDate|date('Y/m/d')}}</time></p>
+             <p><span class="entry-name">End Date</span><time class="entry-details">{{trip.endDate|date('Y/m/d')}}</time></p>
+             <p><span class="entry-name">Duration</span><time class="entry-details">{{trip.duration}} day(s)</time></p>
          </div>
 
      </div>   
+    </div>
+    <h5>Destinations</h5>
+    {% if  trip.destinations is empty %} <!-- Check if object is empty null -->
+    <div>Destinations space too clean, create some <a rel="noopener noreferrer">HERE</a></div>
+    {% endif %}
     
+    {% for d in trip.destinations %} <!-- looping over trip's destinations -->
+      
+       <div class="d-card">
+         <div class="d-card-header">
+           <p><span class="entry-name">Name</span><span class="entry-details">{{d.name}}</span></p>
+         </div>
+         <div class="d-card-body">
+             <div>Country Info</div>
+             <div class="d-flex flex-wrap">
+                 <p><span class="entry-name">Name</span><span class="entry-details">{{d.countryInfo.name}}<>{{d.countryInfo.flag}}</span></p>
+                 <p><span class="entry-name">Language</span><span class="entry-details">{{d.countryInfo.language}}</span></p>
+                 <p><span class="entry-name">Region</span><span class="entry-details">{{d.countryInfo.region}}</span></p>
+                 <p><span class="entry-name">Timezone</span><span class="entry-details">{{d.countryInfo.timezone}}</span></p>
+                 <p><span class="entry-name">Capital</span><span class="entry-details">{{d.countryInfo.capital}}</span></p>
+                 <p><span class="entry-name">Currency</span><span class="entry-details">{{d.countryInfo.currency}}</span></p>
+                 <p><span class="entry-name">Borders</span><span class="entry-details">
+                {% for b in d.countryInfo.borders %}
+                      {{b}}| 
+                {% endfor %}     
+                 
+                
+                </span>
+            </p>
+             </div>
+            
+         </div>
+
+       </div>
+    
+    {% endfor %}
 
     {% endfor %}
 
+
+
+   </div>
 </section>
 
 {% endblock %}

@@ -13,12 +13,12 @@ const { Schema } = mongoose
 
 const PixaInfoSchema = new Schema({ // Schema instantiation
 
-    previewUrl: {
+    previewURL: {
         type: String,
         required: true
     },
 
-    largeImageUrl: {
+    largeImageURL: {
         type: String,
         required: true
     },
@@ -29,10 +29,15 @@ const PixaInfoSchema = new Schema({ // Schema instantiation
     comments: {
         type: Number,
         required: true
+    },
+    obscure: {
+        type: Boolean,
+        default: false
     }
+
 
 
 })
 
 
-module.exports = mongoose.model('PixaInfo', PixaInfoSchema)
+module.exports =  PixaInfoSchema

@@ -1,8 +1,15 @@
 const restCountriesAPICall = async (url, countryName) => { // make a fetch and pick only required data from restCountries 
 
 
-    const countryInfoRaw = await Client.fetchAny(url + countryName) // fetching restcountries.eu
+    const raw = await Client.fetchAny(url + countryName) // fetching restcountries.eu
+    let countryInfoRaw = null
+   raw.forEach(r => { // found some islands with no capitals no borders and few citizen (300) 
 
+         if(r.capital !== ''){
+
+            countryInfoRaw = [r]
+         }
+   } )
    
 
   const countryInfo = {} // creating countryInfo entries object
@@ -44,6 +51,8 @@ pixaAPICall = async (url, key, loc, countryName) => { // // make a fetch and pic
         const maxHit = Client.getMaxLikesEntry(maxHit.hits)
         pixa.previewURL = maxHit.previewURL
         pixa.largeImageURL = maxHit.largeImageURL
+        pixa.likes = maxHit.likes
+        pixa.comments = maxHit.comments
         pixa.obscure = true
 
     } 
@@ -63,7 +72,7 @@ const days = []
         const data = await Client.fetchAny(nUrl)
 
 
-        console.log('wb',data)
+   
 
         data.data.forEach(e => {
 
@@ -78,7 +87,7 @@ const days = []
                 day.description = e.weather.description
                 day.icon = e.weather.icon
                 day.precip = e.precip
-                
+                day.timezone = data.timezone
 
              days.push( day)
 
@@ -86,19 +95,17 @@ const days = []
             }
         })
         
-        days.tZone = data.timezone // setting timezone
-
+      
         return days
 
     } else {  // get a forecast in the future
 
         const d = new Date(start)
 
-        console.log(start)
+        
         let newEnd = new Date(d.getTime() + 1000 * 60 * 60 * 24) // adding only one day to date, API doesn't allow to fetch data for more one day in future forecasts
         
-        console.log('nE', newEnd)
-
+      
         newEnd = Client.revertDate(Client.toEnUSDate(newEnd)) // convert it to weatherbit required format
 
         const url = Client.findReplace.call(hUrl, `key=${key}`, `lon=${lng}`, `lat=${lat}`, `start_date=${start}`, `end_date=${newEnd}`)

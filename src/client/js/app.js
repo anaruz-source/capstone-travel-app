@@ -52,10 +52,13 @@
 
         dataHolder.countryInfo = await Client.restCountriesAPICall(restCountriesUrl, geo.name) // rest countries API
    
-        dataHolder.pixa = await Client.pixaAPICall(pixaUrl, pixaKey, location,  geo.name)
+        dataHolder.pixa = await Client.pixaAPICall(pixaUrl, pixaKey, location,  geo.name) // fetching pixabay.com
 
         dataHolder.weather = await Client.weatherbitAPICall(weatherBitCurUrl, weatherBitHistUrl, weatherBitKey, start, end, geo.lng, geo.lat) // fetching weatherbit
-
+         
+        dataHolder.countryInfo.timezone = dataHolder.weather[0].timezone
+        
+        console.log(dataHolder)
         options.body = JSON.stringify({
 
             title: location,
@@ -66,16 +69,22 @@
 
             endDate: end,
 
+            countryInfo: dataHolder.countryInfo,
+
+            pixaInfo: dataHolder.pixa,
+
+            weatherInfo: dataHolder.weather,
+
             userId: JSON.parse(Client.getItem('userId')) // parse userId store locally of the connected user
 
         })
 
 
-     console.log(dataHolder)
+    
 
-    // const dataN =    await Client.fetchAny ('http://localhost:3030/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
+    const dataN =    await Client.fetchAny ('http://localhost:3030/trips', options ) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
 
-
+     console.log(dataN)
         
     } catch(err){
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Destination = require('./Destination')
 
 // https://www.youtube.com/watch?v=vjf774RKrLc&t=1s
 
@@ -8,6 +9,8 @@ const mongoose = require('mongoose')
 /// -> Schema alias to alleviate writing burdern of long names
 
 const {Schema} = mongoose
+
+const DestinationSchema = require('../schemas/DestinationSchema')
 
 const TripSchema = new Schema({ // Schema instantiation
 
@@ -46,10 +49,15 @@ const TripSchema = new Schema({ // Schema instantiation
 
     userId: {  // owner id of the trip
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'users'
+    },
+    destinations: {
+
+        type: [DestinationSchema],
+        default: []
     }
 
 }) 
 
 
-module.exports = mongoose.model('Trips', TripSchema)
+module.exports = mongoose.model('trips', TripSchema)

@@ -31,11 +31,11 @@ const TodoSchema = new Schema({ // Schema instantiation
     destinationId: {
         // owner id of the trip
         type: Schema.Types.ObjectId,
-        ref: 'Destination'
+        ref: 'destinations'
 
     }
 
 })
 
 
-module.exports = mongoose.model('Todo', TodoSchema)
+module.exports = mongoose.model('todos', TodoSchema)

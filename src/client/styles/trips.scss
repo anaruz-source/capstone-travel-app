@@ -1,0 +1,49 @@
+section.trips {
+     background: rgba(239, 239, 239, 0.5);
+     padding-top: 5em;
+     .title {
+        
+      margin: .5em 0;
+      color: #ddd;
+     }
+  .trip-card, .d-card {
+    border: 1px solid rgba(0, 0, 0,.1);
+    background: white;
+    .trip-card-header, .d-card-header {
+
+      margin: 0.2em
+    }
+    .trip-card-body, .d-card-body {
+
+        p { 
+            margin: 0;
+            display: flex;
+           
+            .entry-name {
+
+              
+              background: rgba(0, 255, 0, 0.2);
+              width: 6em;
+              color: green
+            }
+
+            .entry-details {
+
+              flex-grow: 2;
+                 background: rgba(255, 0, 0, 0.2);
+                 color: darkred
+            }
+            span, time{
+
+                    display: inline-block;
+ 
+    
+    margin: 0.2em;
+    padding: .2em;
+  
+            }
+        }
+    }
+  }
+    
+}

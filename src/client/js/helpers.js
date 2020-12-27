@@ -1,9 +1,10 @@
 import datepickr from 'js-datepicker';
+
 function findReplace(...args){ // inserts parameters on required place in the url string
     
     let copy = this.slice() // making a copy of a string reference by this
     
-    console.log('...args', args)
+   
     
     args.forEach(arg => {
        
@@ -25,8 +26,6 @@ const  fetchAny = async (url, options) => {
     try {
 
         const data = await response.json();
-         
-        console.log('data', data)
 
         return data;
 

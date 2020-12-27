@@ -31,11 +31,11 @@ const PlaceSchema = new Schema({ // Schema instantiation
     destinationId: {
   // owner id of the trip
             type: Schema.Types.ObjectId,
-            ref: 'Destination'
+            ref: 'destinations'
 
     }
 
 })
 
 
-module.exports = mongoose.model('Place', PlaceSchema)
+module.exports = mongoose.model('places', PlaceSchema)
