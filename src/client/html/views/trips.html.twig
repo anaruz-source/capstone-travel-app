@@ -1,10 +1,6 @@
 {% extends "./layout.html.twig" %}
 {% block head  %}
 {{parent()}}
-
-
-
-
   
 <title>Capstone trips display</title>
 
@@ -19,13 +15,14 @@
 
          <h4 class="title">My Trips</h4> 
  
-    {% if trips is empty %}
+    {% if trips is empty %} <!--/empty/null/false-->
 
 <div> Too Clean space, create some trips <a>HERE</a></div>
 {% endif %}
 
 
   {% for trip in trips %}
+
    <div class="trip-card">
      <div class="d-flex d-column">
          <h4 class="trip-card-header">{{ trip.title|e }}</h4>
@@ -39,13 +36,17 @@
      </div>   
     </div>
     <h5>Destinations</h5>
-    {% if  trip.destinations is empty %} <!-- Check if object is empty null -->
-    <div>Destinations space too clean, create some <a rel="noopener noreferrer">HERE</a></div>
+    {% if  destinations is empty %} <!-- Check if object is empty/null/false -->
+    <div>Destinations space too clean, create some <a>HERE</a></div>
     {% endif %}
-    
-    {% for d in trip.destinations %} <!-- looping over trip's destinations -->
+    <pre>
+        {{ dump(destinations) }}
+    </pre>
+    {% for d in destinations %} <!-- looping over trip's destinations -->
       
-       <div class="d-card">
+    {% if d.tripId == trip._id %}
+    
+           <div class="d-card">
          <div class="d-card-header">
            <p><span class="entry-name">Name</span><span class="entry-details">{{d.name}}</span></p>
          </div>
@@ -60,7 +61,9 @@
                  <p><span class="entry-name">Currency</span><span class="entry-details">{{d.countryInfo.currency}}</span></p>
                  <p><span class="entry-name">Borders</span><span class="entry-details">
                 {% for b in d.countryInfo.borders %}
+                      
                       {{b}}| 
+
                 {% endfor %}     
                  
                 
@@ -71,6 +74,9 @@
          </div>
 
        </div>
+    {% endif %}
+    
+
     
     {% endfor %}
 

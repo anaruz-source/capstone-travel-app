@@ -51,7 +51,37 @@ const CountryInfoSchema = new Schema({ // Schema instantiation
         default: []
       
 
+    },
+    previewURL: {
+        type: String,
+        required: true
+    },
+
+    largeImageURL: {
+        type: String,
+        required: true
+    },
+    likes: {
+        type: Number,
+        required: true
+    },
+    comments: {
+        type: Number,
+        required: true
+    },
+    obscure: {
+        type: Boolean,
+        default: false
+    },
+
+    destId : {
+
+        type: Schema.Types.ObjectId,
+
+        ref: 'destinations'
     }
+
+
 
 })
 

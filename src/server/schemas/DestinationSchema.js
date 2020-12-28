@@ -10,27 +10,11 @@ const mongoose = require('mongoose')
 /// -> Schema alias to alleviate writing burdern of long names
 
 const { Schema } = mongoose
-const CountryInfoSchema = require('./CountryInfoSchema')
-const PixaInfoSchema = require('./PixaInfoSchema')
-const WeatherInfoSchema = require('./WeatherInfoSchema')
 
 const DestinationSchema = new Schema({ // Schema instantiation
 
     name: {
         type: String,
-        required: true
-    },
-    countryInfo: {
-        type: CountryInfoSchema,
-        required: true
-    },
-
-    pixaInfo: {
-        type: PixaInfoSchema,
-        required: true
-    },
-    weatherInfo: {
-        type: [WeatherInfoSchema],
         required: true
     },
 
@@ -49,7 +33,19 @@ const DestinationSchema = new Schema({ // Schema instantiation
         // owner id of the destination
         type: Schema.Types.ObjectId,
         ref: 'trips'
-    }
+    },
+
+    countryInfos :[{
+
+        type: Schema.Types.ObjectId,
+        ref: 'countryinfos'
+    }],
+
+    weatherInfos:[ {
+
+        type: Schema.Types.ObjectId,
+        ref: "weatherinfos"
+    }]
 
 })
 
