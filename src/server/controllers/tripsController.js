@@ -1,20 +1,10 @@
-const Trip = require('../models/Trip')
-
-const Destination = require('../models/Destination')
-
-const countryInfo = require('../models/CountryInfo')
-
-const WeatherInfo = require('../models/WeatherInfo')
-
 const path = require('path')
-
+const Trip = require('../models/Trip')
 const {countDays} = require('../helpers/helpers')
+const createDestination = require('../helpers/modelsUtils')
+const User = require('../models/User')
+const { populate } = require('../models/Trip')
 
-const CountryInfo = require('../models/CountryInfo')
-
-const weatherInfo = require('../models/WeatherInfo')
-
-const dataholder = []
 
 const addTripsController = async (req, resp) => {
 
@@ -35,30 +25,26 @@ const addTripsController = async (req, resp) => {
         userId: req.body.userId
     })
     try {
-
-        const sentTrip = await trip.save() // saving in Mongodb Atlas, captrip database, trips collection
-
-        
-     
-        const destination = new Destination({
-             
-             tripId: sentTrip._id,
-             name: sentTrip.title,
-             step: 1, // the destination created while creating trip will have step = 1 others => step = 0, will be reorder by their time of creation
-        
-        })
-
-        const savedDestination = await destination.save()
        
-        const cInfo = {destId: savedDestination._id, ...req.body.countryInfo, ...req.body.pixaInfo} // using rest parameters ES6
-        const wInfo = { destId: savedDestination._id, forecasts: req.body.weatherInfo }
         
-        const countryInfo = new CountryInfo(cInfo)
-        const weatherInfo = new WeatherInfo(wInfo)
+        const user =  await User.findById({_id: req.body.userId})
         
-        await countryInfo.save()
-        await weatherInfo.save()
+
+        const savedTrip = await trip.save() // saving in Mongodb Atlas, captrip database, trips collection
+        
+    
+        const  savedDestination_id = await createDestination({id: savedTrip._id, title: savedTrip.title, ...req.body}) // ES6 spred parameters
+     
+    
+       savedTrip.destinations.push(savedDestination_id) // update trip with created destination._id then save()
+
       
+        await savedTrip.save()
+
+        user.trips.push(savedTrip._id) // update user with created trip._id
+        
+        await user.save()
+              
         resp.send(savedDestination)
 
     } catch (err) {
@@ -78,16 +64,20 @@ getTripsController = async (req, resp) => {
 
     try {
 
-        const trips = await Trip.find({ userId: req.params.userId }).lean(true) // return trips only related to the asking user defined with userId param of the http 'get' request
 
-      trips.forEach(async (t,idx) => {
-                    
-        const destinations = await Destination.find({ tripId: t._id }).lean(true) // get destinations relevant to each trip (Destination.tripId references Trip._id)
-        
-        })
+     const trips =   await Trip.find({userId: req.params.userId}) // compound mongoose query to populate _id references with real objects in Trip.destinations
+                               .populate({
+                                   path: 'destinations', // array of refs => array of Destination objs
+                                   
+                                   populate: {
 
-      console.log(dataholder)
-         
+                                       path: 'countryInfos weatherInfos' // in Trip.destinations.weahterInfos and .countryInfos fields
+                                   }       
+                                                                        //  refs to WeatherInfo and CountryInfo => Real objs of previous
+                                })
+     
+    // rendering template with given trips queried above
+    
         resp.render(path.resolve(__dirname+'/../../../dist/templates/trips.html.twig'), {trips: trips, js: '<script src="app.bundle.js"></script>', css: '<link rel="stylesheet" href="app.bundle.css">', base: `<base href="http://${ req.headers.host}/">`})
         
 

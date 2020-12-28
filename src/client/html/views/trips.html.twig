@@ -36,15 +36,13 @@
      </div>   
     </div>
     <h5>Destinations</h5>
-    {% if  destinations is empty %} <!-- Check if object is empty/null/false -->
+    {% if  trip.destinations is empty %} <!-- Check if object is empty/null/false -->
     <div>Destinations space too clean, create some <a>HERE</a></div>
     {% endif %}
-    <pre>
-        {{ dump(destinations) }}
-    </pre>
-    {% for d in destinations %} <!-- looping over trip's destinations -->
+ 
+    {% for d in trip.destinations %} <!-- looping over trip's destinations -->
       
-    {% if d.tripId == trip._id %}
+
     
            <div class="d-card">
          <div class="d-card-header">
@@ -53,14 +51,14 @@
          <div class="d-card-body">
              <div>Country Info</div>
              <div class="d-flex flex-wrap">
-                 <p><span class="entry-name">Name</span><span class="entry-details">{{d.countryInfo.name}}<>{{d.countryInfo.flag}}</span></p>
-                 <p><span class="entry-name">Language</span><span class="entry-details">{{d.countryInfo.language}}</span></p>
-                 <p><span class="entry-name">Region</span><span class="entry-details">{{d.countryInfo.region}}</span></p>
-                 <p><span class="entry-name">Timezone</span><span class="entry-details">{{d.countryInfo.timezone}}</span></p>
-                 <p><span class="entry-name">Capital</span><span class="entry-details">{{d.countryInfo.capital}}</span></p>
-                 <p><span class="entry-name">Currency</span><span class="entry-details">{{d.countryInfo.currency}}</span></p>
+                 <p><span class="entry-name">Name</span><span class="entry-details">{{d.countryInfos.name}}</p>
+                 <p><span class="entry-name">Language</span><span class="entry-details">{{d.countryInfos.language}}</span></p>
+                 <p><span class="entry-name">Region</span><span class="entry-details">{{d.countryInfos.region}}</span></p>
+                 <p><span class="entry-name">Timezone</span><span class="entry-details">{{d.countryInfos.timezone}}</span></p>
+                 <p><span class="entry-name">Capital</span><span class="entry-details">{{d.countryInfos.capital}}</span></p>
+                 <p><span class="entry-name">Currency</span><span class="entry-details">{{d.countryInfos.currency}}</span></p>
                  <p><span class="entry-name">Borders</span><span class="entry-details">
-                {% for b in d.countryInfo.borders %}
+                {% for b in d.countryInfos.borders %}
                       
                       {{b}}| 
 
@@ -68,14 +66,14 @@
                  
                 
                 </span>
+                <p> <span class="entry-name">Flag</span> <span class="entry-details"><> <img src="{{d.countryInfos.flag}}" alt="country flag"></span></span></p>
             </p>
              </div>
             
          </div>
 
        </div>
-    {% endif %}
-    
+ 
 
     
     {% endfor %}

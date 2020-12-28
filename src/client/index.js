@@ -19,7 +19,6 @@ import './styles/trips.scss'
 
 import './media/captrip-logo.svg';
 import './media/favicon.ico';
-import './media/page-curl.svg';
 import './media/magnifier.svg';
 import './media/sign-up.svg';
 import './media/family-vacation.png';
@@ -64,6 +63,6 @@ conf.addEventListener('keyup', handlePasswordsValidation)
 // setting a placeholder in the sessionstorage by default
 
 addItem('user')
-addItem('userId','5fe50c91439a70514ae0e339') // set here for the sake of the reviewer
+addItem('userId','5fea479cb59a4b30df27ac39') // set here for the sake of the reviewer
 
 export { findReplace, fetchAny,  dtPicker, appendTag, onSignIn, signOut, show, hide, hasClassName, addItem, removeItem, getItem, revertDate, toEnUSDate, isEmptyObj, countDays, pixaAPICall, restCountriesAPICall, weatherbitAPICall, geonamesAPICall, getMaxLikesEntry, Glib}
