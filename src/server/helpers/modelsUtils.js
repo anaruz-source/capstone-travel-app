@@ -20,6 +20,8 @@ const createDestination = async (info) => { // this will create a destination co
     const savedDestination = await destination.save()
 
     const cInfo = { destId: savedDestination._id, ...info.countryInfo, ...info.pixaInfo } // using rest parameters ES6
+
+   
     const wInfo = { destId: savedDestination._id, forecasts: info.weatherInfo }
 
     const countryInfo = new CountryInfo(cInfo)

@@ -3,7 +3,7 @@ const Trip = require('../models/Trip')
 const {countDays} = require('../helpers/helpers')
 const createDestination = require('../helpers/modelsUtils')
 const User = require('../models/User')
-const { populate } = require('../models/Trip')
+
 
 
 const addTripsController = async (req, resp) => {

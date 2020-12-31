@@ -12,6 +12,7 @@ body{
     font-family: 'Barlow', sans-serif;
     font-weight: 500;
     font-size: 16px;
+    scroll-behavior: smooth;
 }
 
 h1, 
@@ -113,7 +114,7 @@ section {
 
 article:nth-of-type(2) {
 
-   background: blue;
+ 
 
    padding: 1em;
    position: relative;

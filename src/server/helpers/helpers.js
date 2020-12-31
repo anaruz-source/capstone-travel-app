@@ -3,6 +3,12 @@
 
 function isEmptyObj(obj) {
 
+// for NodeList and HTMLCollection there're some props even when empty,
+// So let's add this check to make this function more general purpose
+
+ const toString = Object.prototype.toString // shortcut to Object.protoype method, we need to change its 'this' context to reveal type of object
+
+if( obj.length == 0 && (toString.call(obj) === '[object NodeList]'|| toString.call(obj) == '[object HTMLCollection]' )) return true
 
     for (let prop in obj) { // if object has one property then it's not empty
 
@@ -53,7 +59,6 @@ const toEnUSDate = (d) => {
         return datepicker.setMin(minDate)  // prevents selecting passed dates, so we set the date to current
 
     }
-
 
 
 module.exports = {isEmptyObj,  toEnUSDate, countDays}

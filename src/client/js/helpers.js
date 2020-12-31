@@ -2,7 +2,7 @@ import datepickr from 'js-datepicker';
 
 function findReplace(...args){ // inserts parameters on required place in the url string
     
-    let copy = this.slice() // making a copy of a string reference by this
+    let copy = this.slice() // making a copy of a string referenced by 'this' keyword
     
    
     
@@ -129,7 +129,8 @@ isInputText = (input) => {
 
 },
 
-// function to append tag ansynchronously
+// function to append tag 
+// it helps to permform some checking before appending a tag to its parent
 
 appendTag =  (tag, parent) => {
    
@@ -225,7 +226,63 @@ hits.forEach(h => {
 })
 
 return maxHit
+},
+
+shortenToSeven = (days, start) => { //used to shorten the list of retuned forecast days from the API (16 -> 7 only)
+
+
+    const onlySvn = []
+    days.forEach(d => {
+     
+        const dDate = new Date(d.date)
+        const dStart = new Date(start)
+
+        if (dDate.getTime() >= dStart.getTime() && onlySvn.length < 7) {
+
+            onlySvn.push(d)
+        }
+    });
+  
+    return onlySvn
+},
+
+
+attachEvent = (t, type, eventListener, options) => { // check if defined before attaching eventListener to an element// t (target) type of event, eventListener params
+
+    if (isEmptyObj(t) || !t || !!t && !!t.length && t[0].nodeType != 1) return false // passed empty set of elements or null/undefined or not cointaining node elements
+    console.log('att called', type)
+   
+    if (length in t && t.nodeType != 1) { // HTMLNodeLists HTMLCollections has length
+
+        let idx = 0
+
+        for (; idx < t.length;) {
+
+            t[idx].addEventListener(type, eventListener, options)
+
+            idx++
+
+        }
+
+
+    } else { // Single node passed as param
+
+        t.addEventListener(type, eventListener, options)
+
+    }
+
+    return true// everyThing is okey
+}, 
+
+tripHTMLCodeToAppend =  async (data) => { // applied only in dedicated page for image
+
+    if(location.href.indexOf('/trips/') <= -1) return // in case we're in the index page, no need to append the added trip a success message is okey!
+
+    const trips =    fetchAny('http://localhost:3030/trips/userId/'+Client.getItem('userId'))
+
+    console.log('length', trips.length)
 }
+
 export {
     
     findReplace,
@@ -242,6 +299,9 @@ export {
     hasClassName,
     handleDate,
     countDays,
-    getMaxLikesEntry
+    getMaxLikesEntry,
+    shortenToSeven,
+    attachEvent,
+    tripHTMLCodeToAppend
 }
 

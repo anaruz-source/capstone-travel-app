@@ -45,11 +45,11 @@
                     <h1>Travel abroad and Turn the page</h1>
                     <p>Many use our app to book their flights, book yours today and  make savings for others valuable things</p>
 
-                    <a class="button">Book a trip now!</a>
+                    <a href="#sign" class="button">Create folder now!</a>
                   </div>
 
                    <div class="col col-12 col-md-6">
-                     <img src="media/family-vacation.png" alt="">
+                     <img src="media/page-curl.svg" alt="">
                    </div>
                   </div>
                   
@@ -63,10 +63,10 @@
                               <div class="container">
                                 <form  id="sign" method="post" accept-charset="UTF-8">
                                   <div class="d-flex justify-content-center align-items-center">
-                                    <div class="signin active">Sign in</div>
-                                    <div class="signup">Sign up</div>
+                                    <div class="signin tab active" data-tab-id="signin-with-email">Sign in</div>
+                                    <div class="signup tab" data-tab-id="signup-with-email">Sign up</div>
                                   </div>
-                                  <div id="signup-with-email" class="d-none">
+                                  <div id="signup-with-email" class="d-none tab-content">
 
                                      <div class="form-header">Email sign up</div>
                                      <div class="d-flex flex-column justify-content-center align-items-center">
@@ -75,29 +75,29 @@
                                   
                   
                               <div class="in-container">
-                                                                  <label for="username" class="text-left">Username</label>
-                                  <input id="username" type="text" name="username">
+                                  <label for="username" class="text-left">Username</label>
+                                  <input id="username" type="text" name="username" placeholder="username here">
                               </div>
 
                               
                                  <div class="in-container">
                                                  <label for="email">Email</label>
-                                  <input id="email" type="email" name="email">
+                                  <input id="email" type="email" name="email" placeholder="@email here">
                                  </div>
                                   <div id="errEmail" class="d-none">&times; Enter well formatted email, could contain _- maj, min chars</div>
                               
                                   <div class="in-container">
                                                                   
                                   <label for="password">Password</label>
-                                  <input id="password" type="password" name="password">
+                                  <input id="password" type="password" name="password" placeholder="password here">
                                   </div>
 
                                   <div id="errPwd" class="d-none" class="d-none"></div>
-                                  <div id="strongPwd" class="d-none">&#x2713; Great Password. Confirm it below!</div>
+                                  <div id="strongPwd" class="d-none">&#x274C; Great Password. Confirm it below!</div>
                                   
                                   <div class="in-container">
                                                                       <label for="confirm">Confirm Password</label>
-                                  <input id="confirm" type="password" name="confirm">
+                                  <input id="confirm" type="password" name="confirm" placeholder="confirm password">
                                   </div>
                                   <div id="errConf" class="d-none">&times; Passwords don't match!</div>
                                   <div>
@@ -108,9 +108,9 @@
 
                                  
                               </div>
-                                  </div>
+                            </div>
 
-                                    <div id="signin-with-email" class="d-block">
+                                    <div id="signin-with-email" class="d-block tab-content" >
                                         <div class="form-header">Email sign in</div>
                                     <div class="d-flex flex-column justify-content-center align-items-center">
                                  <div class="in-container">
@@ -124,7 +124,7 @@
                
                               <div class="in-container">
                                          <label for="passwordin">Password</label>
-                                  <input id="passwordin" type="password" name="password">
+                                  <input id="passwordin" type="password" name="password" placeholder="password here">
                               </div>
                            
                                   <div>

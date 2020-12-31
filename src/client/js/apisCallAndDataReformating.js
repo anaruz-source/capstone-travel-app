@@ -1,16 +1,10 @@
+import { shortenToSeven } from "./helpers"
+
 const restCountriesAPICall = async (url, countryName) => { // make a fetch and pick only required data from restCountries 
 
 
-    const raw = await Client.fetchAny(url + countryName) // fetching restcountries.eu
-    let countryInfoRaw = null
-   raw.forEach(r => { // found some islands with no capitals no borders and few citizen (300) 
+    const countryInfoRaw = await Client.fetchAny(url + countryName + '?fullText=true') // fetching restcountries.eu, search exact match with fullText=true
 
-         if(r.capital !== ''){
-
-            countryInfoRaw = [r]
-         }
-   } )
-   
 
   const countryInfo = {} // creating countryInfo entries object
 
@@ -95,8 +89,8 @@ const days = []
             }
         })
         
-      
-        return days
+        console.log('short list', Client.shortenToSeven( days, start))
+        return Client.shortenToSeven( days, start )
 
     } else {  // get a forecast in the future
 

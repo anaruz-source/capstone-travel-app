@@ -23,7 +23,7 @@ getItem = (key) => {
 
     if(!key) return null
 
-    return session.getItem(key)
+    return JSON.parse(session.getItem(key))
 },
 
 clearAll = () => {

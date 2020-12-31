@@ -10,21 +10,90 @@
 {% block body %}
    {{parent()}}
 <section class="trips">
-    <div class="container">
+ 
        
 
-         <h4 class="title">My Trips</h4> 
+        <div class="container">
+            <h4 class="title">My Trips</h4> 
+        </div> 
  
-    {% if trips is empty %} <!--/empty/null/false-->
+    {% if trips is empty %} <!--empty|null|false-->
 
 <div> Too Clean space, create some trips <a>HERE</a></div>
 {% endif %}
+<!-- The following forms will float and change their parents depending on the calling section (which trip, which destination....)-->
+     <div id="form-add-trip" class="d-none">
+       
+       <form action="" method="post" id="add-trip">
+                
+                     <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+                      
+                     <div class="input d-flex flex-column">
+                       <label for="destination">Where?</label>
+                       <input type="text" name="" id="destination" placeholder="DESTINATION" required>
+                      </div>
+                     <div class="input d-flex flex-column">
+                       <label for="start-date">Trip start</label>
+                       <input type="text" name="" id="start-date" placeholder="MM/DD/YYYY" required>
+                      </div>
+                     <div class="input d-flex flex-column">
+                       <label for="end-date">Trip end</label>
+                       <input type="text" name="" id="end-date" placeholder="MM/DD/YYYY" required>
+                      </div>
+                     <div class="input"><input type="submit" value="Submit" id="input-trip"></div>
+                   </div>
+       </form>
+     </div>
+
+          <div id="form-add-dest" class="d-none">
+       <form action="" method="post" id="add-dest">
+                     <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+                     <div class="input d-flex flex-column">
+                       <label for="dest">Where?</label>
+                       <input type="text" name="" id="dest" placeholder="DESTINATION" required>
+                    
+                     </div>
+                     <div class="input"><input type="submit" value="Submit" id="input-dest"></div>
+                   </div>
+       </form>
+     </div>
 
 
-  {% for trip in trips %}
+       <div id="form-add-place" class="d-none">
+       <form action="" method="post" id="add-place">
+                     <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+                     <div class="input d-flex flex-column">
+                       <label for="place">Where?</label>
+                       <input type="text" name="" id="place" placeholder="PLACE" required>
+                    
+                     </div>
+                     <div class="input"><input type="submit" value="Submit" id="input-place"></div>
+                   </div>
+       </form>
+     </div>
 
-   <div class="trip-card">
-     <div class="d-flex d-column">
+            <div id="form-add-pack" class="d-none">
+       <form action="" method="post" id="add-pack">
+                     <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+                     <div class="input d-flex flex-column">
+                       <label for="pack">What?</label>
+                       <input type="text" name="" id="pack" placeholder="TASK" required>
+                    
+                     </div>
+                     <div class="input"><input type="submit" value="Submit" id="input-task"></div>
+                   </div>
+       </form>
+     </div>
+     
+     
+     
+{% set idx = 0 %}
+
+  {% for trip in trips %} <!-- for incremental id of country info and weather-info -->
+  
+   <div class="trip-card" id="trip-card-{{idx}}">
+     <div class="container d-flex flex-wrap align-items-start justify-content-between">
+     <div class="d-flex d-column order-2 order-md-2 order-lg-1">
          <h4 class="trip-card-header">{{ trip.title|e }}</h4>
          <div class="trip-card-body">
              <p><span class="entry-name">Description</span><span class="entry-details">{{trip.description|e}}</span></p>
@@ -32,24 +101,43 @@
              <p><span class="entry-name">End Date</span><time class="entry-details">{{trip.endDate|date('Y/m/d')}}</time></p>
              <p><span class="entry-name">Duration</span><time class="entry-details">{{trip.duration}} day(s)</time></p>
          </div>
-
-     </div>   
+     </div>  
+     <div class="d-flex flex-nowrap d-none order-1 order-md-1 order-lg-2 settings">
+       <div><img src="media/add.svg" alt="add trip icon" id="add-trip-link-{{idx}}"></div>
+       <div><img src="media/edit.svg" alt="edit trip icon" id="edit-trip-link-{{idx}}"></div>
+       <div><img src="media/print.svg" alt="print trip icon" id="print-link-{{idx}}"></div>
+       <div><img src="media/delete.svg" alt="delete trip icon" id="delete-trip-link-{{idx}}"></div>
+       <div id="trip-id-info-{{idx}}" data-trip-id-info ="{{trip._id}}"></div>
+     </div>
+   </div>   
     </div>
+       <div class="container">
     <h5>Destinations</h5>
     {% if  trip.destinations is empty %} <!-- Check if object is empty/null/false -->
     <div>Destinations space too clean, create some <a>HERE</a></div>
     {% endif %}
- 
+  
     {% for d in trip.destinations %} <!-- looping over trip's destinations -->
       
-
+          {% set idx = idx + 1 %}
     
-           <div class="d-card">
+           <div class="d-card" id="d-card-{{idx}}">
          <div class="d-card-header">
            <p><span class="entry-name">Name</span><span class="entry-details">{{d.name}}</span></p>
          </div>
-         <div class="d-card-body">
-             <div>Country Info</div>
+      <div class="d-flex flex-nowrap settings-d">
+     
+       <div><img src="media/delete.svg" alt="delete dest icon" id="delete-dest-link-{{idx}}"></div>
+       <div id="dest-id-info-{{idx}}" data-dest-id-info ="{{d._id}}"></div>
+
+     </div>
+
+         <div class="tabs d-flex  justify-content-center">
+               <div class="tab active" data-tab-id="country-info-{{idx}}">Country Info</div> <div class="tab" data-tab-id="weather-info-{{idx}}">Weather forecast</div>
+         </div>
+          
+         <div class="d-card-body tab-content d-block" id="country-info-{{idx}}">
+           
              <div class="d-flex flex-wrap">
                  <p><span class="entry-name">Name</span><span class="entry-details">{{d.countryInfos.name}}</p>
                  <p><span class="entry-name">Language</span><span class="entry-details">{{d.countryInfos.language}}</span></p>
@@ -66,23 +154,62 @@
                  
                 
                 </span>
-                <p> <span class="entry-name">Flag</span> <span class="entry-details"><> <img src="{{d.countryInfos.flag}}" alt="country flag"></span></span></p>
-            </p>
+              </p>
+                <p> <span class="entry-name">Flag</span> <span class="entry-details"><img src="{{d.countryInfos.flag}}" alt="country flag"></span></span></p>
+            
              </div>
             
          </div>
-
+           </div>
        </div>
+       <div class="container">
+         <div class="d-card">
+        <div class="d-card-body tab-content d-none" id="weather-info-{{idx}}">
+             <div class="entries d-flex justify-content-around flex-wrap">
+            {% for w in d.weatherInfos.forecasts %}
+            <div class="entry">
+                          
+           
+
+             <div class="entry-body d-flex">
+                  
+                  <div class="forecast-vals">
+                     <div class="entry-title">{{w.date|date('D')}} ({{w.date|date('Y/m/d')}})</div> <!-- getting name of the day-->
+                  <p><span class="entry-name">Temp</span><span class="entry-details"> {{w.avgTemp}}</p>
+                 <p><span class="entry-name">Wind(km/h)</span><span class="entry-details"> {{(w.windSpd * 36)|number_format(0)}}</span></p> <!---->
+                 <p><span class="entry-name">Precips(mm)</span><span class="entry-details"> {{w.precip|number_format(2)}}</span></p>
+           
+                  </div>
+                  <div class="forecast-icon">
+                     <img src=" https://www.weatherbit.io/static/img/icons/{{w.icon}}.png " alt="forecast icon">
+                     <div class="desc">{{w.description}}</div>
+                  </div>
+           
+         
+             </div>
+        
+            </div>
+
+
+  
  
+            {% endfor %}
+
+             </div>
+                </div>  
+          </div>
+         </div>
 
     
+     
+    
+    {% endfor %}
+   
     {% endfor %}
 
-    {% endfor %}
 
 
 
-   </div>
 </section>
 
 {% endblock %}
