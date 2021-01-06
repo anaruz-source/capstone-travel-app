@@ -1,215 +1,340 @@
 {% extends "./layout.html.twig" %}
 {% block head  %}
 {{parent()}}
-  
-<title>Capstone trips display</title>
-
+<title>Capstone trips display
+</title>
 {% endblock %}}
-
-
 {% block body %}
-   {{parent()}}
+{{parent()}}
 <section class="trips">
- 
-       
-
-        <div class="container">
-            <h4 class="title">My Trips</h4> 
-        </div> 
- 
-    {% if trips is empty %} <!--empty|null|false-->
-
-<div> Too Clean space, create some trips <a>HERE</a></div>
-{% endif %}
-<!-- The following forms will float and change their parents depending on the calling section (which trip, which destination....)-->
-     <div id="form-add-trip" class="d-none">
-       
-       <form action="" method="post" id="add-trip">
-                
-                     <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
-                      
-                     <div class="input d-flex flex-column">
-                       <label for="destination">Where?</label>
-                       <input type="text" name="" id="destination" placeholder="DESTINATION" required>
-                      </div>
-                     <div class="input d-flex flex-column">
-                       <label for="start-date">Trip start</label>
-                       <input type="text" name="" id="start-date" placeholder="MM/DD/YYYY" required>
-                      </div>
-                     <div class="input d-flex flex-column">
-                       <label for="end-date">Trip end</label>
-                       <input type="text" name="" id="end-date" placeholder="MM/DD/YYYY" required>
-                      </div>
-                     <div class="input"><input type="submit" value="Submit" id="input-trip"></div>
-                   </div>
-       </form>
-     </div>
-
-          <div id="form-add-dest" class="d-none">
-       <form action="" method="post" id="add-dest">
-                     <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
-                     <div class="input d-flex flex-column">
-                       <label for="dest">Where?</label>
-                       <input type="text" name="" id="dest" placeholder="DESTINATION" required>
-                    
-                     </div>
-                     <div class="input"><input type="submit" value="Submit" id="input-dest"></div>
-                   </div>
-       </form>
-     </div>
-
-
-       <div id="form-add-place" class="d-none">
-       <form action="" method="post" id="add-place">
-                     <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
-                     <div class="input d-flex flex-column">
-                       <label for="place">Where?</label>
-                       <input type="text" name="" id="place" placeholder="PLACE" required>
-                    
-                     </div>
-                     <div class="input"><input type="submit" value="Submit" id="input-place"></div>
-                   </div>
-       </form>
-     </div>
-
-            <div id="form-add-pack" class="d-none">
-       <form action="" method="post" id="add-pack">
-                     <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
-                     <div class="input d-flex flex-column">
-                       <label for="pack">What?</label>
-                       <input type="text" name="" id="pack" placeholder="TASK" required>
-                    
-                     </div>
-                     <div class="input"><input type="submit" value="Submit" id="input-task"></div>
-                   </div>
-       </form>
-     </div>
-     
-     
-     
-{% set idx = 0 %}
-
-  {% for trip in trips %} <!-- for incremental id of country info and weather-info -->
-  
-   <div class="trip-card" id="trip-card-{{idx}}">
-     <div class="container d-flex flex-wrap align-items-start justify-content-between">
-     <div class="d-flex d-column order-2 order-md-2 order-lg-1">
-         <h4 class="trip-card-header">{{ trip.title|e }}</h4>
-         <div class="trip-card-body">
-             <p><span class="entry-name">Description</span><span class="entry-details">{{trip.description|e}}</span></p>
-             <p><span class="entry-name">Start Date</span><time class="entry-details">{{trip.startDate|date('Y/m/d')}}</time></p>
-             <p><span class="entry-name">End Date</span><time class="entry-details">{{trip.endDate|date('Y/m/d')}}</time></p>
-             <p><span class="entry-name">Duration</span><time class="entry-details">{{trip.duration}} day(s)</time></p>
-         </div>
-     </div>  
-     <div class="d-flex flex-nowrap d-none order-1 order-md-1 order-lg-2 settings">
-       <div><img src="media/add.svg" alt="add trip icon" id="add-trip-link-{{idx}}"></div>
-       <div><img src="media/edit.svg" alt="edit trip icon" id="edit-trip-link-{{idx}}"></div>
-       <div><img src="media/print.svg" alt="print trip icon" id="print-link-{{idx}}"></div>
-       <div><img src="media/delete.svg" alt="delete trip icon" id="delete-trip-link-{{idx}}"></div>
-       <div id="trip-id-info-{{idx}}" data-trip-id-info ="{{trip._id}}"></div>
-     </div>
-   </div>   
+  <div class="container d-flex align-items-center">
+    <h4 class="title">My Trips</h4>
+    <div title="click here to add a trip">
+      <img src="media/add.svg" alt="add trip icon" id="add-trip-link">
     </div>
-       <div class="container">
-    <h5>Destinations</h5>
-    {% if  trip.destinations is empty %} <!-- Check if object is empty/null/false -->
-    <div>Destinations space too clean, create some <a>HERE</a></div>
-    {% endif %}
-  
-    {% for d in trip.destinations %} <!-- looping over trip's destinations -->
-      
-          {% set idx = idx + 1 %}
-    
-           <div class="d-card" id="d-card-{{idx}}">
-         <div class="d-card-header">
-           <p><span class="entry-name">Name</span><span class="entry-details">{{d.name}}</span></p>
-         </div>
-      <div class="d-flex flex-nowrap settings-d">
-     
-       <div><img src="media/delete.svg" alt="delete dest icon" id="delete-dest-link-{{idx}}"></div>
-       <div id="dest-id-info-{{idx}}" data-dest-id-info ="{{d._id}}"></div>
-
-     </div>
-
-         <div class="tabs d-flex  justify-content-center">
-               <div class="tab active" data-tab-id="country-info-{{idx}}">Country Info</div> <div class="tab" data-tab-id="weather-info-{{idx}}">Weather forecast</div>
-         </div>
-          
-         <div class="d-card-body tab-content d-block" id="country-info-{{idx}}">
-           
-             <div class="d-flex flex-wrap">
-                 <p><span class="entry-name">Name</span><span class="entry-details">{{d.countryInfos.name}}</p>
-                 <p><span class="entry-name">Language</span><span class="entry-details">{{d.countryInfos.language}}</span></p>
-                 <p><span class="entry-name">Region</span><span class="entry-details">{{d.countryInfos.region}}</span></p>
-                 <p><span class="entry-name">Timezone</span><span class="entry-details">{{d.countryInfos.timezone}}</span></p>
-                 <p><span class="entry-name">Capital</span><span class="entry-details">{{d.countryInfos.capital}}</span></p>
-                 <p><span class="entry-name">Currency</span><span class="entry-details">{{d.countryInfos.currency}}</span></p>
-                 <p><span class="entry-name">Borders</span><span class="entry-details">
-                {% for b in d.countryInfos.borders %}
-                      
-                      {{b}}| 
-
-                {% endfor %}     
-                 
-                
+  </div> 
+  {% if trips is empty %} <!--empty|null|false-->
+  <div> Too Clean space, create some trips 
+    <a>HERE
+    </a>
+  </div>
+  {% endif %}
+  <div id="dynamic-trips-container">
+    <div class="d-none form-success d-none justify-content-center align-items-center p-fixe" >
+    </div>
+    <!-- The following forms will float and change their parents depending on the calling section (which trip, which destination....)-->
+    <div id="form-add-trip" class="d-none">
+      <form action="" method="post" id="add-trip">
+        <div class="form-error d-none">
+        </div>
+        <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+          <div class="input d-flex flex-column">
+            <label for="destination">Where?
+            </label>
+            <input type="text" name="" id="destination" placeholder="DESTINATION" required>
+          </div>
+          <div class="input d-flex flex-column">
+            <label for="start-date">Trip start
+            </label>
+            <input type="text" name="" id="start-date" placeholder="MM/DD/YYYY" required>
+          </div>
+          <div class="input d-flex flex-column">
+            <label for="end-date">Trip end
+            </label>
+            <input type="text" name="" id="end-date" placeholder="MM/DD/YYYY" required>
+          </div>
+          <div class="input">
+            <input type="submit" value="Submit" id="input-trip">
+          </div>
+        </div>
+        <div class="d-none overlay">
+          <img src="media/pulse-loader.gif" alt="">
+        </div>
+      </form>
+    </div>
+    <div id="form-add-dest" class="d-none">
+      <form action="" method="post" id="add-dest">
+        <div class="form-error d-none">
+        </div>
+        <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+          <div class="input d-flex flex-column">
+            <label for="dest">Where?
+            </label>
+            <input type="text" name="" id="dest" placeholder="DESTINATION" required>
+          </div>
+          <div class="input">
+            <input type="submit" value="Submit" id="input-dest">
+          </div>
+        </div>
+        <div class="d-none overlay">
+          <img src="media/pulse-loader.gif" alt="">
+        </div>
+      </form>
+    </div>
+    <div id="form-add-place" class="d-none">
+      <form action="" method="post" id="add-place">
+        <div class="form-error d-none">
+        </div>
+        <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+          <div class="input d-flex flex-column">
+            <label for="place">Where?
+            </label>
+            <input type="text" name="" id="place" placeholder="PLACE" required>
+          </div>
+          <div class="input">
+            <input type="submit" value="Submit" id="input-place">
+          </div>
+        </div>
+        <div class="d-none overlay">
+          <img src="media/pulse-loader.gif" alt="">
+        </div>
+      </form>
+    </div>
+    <div id="form-add-pack" class="d-none">
+      <form action="" method="post" id="add-pack">
+        <div class="form-error d-none">
+        </div>
+        <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+          <div class="input d-flex flex-column">
+            <label for="pack">What?
+            </label>
+            <input type="text" name="" id="pack" placeholder="TASK" required>
+          </div>
+          <div class="input">
+            <input type="submit" value="Submit" id="input-task">
+          </div>
+        </div>
+        <div class="d-none overlay">
+          <img src="media/pulse-loader.gif" alt="">
+        </div>
+      </form>
+    </div>
+    {% set idx_t = 0 %}
+    {% for trip in trips %} 
+    <!-- for incremental id of country info and weather-info -->
+    {% set idx_t = idx_t + 1 %}
+    <div class="trip-card" id="trip-card-{{idx_t}}" title="click anywhere to show destinations" data-trip-id-db-info ="{{trip._id}}">
+      <div class="container">
+        <div class="d-flex d-column">
+          <h4 class="trip-card-header">{{ trip.title|e }}
+          </h4>
+          <div class="trip-card-body">
+            <p>
+              <span class="entry-name">Description
+              </span>
+              <span class="entry-details">{{trip.description|e}}
+              </span>
+            </p>
+            <p>
+              <span class="entry-name">Start Date
+              </span>
+              <time class="entry-details">{{trip.startDate|date('Y/m/d')}}
+              </time>
+            </p>
+            <p>
+              <span class="entry-name">End Date
+              </span>
+              <time class="entry-details">{{trip.endDate|date('Y/m/d')}}
+              </time>
+            </p>
+            <p>
+              <span class="entry-name">Duration
+              </span>
+              <time class="entry-details">{{trip.duration}} day(s)
+              </time>
+            </p>
+          </div>
+        </div>
+        <div class="flex-nowrap d-none settings">
+          <div title="add destination to trip">
+            <img src="media/add.svg" alt="edit dest icon" title="add destination" id="add-dest-link-{{idx_t}}">
+          </div>
+          <div title="edit trip">
+            <img src="media/edit.svg" alt="edit trip icon" title="edit trip" id="edit-trip-link-{{idx_t}}">
+          </div>
+          <div title="print trip">
+            <img src="media/print.svg" alt="print trip icon" title="print" id="print-link-{{idx_t}}">
+          </div>
+          <div title="delete trip">
+            <img src="media/delete.svg" alt="delete trip icon" title="delete trip" id="delete-trip-link-{{idx_t}}">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container accordion">
+      <h5>Destinations
+      </h5>
+      {% if  trip.destinations is empty %} 
+      <!-- Check if object is empty/null/false -->
+      <div>Destinations space too clean, create some 
+        <a>HERE
+        </a>
+      </div>
+      {% endif %}
+      {% set idx_d = idx_t %}
+      {% for d in trip.destinations %} 
+      <!-- looping over trip's destinations -->
+      {% set idx_d = idx_d + 1 %}
+      <div class="d-card" id="d-card-{{idx_d}}" data-trip-db-id="{{trip._id}}" data-d-db-id="{{d._id}}">
+        <div class="d-card-header">
+          <p>
+            <span class="entry-name">Name:
+            </span>
+            <span class="entry-details">{{d.name}}
+            </span>
+          </p>
+          <div class="flex-nowrap d-none  settings-d">
+            <div>
+              <img src="media/add-place.svg" alt="delete task icon"  title="add place" id="add-place-link-{{idx_d}}">
+            </div>
+            <div>
+              <img src="media/add-task.svg" alt="delete task icon" title="add task" id="delete-task-link-{{idx_d}}">
+            </div>
+            <div>
+              <img src="media/delete.svg" alt="delete dest icon" title="delete destination" id="delete-dest-link-{{idx_d}}">
+            </div>
+          </div>
+          <div class="tabs d-flex">
+            <div class="tab" data-tab-id="country-info-{{idx_d}}">Country Info
+            </div>
+            <div class="tab active" data-tab-id="weather-info-{{idx_d}}">Weather forecast
+            </div>
+            <div class="tab" data-tab-id="place-info-{{idx_d}}">places
+            </div>
+            <div class="tab" data-tab-id="pack-info-{{idx_d}}">todo list
+            </div>
+          </div>
+        </div>
+        <div class="d-card-body">
+          <div class="tab-content d-none" id="country-info-{{idx_d}}">
+            <div class="d-flex flex-wrap">
+              <p>
+                <span class="entry-name">Name:
+                </span>
+                <span class="entry-details">&lt;{{d.countryInfos.name}}&gt;
                 </span>
               </p>
-                <p> <span class="entry-name">Flag</span> <span class="entry-details"><img src="{{d.countryInfos.flag}}" alt="country flag"></span></span></p>
-            
-             </div>
-            
-         </div>
-           </div>
-       </div>
-       <div class="container">
-         <div class="d-card">
-        <div class="d-card-body tab-content d-none" id="weather-info-{{idx}}">
-             <div class="entries d-flex justify-content-around flex-wrap">
-            {% for w in d.weatherInfos.forecasts %}
-            <div class="entry">
-                          
-           
-
-             <div class="entry-body d-flex">
-                  
+              <p>
+                <span class="entry-name">Language:
+                </span>
+                <span class="entry-details">&lt;{{d.countryInfos.language}}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Region:
+                </span>
+                <span class="entry-details">&lt;{{d.countryInfos.region}}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Timezone:
+                </span>
+                <span class="entry-details">&lt;{{d.countryInfos.timezone}}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Capital:
+                </span>
+                <span class="entry-details">&lt;{{d.countryInfos.capital}}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Currency:
+                </span>
+                <span class="entry-details">&lt;{{d.countryInfos.currency}}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Borders
+                </span>
+                <span class="entry-details">
+                  &lt;{{ d.countryInfos.borders|join('|') }}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Flag
+                  <>
+                </span>
+                  <span class="entry-details">
+                    <img src="{{d.countryInfos.flag}}" alt="country flag">
+                  </span>
+                  </span>
+                  </p>
+            </div>
+          </div>
+          <div class="tab-content  d-block" id="weather-info-{{idx_d}}">
+            <div class="entries d-flex justify-content-around flex-wrap">
+              {% for w in d.weatherInfos.forecasts %}
+              <div class="entry">
+                <div class="entry-body d-flex">
                   <div class="forecast-vals">
-                     <div class="entry-title">{{w.date|date('D')}} ({{w.date|date('Y/m/d')}})</div> <!-- getting name of the day-->
-                  <p><span class="entry-name">Temp</span><span class="entry-details"> {{w.avgTemp}}</p>
-                 <p><span class="entry-name">Wind(km/h)</span><span class="entry-details"> {{(w.windSpd * 36)|number_format(0)}}</span></p> <!---->
-                 <p><span class="entry-name">Precips(mm)</span><span class="entry-details"> {{w.precip|number_format(2)}}</span></p>
-           
+                    <div class="entry-title">{{w.date|date('D')}} ({{w.date|date('Y/m/d')}})
+                    </div>
+                    <!-- getting name of the day-->
+                    <p>
+                      <span class="entry-name">Temp
+                      </span>
+                      <span class="entry-details"> {{w.avgTemp}}
+                        </p>
+                    <p>
+                      <span class="entry-name">Wind(km/h)
+                      </span>
+                      <span class="entry-details"> {{(w.windSpd * 36)|number_format(0)}}
+                      </span>
+                    </p>
+                    <!---->
+                    <p>
+                      <span class="entry-name">Precips(mm)
+                      </span>
+                      <span class="entry-details"> {{w.precip|number_format(2)}}
+                      </span>
+                    </p>
                   </div>
                   <div class="forecast-icon">
-                     <img src=" https://www.weatherbit.io/static/img/icons/{{w.icon}}.png " alt="forecast icon">
-                     <div class="desc">{{w.description}}</div>
+                    <img src=" https://www.weatherbit.io/static/img/icons/{{w.icon}}.png " alt="forecast icon">
+                    <div class="desc">{{w.description}}
+                    </div>
                   </div>
-           
-         
-             </div>
-        
+                </div>
+              </div>
+              {% endfor %}
             </div>
-
-
-  
- 
-            {% endfor %}
-
-             </div>
-                </div>  
           </div>
-         </div>
-
-    
-     
-    
+          <div class="tab-content d-none" id="place-info-{{idx_d}}">
+            {% if  d.places is empty %}
+            <div>Too Clean space, add some places to visit
+            </div>
+            {% endif %}
+            {% if d.places is not empty %}
+            <ul id="places">
+              {% for k,p in d.places %}
+              <li class="item" id="place-{{idx_d + k}}">p
+              </li>
+              {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+          <div class="tab-content d-none" id="pack-info-{{idx_d}}">
+            <div class="tab-content" id="place-info-{{idx_d}}">
+              {% if  d.packs is empty %}
+              <div>Too Clean space!!, add some items to your to dolist
+              </div>
+              {% endif %}
+              {% if d.packs is not empty %}
+              <ul id="packs">
+                {% for k,p in d.packs %}
+                <li class="item" id="pack-{{idx_d + k}}">p
+                </li>
+                {% endfor %}
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
     {% endfor %}
-   
-    {% endfor %}
-
-
-
-
+  </div>
 </section>
-
 {% endblock %}

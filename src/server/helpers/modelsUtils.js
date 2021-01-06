@@ -4,6 +4,13 @@ const CountryInfo = require('../models/CountryInfo')
 
 const WeatherInfo = require('../models/WeatherInfo')
 
+const Trip = require('../models/Trip')
+
+const Place = require('../models/Place')
+
+const ToDo = require('../models/ToDoList')
+
+
 const createDestination = async (info) => { // this will create a destination collection with its dependencies (code linting)
                                             // It will be reused in creating futher destinations
   
@@ -36,6 +43,78 @@ const createDestination = async (info) => { // this will create a destination co
     const saved = await savedDestination.save()
     
     return saved._id
-}
+},
 
-module.exports = createDestination
+
+findTrips = async (userId) => { // trips of a signle user
+
+
+    const trips = await Trip.find({ userId }) // compound mongoose query to populate _id references with real objects in Trip.destinations/ES6 Syntax for obj creatiion
+        .populate({
+            path: 'destinations', // array of refs => array of Destination objs
+
+            populate: {
+
+                path: 'countryInfos weatherInfos' // in Trip.destinations.weahterInfos and .countryInfos fields
+            }
+            //  refs to WeatherInfo and CountryInfo => Real objs of previous
+        })
+
+        return trips
+},
+
+    findOneTrip = async (tripId) => { // single trip 
+
+        
+
+        const trip = await Trip.findById( tripId)// compound mongoose query to populate _id references with real objects in Trip.destinations
+            .populate({
+                path: 'destinations', // array of refs => array of Destination objs
+
+                populate: {
+
+                    path: 'countryInfos weatherInfos' // in Trip.destinations.weahterInfos and .countryInfos fields
+                }
+                //  refs to WeatherInfo and CountryInfo => Real objs of previous
+            })
+
+        return trip
+    },
+
+
+findOneDestination = async (destId) => { // single trip 
+
+
+
+    const d = await Destination.findById(destId)// compound mongoose query to populate _id references with real objects in Trip.destinations
+        .populate({
+            path: 'destinations', // array of refs => array of Destination objs
+
+            populate: {
+
+                path: 'countryInfos weatherInfos  places packs' ,// in Trip.destinations.weahterInfos and .countryInfos fields, .places , .packs
+                
+            }
+            //  refs to WeatherInfo and CountryInfo => Real objs of previous
+        })
+
+    return d
+},
+
+findOnePlace = async (destId) => {
+
+    const p = await Place.findOne({destId})
+
+    return p
+    },
+
+findOneToDo = async (destId) => {
+
+        const p = await Pack.findOne({ destId })
+
+        return p
+    }
+
+
+
+module.exports = { createDestination, findOneDestination, findTrips, findOneTrip, findOnePlace, findOneToDo }

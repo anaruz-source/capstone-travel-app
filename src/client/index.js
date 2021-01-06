@@ -5,9 +5,13 @@ import {
       dtPicker,
       handleDate,
       appendTag,
+      removeTag,
       show,
       hide,
+      handleFormError,
+      getAdjacentNodes,
       hasClassName,
+      hasFullClassName,
       revertDate,
       toEnUSDate,
       countDays,
@@ -15,22 +19,31 @@ import {
       isEmptyObj,
       shortenToSeven,
       attachEvent,
-      tripHTMLCodeToAppend
+      getParentOfChild,
+      tripHTMLCodeToAppend,
+      destHTMLCodeToAppend,
+      addClassWithTimeout
 } from './js/helpers';
 import {
       handleFormSubmission,
       documentLoadedListener,
+      windowLoadedListener,
       handleUserSession,
       handleTabsSwitching,
       handlePasswordsValidation,
       handleEmailValidation,
-      handleShowHideDynamicForms
+      handleShowHideDynamicForms,
+      addTripDynamicCode,
+      showHideAccordion
 } from './js/app.js';
 import {
       googleSignInLib as Glib,
       onSignIn,
       signOut
 } from './js/googleClientSideSignin'
+
+import {Places, autoCompleter} from './js/AlgoliaAutocomplete'
+
 import {
       addItem,
       removeItem,
@@ -44,6 +57,7 @@ import {
       geonamesAPICall
 } from './js/apisCallAndDataReformating'
 
+import { getElmRect, animate, getComputedHeight} from './js/animation'
 // SCSS files import
 
 import './styles/normalize.scss';
@@ -63,14 +77,22 @@ import './media/sign-up.svg';
 import './media/page-curl.svg';
 import './media/menu-bars.svg'
 import './media/add.svg'
+import './media/add-place.svg'
+import './media/add-task.svg'
 import './media/edit.svg'
 import './media/print.svg'
 import './media/delete.svg'
+import './media/pulse-loader.gif' // https://loading.io/spinner/pulse/-facebook-bar-pulse
 
 
-const button = document.getElementById('search-button'),
 
-      form = document.getElementsByTagName('form')[0] // delegate event on form
+window.addEventListener('DOMContentLoaded', documentLoadedListener) // make sure that DOM is loaded before manipulating it, attachEvent function won't work in this case
+window.addEventListener('load', windowLoadedListener)
+const button = document.getElementById('search-button')
+
+const searchBar = document.getElementsByClassName('search-bar')[0]
+     
+const form = searchBar ? searchBar.firstElementChild : '' // delegate event on form if it's defined!(for index page)
 
 // sign in form event of sign in/up tabs / general purpose tabs
 const tabs = document.getElementsByClassName('tab')
@@ -79,11 +101,9 @@ attachEvent(tabs, 'click', handleTabsSwitching)
 
 attachEvent(button, 'click', handleFormSubmission)
 
-attachEvent(form, 'mouseover', handleDate, {
-      once: true
-}) // adding eventListener only once!
 
-window.addEventListener('DOMContentLoaded', documentLoadedListener) // make sure that DOM is loaded before manipulating it, attachEvent function won't work in this case
+attachEvent(form, 'mouseover',  handleDate, {once:true})
+
 
 
 const submitConnexion = document.getElementById('signin-sub')
@@ -113,12 +133,23 @@ attachEvent(conf, 'keyup', handlePasswordsValidation)
 window.addEventListener('click', handleShowHideDynamicForms) // event delegation
 
 
-// setting a placeholder in the sessionstorage by default
-
-
+// if input-trip  submit input is clicked in trips/ page, then submit this form
 const formAddTrip = document.getElementById('input-trip')
 
-attachEvent(formAddTrip, 'click', tripHTMLCodeToAppend)
+attachEvent(formAddTrip, 'click', addTripDynamicCode)
+
+
+// if input-dest submit input is clicked in trips/ page, then submit this form
+const formAddDest = document.getElementById('input-dest')
+
+attachEvent(formAddDest, 'click', addTripDynamicCode)
+
+// card-trip accordion show and hide event, used to show and hide destinations
+
+const tripCards = document.getElementsByClassName('trip-card')
+
+attachEvent(tripCards, 'click', showHideAccordion)
+
 addItem('user')
 addItem('userId', '5fea479cb59a4b30df27ac39') // set here for the sake of the reviewer
 
@@ -129,11 +160,17 @@ export {
       fetchAny,
       dtPicker,
       appendTag,
+      removeTag,
       onSignIn,
       signOut,
       show,
       hide,
+      handleFormError,
       hasClassName,
+      hasFullClassName,
+      handleDate,
+      attachEvent,
+      getParentOfChild,
       addItem,
       removeItem,
       getItem,
@@ -148,5 +185,15 @@ export {
       geonamesAPICall,
       getMaxLikesEntry,
       shortenToSeven,
-      Glib
+      tripHTMLCodeToAppend,
+      destHTMLCodeToAppend,
+      getElmRect,
+      animate,
+      getComputedHeight,
+      addClassWithTimeout,
+      getAdjacentNodes,
+      autoCompleter,
+      Places,
+      Glib,
+     
 }

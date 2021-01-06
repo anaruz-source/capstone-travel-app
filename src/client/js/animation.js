@@ -1,5 +1,5 @@
 // This functions are copied from the 1nd nondegree project (Langing page)
-////
+//// anaruz-source repository
 let docElm = document.documentElement,
 
     addClass = function (className) { // Using  declaration function/function expression because, arrow functions resolve 'this'  to enclosing lexical scope
@@ -148,5 +148,6 @@ let docElm = document.documentElement,
 export {
     animate,
     getElmRect,
+    getComputedHeight,
     addClass
 }

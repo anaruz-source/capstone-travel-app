@@ -1,9 +1,22 @@
 import { shortenToSeven } from "./helpers"
 
 const restCountriesAPICall = async (url, countryName) => { // make a fetch and pick only required data from restCountries 
+    
+    let countryInfoRaw
+    try {
 
+    countryInfoRaw = await Client.fetchAny(url + encodeURIComponent(countryName) + '?fullText=true') // fetching restcountries.eu, search exact match with fullText=true
+   
+    if(countryInfoRaw.status == 404) throw new Error('Going to next step in catch bloc')
 
-    const countryInfoRaw = await Client.fetchAny(url + countryName + '?fullText=true') // fetching restcountries.eu, search exact match with fullText=true
+} catch (error) { // nothing found with full name option then try with name/nativename option
+        countryInfoRaw = await Client.fetchAny(url + encodeURIComponent(countryName))
+        
+        if( countryInfoRaw.status == 404) throw new Error('404 Nothing found in the 2nd round!!')
+}
+
+  
+
 
 
   const countryInfo = {} // creating countryInfo entries object
@@ -89,7 +102,7 @@ const days = []
             }
         })
         
-        console.log('short list', Client.shortenToSeven( days, start))
+      
         return Client.shortenToSeven( days, start )
 
     } else {  // get a forecast in the future

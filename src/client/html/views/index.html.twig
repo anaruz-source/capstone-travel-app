@@ -12,14 +12,16 @@
 
    {{parent()}}
         <section>
-       
+           <div class="form-error d-none"></div>
+           <div class="form-success d-none"> trip added successfully!</div>
             <div class="search-bar">
-              <form action="" method="post">
+              <form action="" method="post" id="index-form">
                      
                    <div class="inputs-container d-flex justify-content-center flex-wrap">
                      <div class="input d-flex flex-column col col-12 col-md-3">
                        <label for="destination">Where?</label>
-                       <input type="text" name="" id="destination" placeholder="DESTINATION" required>
+                       <input  type="text" name="" id="destination" placeholder="DESTINATION" class="autocomplete" required>
+                       <div class="details"></div>
                       </div>
                      <div class="input d-flex flex-column col col-12 col-md-3">
                        <label for="start-date">Trip start</label>
@@ -31,6 +33,9 @@
                       </div>
                      <div class="input col col-12 col-md-3"><button id="search-button"><img src="media/magnifier.svg" alt="search"></button></div>
                    </div>
+                   <div class="d-none overlay">
+                     <img src="media/pulse-loader.gif" alt="">
+                   </div>
               </form>
             </div>
            
@@ -41,11 +46,15 @@
                   <div class=" d-flex flex-wrap justify-content-center align-items-center">
                     
                   <div class="heading col col-12 col-md-6 d-flex flex-column">
+                    <div class="bg-white">
                     <div class="sub-heading">Captrip a large panel of choices</div>
                     <h1>Travel abroad and Turn the page</h1>
-                    <p>Many use our app to book their flights, book yours today and  make savings for others valuable things</p>
-
-                    <a href="#sign" class="button">Create folder now!</a>
+                    <p>Many use our app to book their trips, book yours today and  make savings for others valuable things</p>
+                   </div>
+                   <div class="bg-white text-center">
+                      <a href="#sign" class="button">Create folder now!</a>
+                   </div>
+                   
                   </div>
 
                    <div class="col col-12 col-md-6">

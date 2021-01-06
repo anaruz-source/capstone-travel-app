@@ -1,8 +1,5 @@
 // http://www.geonames.org/export/geonames-search.html 
 
-
-
-
 let dataHolder = {}, // to store data of the trip
 
     placeHolder = { // place holder to contain user info to send to the node js server
@@ -36,12 +33,30 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
     handleFormSubmission = async (event) => { //using Async to have acess to await, try, catch
 
         event.preventDefault()
+     
 
+        const location = document.getElementById('destination').value || document.getElementById('dest').value // trip form or destination form (only one field)
+      
 
-        const location = document.getElementById('destination').value
-        const start = document.getElementById('start-date').value
-        const end = document.getElementById('end-date').value
+        const form = Client.getParentOfChild(event.target, 'form')  // get form parent of clicked submit input
 
+        const tripCard = Client.getParentOfChild(form, 'trip-card') // get parent of the form for which submit is clicked
+
+        const dates = tripCard && tripCard.getElementsByTagName('time') // destined to be used in destination form as following
+
+        // handling trip form inputs ||  destination form inputs
+        const start = document.getElementById('start-date').value  || dates[0].textContent // start date in case value is null because not present in form
+        const end = document.getElementById('end-date').value      || dates [1].textContent  // end date in case value is null 
+
+        const overlay = form.getElementsByClassName('overlay')[0] // overlay position absolute to cover the form
+        
+        const errForm = document.getElementsByClassName('form-error')[0] // index error form message
+
+        const successForm = document.getElementsByClassName('form-success')[0] // index success form message
+
+        Client.show(overlay)
+
+      
 
         try {
 
@@ -56,7 +71,10 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
             dataHolder.countryInfo.timezone = dataHolder.weather[0].timezone
 
-
+            const inputDestParent = Client.getParentOfChild(document.getElementById('input-dest'), 'trip-card')
+            
+           const tripId = inputDestParent && inputDestParent.getAttribute('data-trip-id-db-info') // form is inside a trip-card (means called by a trip to add dest)
+                                                                                                  // otherwise inputDestParent is null => tripId == null   (new trip) 
             options.body = JSON.stringify({
 
                 title: location,
@@ -73,93 +91,132 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
                 weatherInfo: dataHolder.weather,
 
-                userId: Client.getItem('userId') // parse userId store locally of the connected user
+                userId: Client.getItem('userId') ,// parse userId store locally of the connected user,
+                
+                tripId: tripId
 
             })
-
-
+            
+          
+            
             const dataN = await Client.fetchAny('http://localhost:3030/trips', options) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
+            
+            console.log(dataN)
+            if (!!form && !Client.hasFullClassName(form.parentNode,'search-bar')){  // somewhere rather than home/index page
+            
+               Client.hide(form.parentNode)
+                form.reset() // reset in case of success 
+            
+            } else { // index page processing
 
+                  Client.hide(overlay)
+                  Client.show(successForm, 'd-flex')
+                  Client.addClassWithTimeout(successForm, 'd-flex', 10000) // 10secs timer to remove added class
+                  form.reset() // reset in case of success 
+            }
            
+            return dataN
 
         } catch (err) {
 
-            console.log(err)
+  
+           if (!!form && !Client.hasFullClassName(form.parentNode,'search-bar')){ 
+          
+            const errElm = form.firstElementChild
+                  errElm.textContent = err.message
+                  Client.show(errElm)
+          
+            } else { // if we're in /trips/  page
+              
+              
+              
+
+                 Client.show(errForm) 
+
+             
+
+            }
+
+
         }
 
 
     },
+    
+    handleAddPlacesTasksForm = async (e) => {
 
+        const parentDestCard = Client.getParentOfChild(e.target, 'd-card'),
+              parentForm     = Client.getParentOfChild(e.target, 'form'),
+            dataDestId = parentDestCard.getAttribute(' data-d-db-id')
+        
+        options.body.destId = dataDestId // setting task/place's destination _id
+        
+        if(e.target.id.indexOf('place')){
+
+            options.body.place = parentForm.getElementById('place').value // set place  if it's a  add place click 
+       
+        } else if(e.target.id.indexOf('pack')) {
+            
+            options.body.pack = parentForm.getElementById('place').value // else add add a task in the list /todo list
+           
+        }
+
+      if(options.body.place || options.body.pack){ // if pack or place is defined, else nothing!
+
+        try {
+
+        const pData = await Client.fetchAny(`/places-packs/${dataDestId}`, options) // adding data to the destination referenced by dataDestId
+
+
+
+        } catch (error) {
+            
+        }
+      } else return
+    },
 
     handleTabsSwitching = (e) => { // scallable function to display and hide tabs content, highlight active tab
-        // use tabs with data-tab-id references ids of tabs content
+        // use tab and tab-content
         // use your names, but make sure that everything is matching between function and html
 
         // aliases for Lib Client functions in js folder
 
-        const hasClassName = Client.hasClassName,
-            hide = Client.hide,
-            show = Client.show
+    const hasClassName = Client.hasClassName,
+        hide = Client.hide,
+        show = Client.show
 
-        const tabsContent = document.getElementsByClassName('tab-content')
+    const tab = e.target || e // in case a tag is passed instead of an event (function could be used as normal function not event listener)
+    const id = tab.getAttribute('data-tab-id')
+    
+    const tabContent = document.getElementById(id)
+    
+    const tabsContentAdjs = Client.getAdjacentNodes(tabContent) // get all siblings of tabContent except itself
 
-        let idx = 0
+    const tabsAdjs = Client.getAdjacentNodes(tab) // siblings of tab (same parent) except element passed as parameter
 
-        for (; idx < tabsContent.length;) {
+    tabsAdjs.forEach( el => el.classList.remove('active')) // removing active for other tabs
 
-            const clickedTab = e.target
+    tabsContentAdjs.forEach(el => hide(el)) // hiding siblings
 
-            const t = tabsContent[idx]
+        show(tabContent)
 
-            if (t.id == clickedTab.getAttribute('data-tab-id')) {
-
-
-                if (!hasClassName(clickedTab, 'active')) {
-
-                    clickedTab.classList.add('active')
-
-                    if (!hasClassName(t, 'd-block')) {
-
-                        show(t)
-
-                    }
-                }
-
-            } else {
-
-                const sel = '[data-tab-id="' + t.id + '"]'
-             
-                const oTab = document.querySelector(sel) // other tabs, selected tabs not matching clicked 
-
-                console.log(oTab)
-
-                if (hasClassName(oTab, 'active')) { // tab activated (has class active)
-
-                    oTab.classList.remove('active')
+        const top = Client.getElmRect(document.getElementById(`d-card-${id.split('-')[2]}`)).top // getting the  scrolltop of element and scroll to using window.scroll
+        
+        window.scroll(0, top)
 
 
-                    if (hasClassName(t, 'd-block')) { // element displayed (d-block bootstrap class)
-
-                        hide(t)
-                    }
-
-                }
-
-
-            }
-
-            idx++
-        }
-
-
+        tab.classList.add('active')
+    
+     
     },
 
-    documentLoadedListener = async (e) => {
+    documentLoadedListener = (e) => {
 
         // aliases creations for Client library variables
 
         const appendTag = Client.appendTag,
-            Glib = Client.Glib
+            Glib = Client.Glib,
+            Places = Client.Places
 
 
         appendTag(Glib.meta, document.head)
@@ -170,7 +227,12 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
         // onSignIn function should be global
         appendTag(onSignInScript, document.head)
 
+/// Algolia autocomplete
 
+
+        appendTag(Places.script, document.head)
+
+        
         const base = document.createElement('base') // creating and  // ading base  tag dynamically base on the location.href
 
         base.href = location.href
@@ -181,6 +243,15 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
         link1.firstElementChild.href = `/trips/userId/${Client.getItem('userId')}`
 
+    },
+
+    windowLoadedListener = (e) =>{
+
+        const placesApi = document.createElement('script')
+        placesApi.textContent = ' let placesAutocomplete = Client.autoCompleter() ' // appending Google places init script on the head to be Global
+        placesApi.defer = true
+        placesApi.async = true
+        Client.appendTag(placesApi, document.head)
     },
 
     handleUserSession = async (e) => {
@@ -200,7 +271,7 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
         try {
 
-            options.body = JSON.stringify(placeHolder)
+            options.body = JSON.stringify(placeHolder) // appending user to the body of the request
 
             const data = await fetchAny('http://localhost:3030/users/inner', options)
 
@@ -325,49 +396,228 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
 
     handleShowHideDynamicForms = e => {
-        
+         
+        let forms = document.querySelectorAll('div[id^="form"]'), // form-add*** ids
+
+            idx = 0
+       
+
+       for (;idx <forms.length; ){
+          
+        if(Client.hasClassName(forms[idx], 'd-block')) { // only if form has d-block className (visible display:block) 
+           
+
+            // check if the clicked target resides within the form, otherwise hide it
+
+            if (forms[idx].contains(e.target) || Client.hasClassName(e.target, 'qs')) { // choosing date picker hides form,
+                // so added this condition of checking for qs in className (part of it)
+
+
+            } else {
+
+                Client.hide(forms[idx])
+                forms[idx].removeEventListener('mouseover', Client.handleDate)
+            }
+
+
+            
+         }  
+          idx++
+       
+       }
+
+
+        let formId = '',
+            
+            formParent =''
+
+
         const id = e.target.id  // get the Id of clicked element
 
-        const form = document.getElementById('form-add-trip')
+        if(!id) return // no id is present return, do nothing to avoid errors calling function on null id/undefined
 
-        console.log(id.indexOf('add'))
-        // which is clicked is not a link or doesn't have id, so do nothing leave!
-        if(id && id.indexOf('add') > -1  || id.indexOf('delete') >-1 || id.indexOf('edit') > -1 || id.indexOf('print') > -1){    
+       if(id.indexOf('trip') > -1){
+
+           formId = 'form-add-trip'
+           
+           formParent = 'trip-card-link'
+           
+
+       } else if (id.indexOf('dest') > -1){
+
+           formId = 'form-add-dest'
+           formParent = 'trip-card-'
+
+       } else if (id.indexOf('place') > -1) {
+
+           formId = 'form-add-place'
+           formParent = 'd-card-' 
+
+       } else if (id.indexOf('pack') > -1) {
+
+           formId = 'form-add-pack'
+           formParent = 'd-card-'
+
+
+       }
+
+       if(!formId) return  // empty formId no need to do something, return
+        
+         const form = document.getElementById(formId)
+         
+        if(!form) return // nothing if we're not in trips page
+
+        
+        if( id.indexOf('add') > -1  || id.indexOf('delete') >-1 || id.indexOf('edit') > -1 || id.indexOf('print') > -1) {    
             
             const splitedId = id.split('-')
 
-            const idVal = splitedId[splitedId.length - 1]
+            let idVal = splitedId[splitedId.length - 1]
 
+            idVal =  !isNaN(parseInt(idVal)) ? idVal:  ''; // in case idVal isn't an Integer,  assign empty string to (add-trip-link id case above)
+            
             Client.show(form)
 
-            const parentCard = document.getElementById('trip-card-' + idVal)
+            // Client.attachEvent(form, 'mouseover', Client.handleDate, { once: true })
 
-            Client.appendTag(form, parentCard)
+            const parent = document.getElementById(formParent + idVal) || Client.getParentOfChild(e.target, 'section')
+
+
+            Client.appendTag(form, parent)
             
-            return 
-
+       
+          
 
         }
 
       
-         // check if the clicked target resides
+   
 
-            if (form.contains(e.target)) {
-              
-            } else {
+    },
 
-                Client.hide(form)
+    addTripDynamicCode = async (e) =>{
+
+        e.preventDefault()
+
+        try {
+     
+            const trips = await Client.fetchAny('http://localhost:3030/trips/userId/' + Client.getItem('userId'), { headers: new Headers({ 'X-Custom-Resp-Type': 'json' }) })
+
+            const idx = trips.length + 1 // used to create unique ids of created trips, dests...
+
+
+                const trip = await handleFormSubmission(e)
+                
+                console.log(trip)
+
+                let idx_d = 0// number of destinations of all trips of this user
+               
+                  
+
+                trips.forEach(t => {
+
+                    idx_d += t.destinations.length
+                })
+
+                if(e.target.id == 'input-trip'){ // new trip added
+
+                    const html = Client.tripHTMLCodeToAppend(trip, idx)
+
+
+                    const tripContainer = document.getElementById('dynamic-trips-container')
+
+                    tripContainer.insertAdjacentHTML('afterbegin', html)
+
+                    const tripTag = document.getElementById('trip-card-' + idx) // last added 
+                    const destTag = document.getElementById('d-card-1')
+
+                    showHideAccordion(destTag.parentNode) // here this is used as function rather than event listener
+
+                    Client.addClassWithTimeout(tripTag, 'bg-green', 15000) // add class bg-green remove it after 15sec  
+                    Client.addClassWithTimeout(destTag, 'bg-green', 15000) // add class bg-green remove it after 15sec
+
+                    const coors = Client.getElmRect(tripTag) //
+
+                    window.scroll(0, coors.top) // scroll to the new added element
+                    Client.handleFormError(e.target)
+
+               
+                } else { // new destination added of an existing trip
+
+
+                    html = Client.destHTMLCodeToAppend(trip.destinations[trip.destinations.length - 1], idx_d) // the last added
+                    const  inputDest = document.getElementById('input-dest')
+
+                    const parentAccordion = Client.getParentOfChild(inputDest, 'accordion') 
+
+                    console.log(parentAccordion)
+                    
+                    parentAccordion.firstElementChild.insertAdjacentHTML('afterend', html)
+
+                    showHideAccordion(parentAccordion)
+                    Client.addClassWithTimeout(parentAccordion.firstElementChild.nextElementSibling, 'bg-green', 15000) // add class bg-green remove it after 15sec
+                }
+
+
+               
+
+     
+            } catch (err) {
+            
+                Client.handleFormError(e.target, err)
             }
-        
+                
+    },
 
+    showHideAccordion = (e) => {  // function used as event listener and a normal function to show and hide accordion
+
+        const el = e.target || e  // if e.target undefined, means a tag is passed instead of event
+        const pNode = Client.getParentOfChild(el, 'form') // get parent abd check if it's a form =>
+
+        if (el.nodeName.toLowerCase() == 'img'  || pNode && pNode.nodeName.toLowerCase() == 'form')  return // if link images clicked or showed dynamic form
+                                                                                                                                              // do nothing, return  
+        const current = Client.getParentOfChild(el, 'trip-card')
+        const nxtSibl = current.nextElementSibling // we pass className in this case to figure out the nextsibling and show it
+     
+        if(Client.hasClassName(nxtSibl, 'accordion') ) {
+
+            nxtSibl.style.maxHeight = nxtSibl.scrollHeight +'px' 
+            nxtSibl.classList.add('active') // show nextsibling of clicked trip-card element
+            current.classList.add('active') // added to change + sign to - sign in the clicked element with trip-card className
+        }
+
+        const accs = document.getElementsByClassName('accordion')
+
+        const trips = document.getElementsByClassName('trip-card')
+
+        for(let idx = 0; idx < accs.length; idx++) {
+
+            if(Client.hasClassName(accs[idx], 'active') && !accs[idx].isSameNode(nxtSibl)){ // remove active className and hide other accordions 
+
+                accs[idx].classList.remove('active') 
+                accs[idx].style.maxHeight = 0
+            }
+        }
+
+        for (let idx = 0; idx < trips.length; idx++) {
+
+            if (Client.hasClassName(trips[idx], 'active') && !trips[idx].isSameNode(current)) {
+
+                trips[idx].classList.remove('active') // remove + sign from others if they have it
+         
+            }
+        }
     }
 
 export {
     handleFormSubmission,
     documentLoadedListener,
+    windowLoadedListener,
     handleTabsSwitching,
     handleUserSession,
     handleEmailValidation,
     handlePasswordsValidation,
-    handleShowHideDynamicForms
+    handleShowHideDynamicForms,
+    addTripDynamicCode,
+    showHideAccordion
 }

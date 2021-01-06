@@ -33,7 +33,7 @@ module.exports = {
                 loader: "babel-loader"
             },
             {
-                test: /\.(png|jp(e*)g|svg|ico)$/,
+                test: /\.(png|jp(e*)g|svg|gif|ico)$/,
                 use: [{
                     loader: 'file-loader',
                     options: {

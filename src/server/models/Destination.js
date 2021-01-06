@@ -47,7 +47,17 @@ const DestinationSchema = new Schema({ // Schema instantiation
 
         type: Schema.Types.ObjectId,
         ref: "weatherinfos"
+    },
+
+    places: {
+        type: Schema.Types.ObjectId,
+        ref : 'places'
+    },
+    tasks: {
+        type: Schema.Types.ObjectId,
+        ref: 'todos'
     }
+
 
 })
 

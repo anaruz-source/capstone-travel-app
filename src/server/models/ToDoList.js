@@ -10,12 +10,8 @@ const mongoose = require('mongoose')
 /// -> Schema alias to alleviate writing burdern of long names
 const { Schema } = mongoose
 
-const TodoSchema = new Schema({ // Schema instantiation
+const UniqueItem = new Schema({
 
-    title: {
-        type: String,
-        required: true
-    },
 
     description: {
         type: String,
@@ -27,6 +23,11 @@ const TodoSchema = new Schema({ // Schema instantiation
         default: false,
         required: true
     },
+})
+
+const TodoSchema = new Schema({ // Schema instantiation
+    
+    tasks: [UniqueItem],
 
     destinationId: {
         // owner id of the trip

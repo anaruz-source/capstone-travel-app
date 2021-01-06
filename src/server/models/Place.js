@@ -1,16 +1,13 @@
 const mongoose = require('mongoose')
 
 // https://www.youtube.com/watch?v=vjf774RKrLc&t=1s
-
 //https://mongoosejs.com/docs/guide.html
-
-// create a Mongodb schema of the collection that will hold our trip data
-
-
+// create a Mongodb schema of the collection that will hold our Places data
 /// -> Schema alias to alleviate burdern of  writing long names
+
 const { Schema } = mongoose
 
-const PlaceSchema = new Schema({ // Schema instantiation
+const UniquePlaceSchema = new Schema({
 
     name: {
         type: String,
@@ -25,9 +22,15 @@ const PlaceSchema = new Schema({ // Schema instantiation
     expired: {
         type: Boolean,
         default: false,
-        required: true
-    },
+        
+    }
 
+})
+
+const PlaceSchema = new Schema({ // Schema instantiation
+    
+    places: [UniquePlaceSchema],
+ 
     destinationId: {
   // owner id of the trip
             type: Schema.Types.ObjectId,
