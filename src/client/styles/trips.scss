@@ -4,9 +4,25 @@ section.trips {
   position: relative;
 
 
+  .error {
+
+    width: 100%;
+    height: 2em;
+    color: darkred;
+    background: rgba(255, 130, 0, 0.4);
+  }
+
+
+  .success {
+
+    width: 100%;
+    height: 2em;
+    color: darkgreen;
+    background: rgba(0, 255, 130, 0.4);
+  }
   h5 {
 
-    color: green;
+    color: rgb(136, 143, 136);
     font-size: 1.1em;
   }
   #add-trip-link {
