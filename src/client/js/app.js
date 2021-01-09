@@ -1,5 +1,7 @@
 // http://www.geonames.org/export/geonames-search.html 
 
+import { fetchAny, show } from "./helpers"
+
 let dataHolder = {}, // to store data of the trip
 
     placeHolder = { // place holder to contain user info to send to the node js server
@@ -62,6 +64,9 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
 
             const geo = await Client.geonamesAPICall(geoUrl, location)
+            dataHolder.geo = {}
+            dataHolder.geo.lat = geo.lat
+            dataHolder.geo.lng = geo.lng
 
             dataHolder.countryInfo = await Client.restCountriesAPICall(restCountriesUrl, geo.name) // rest countries API
 
@@ -91,6 +96,8 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
                 weatherInfo: dataHolder.weather,
 
+                geo: dataHolder.geo,
+
                 userId: Client.getItem('userId') ,// parse userId store locally of the connected user,
                 
                 tripId: tripId
@@ -102,14 +109,27 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
             const dataN = await Client.fetchAny('http://localhost:3030/trips', options) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
             
             console.log(dataN)
+
             if (!!form && !Client.hasFullClassName(form.parentNode,'search-bar')){  // somewhere rather than home/index page
             
                Client.hide(form.parentNode)
-                form.reset() // reset in case of success 
+                form.reset() // reset in case of success
+                if (successForm.textContent == '') {
+
+                    // destination or trip
+
+                    successForm.textContent = !!tripId ? 'Destination added successfully' : 'Trip added successfully';
+
+                }
+
+              Client.show(successForm,'d-flex')
+              CLient.addClassWithTimeout(successForm, 'd-flex', 10000) // show for 10 secs only
+
             
             } else { // index page processing
 
                   Client.hide(overlay)
+
                   Client.show(successForm, 'd-flex')
                   Client.addClassWithTimeout(successForm, 'd-flex', 10000) // 10secs timer to remove added class
                   form.reset() // reset in case of success 
@@ -145,34 +165,61 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
     
     handleAddPlacesTasksForm = async (e) => {
 
-        const parentDestCard = Client.getParentOfChild(e.target, 'd-card'),
-              parentForm     = Client.getParentOfChild(e.target, 'form'),
-            dataDestId = parentDestCard.getAttribute(' data-d-db-id')
-        
-        options.body.destId = dataDestId // setting task/place's destination _id
-        
-        if(e.target.id.indexOf('place')){
+        e.preventDefault()// preventing any default behaviour, do following instead
 
-            options.body.place = parentForm.getElementById('place').value // set place  if it's a  add place click 
+        const parentDestCard = Client.getParentOfChild(e.target, 'd-card'),
+              
+              parentForm     = Client.getParentOfChild(e.target, 'form'),
+              
+              dataDestId = parentDestCard.getAttribute('data-d-db-id')
+        
+              
+          dataHolder.destId = dataDestId // setting task/place's destination _id
+        
+        if(e.target.id.indexOf('place') > -1) {
+
+            const val = document.getElementById('place').value.split('|')
+
+            dataHolder.type = val[0]
+            dataHolder.place = val[1]  // set place  if it's a  add place click 
        
-        } else if(e.target.id.indexOf('pack')) {
+        } else if(e.target.id.indexOf('pack') > -1) {
             
-            options.body.pack = parentForm.getElementById('place').value // else add add a task in the list /todo list
+            dataHolder.pack = document.getElementById('pack').value // else add add a task in the list /todo list
            
         }
 
-      if(options.body.place || options.body.pack){ // if pack or place is defined, else nothing!
+      if(dataHolder.place || dataHolder.pack) { // if pack or place is defined, else nothing!
 
+        const overlay = parentForm.getElementsByClassName('overlay')[0]
+        const error =  parentForm.getElementsByClassName('form-error')[0]
+        Client.show(overlay)
+        Client.hide(error)
+    
         try {
 
-        const pData = await Client.fetchAny(`/places-packs/${dataDestId}`, options) // adding data to the destination referenced by dataDestId
+            options.body = JSON.stringify({
+                    
+                ...dataHolder // spreading Object, ES6 Syntax!
 
 
+            })
 
-        } catch (error) {
+
+        const pData = await Client.fetchAny(`/places-packs/add/`, options) // adding data to the destination referenced by dataDestId
+        
+        if (pData.errors) throw new Error(pData.message)
+        console.log(pData)
+
+        Client.hide(overlay)
+        } catch (err) {
+
+            error.textContent = err.message || 'something went wrong' // reason of error sent from server
+            Client.hide(overlay)
+            Client.show(error)
             
         }
-      } else return
+      } else return // nothing set, do nothing
     },
 
     handleTabsSwitching = (e) => { // scallable function to display and hide tabs content, highlight active tab
@@ -227,7 +274,6 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
         // onSignIn function should be global
         appendTag(onSignInScript, document.head)
 
-/// Algolia autocomplete
 
 
         appendTag(Places.script, document.head)
@@ -247,8 +293,10 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
     windowLoadedListener = (e) =>{
 
+        if(location.pathname.length > 1) return // means there's a path (no only a forwardslash /), so page different thant index/home page, do nothing just return 
+  /// Algolia autocomplete
         const placesApi = document.createElement('script')
-        placesApi.textContent = ' let placesAutocomplete = Client.autoCompleter() ' // appending Google places init script on the head to be Global
+        placesApi.textContent = ' const input = document.getElementById(\'destination\'), around=false, types=\'city\', placesAutocomplete = Client.autoCompleter(input, types, around) ' // appending Google places init script on the head to be Global
         placesApi.defer = true
         placesApi.async = true
         Client.appendTag(placesApi, document.head)
@@ -392,7 +440,16 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
         }
 
     },
+// using https://www.npmjs.com/package/js-datepicker
 
+handleDate = (e) => { // id (number) to link datepickers and it's position
+
+    const id = Client.getRndInteger(1, 100)
+    const start = Client.dtPicker('#start-date', new Date(), id, 'bl')
+    const end = Client.dtPicker('#end-date', new Date(), id, 'bl')
+
+
+},
 
 
     handleShowHideDynamicForms = e => {
@@ -436,7 +493,7 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
         if(!id) return // no id is present return, do nothing to avoid errors calling function on null id/undefined
 
-       if(id.indexOf('trip') > -1){
+       if(id.indexOf('trip') > -1){ // trying to get parent of  clicked img (add-something-) then append corresponding form  to parent
 
            formId = 'form-add-trip'
            
@@ -464,10 +521,11 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
        if(!formId) return  // empty formId no need to do something, return
         
          const form = document.getElementById(formId)
-         
-        if(!form) return // nothing if we're not in trips page
 
         
+        if(!form) return // nothing if we're not in trips page
+   
+
         if( id.indexOf('add') > -1  || id.indexOf('delete') >-1 || id.indexOf('edit') > -1 || id.indexOf('print') > -1) {    
             
             const splitedId = id.split('-')
@@ -478,12 +536,42 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
             
             Client.show(form)
 
-            // Client.attachEvent(form, 'mouseover', Client.handleDate, { once: true })
+            Client.attachEvent(form, 'mouseover', Client.handleDate, { once: true })
 
             const parent = document.getElementById(formParent + idVal) || Client.getParentOfChild(e.target, 'section')
 
 
             Client.appendTag(form, parent)
+
+
+            const input = form.querySelector('#dest') || form.querySelector('#destination') || form.querySelector('#place')
+            let types = 'city',
+                around = false,     // only cities will be returned in that autoCompleter if false, otherwise true nearby places will be returned
+                aroundLatLng = '' // in case of places we need to perform search nearby some coordinates (Latitude, Longitude)
+            
+            if (input && input.id == 'place') {
+
+                types = ['address', 'busStop', 'trainStation', 'townhall', 'airport']
+
+                around = true
+
+                const parent = Client.getParentOfChild(input, 'd-card')
+
+                aroundLatLng = `${parent.getAttribute('data-d-db-lat')},${parent.getAttribute('data-d-db-lng')}`
+
+            } // otherwise default values (specified above) will apply for types, around 
+
+
+            // apply values to autoCompleter from Algolia
+            
+            if(!!input) { // input of type is defined (that need autocomplete (tasks' form desn't))
+         
+                const autoCompleter = Client.autoCompleter(input, types, around)
+                if (around) autoCompleter.configure({ aroundLatLng: aroundLatLng, aroundLatLngViaIP: false })
+        }
+            // reconfigure autocompleter with coordinates to seach around 
+        
+             
             
        
           
@@ -505,23 +593,20 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
             const idx = trips.length + 1 // used to create unique ids of created trips, dests...
 
-
+         
                 const trip = await handleFormSubmission(e)
                 
                 console.log(trip)
-
-                let idx_d = 0// number of destinations of all trips of this user
+                
+                // number of destinations of all trips of this user (displayed) + 1 (new to be added)
+                let idx_d = document.getElementsByClassName('d-card').length + 1
                
                   
 
-                trips.forEach(t => {
 
-                    idx_d += t.destinations.length
-                })
+                if(e.target.id == 'input-trip') { // new trip added
 
-                if(e.target.id == 'input-trip'){ // new trip added
-
-                    const html = Client.tripHTMLCodeToAppend(trip, idx)
+                    const html = Client.tripHTMLCodeToAppend(trip, idx, idx_d)
 
 
                     const tripContainer = document.getElementById('dynamic-trips-container')
@@ -529,7 +614,7 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
                     tripContainer.insertAdjacentHTML('afterbegin', html)
 
                     const tripTag = document.getElementById('trip-card-' + idx) // last added 
-                    const destTag = document.getElementById('d-card-1')
+                    const destTag = document.getElementById('d-card-'+ idx_d)
 
                     showHideAccordion(destTag.parentNode) // here this is used as function rather than event listener
 
@@ -547,7 +632,8 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
                     html = Client.destHTMLCodeToAppend(trip.destinations[trip.destinations.length - 1], idx_d) // the last added
                     const  inputDest = document.getElementById('input-dest')
-
+                     
+                    console.log('html', html)
                     const parentAccordion = Client.getParentOfChild(inputDest, 'accordion') 
 
                     console.log(parentAccordion)
@@ -607,10 +693,105 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
          
             }
         }
+    },
+
+    deleteEventListener = async (e) => {
+
+        const t = e.target // t for target (not trip), this is a multipurpose event listener! applied to elements with id = 'delete*****'
+       
+
+
+        let res = null,
+            url = null,
+            notif = true // notify before delete
+
+        // for some reason this is added to not a delete link!!! (security measure!)
+        // then do nothing, just exit
+        if(t.id.indexOf('delete') <= -1) return 
+       
+
+        options.method = 'delete' // deleting element from Mongo DB
+
+        if(t.id.indexOf('trip') > -1) {
+
+         
+            url = `/trips/${t.getAttribute('data-delete-d-info')}`
+
+            res = 'trip delete: '
+        
+
+        } else if (t.id.indexOf('dest')) {
+
+
+            url = `/del/destination/${t.getAttribute('data-delete-p-info')}`
+            res = 'destination delete: '
+        
+        
+        } else if (t.id.indexOf('place')) {
+            
+           
+            url = `/del/place/${t.getAttribute('data-delete-p-info')}`
+            res = 'place delete: '
+
+        } else if (t.id.indexOf('pack')){
+
+         
+            url = `/del/pack/${t.getAttribute('data-delete-p-info')}`
+            res = 'list item delete: '
+        } 
+
+
+     
+
+        if( !!res && !!url) {
+
+          // section parent, trip card as parent , or a destination card as parent 
+
+            const parent = Client.getParentOfChild(e.target, 'section') || Client.getParentOfChild(e.target, 'trip-card') || Client.getParentOfChild(e.target, 'd-card')
+         
+        
+
+              const result = parent.getElementsByClassName('result')[0]
+              const error = parent.getElementsByClassName('error')[0]
+
+              Client.handErrors(error, {clear: true}) // clear any found error element
+              
+              // show by changing 'd-none' with 'ongoing' className
+            
+              Client.show(result, 'ongoing') 
+             
+              result.innerHTML = '<p class="d-flex align-items-center"><span>Processing...<span><img src="media/wrench.svg"></p>'
+            
+              res += await fetchAny(url, options)
+              
+              Client.hide(result, 'ongoing') // change ongoing with d-none again
+              result.textContent = res
+              // then replace d-none with 'success' className
+              Client.show(result, 'success')
+
+              // time 'success' className out
+
+              Client.addClassWithTimeout(result, 'success', 10000) // 10 secs
+
+              // hide element again 
+
+              Client.hide(result, 'success') // 'success' => d-none
+           
+          
+        } else {
+
+
+
+            Client.handleErrors(result)
+                         
+
+        }
+    
     }
 
 export {
     handleFormSubmission,
+    handleDate,
     documentLoadedListener,
     windowLoadedListener,
     handleTabsSwitching,
@@ -619,5 +800,7 @@ export {
     handlePasswordsValidation,
     handleShowHideDynamicForms,
     addTripDynamicCode,
-    showHideAccordion
+    showHideAccordion,
+    handleAddPlacesTasksForm,
+    deleteEventListener
 }

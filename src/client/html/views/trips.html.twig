@@ -7,22 +7,7 @@
 {% block body %}
 {{parent()}}
 <section class="trips">
-  <div class="container d-flex align-items-center">
-    <h4 class="title">My Trips</h4>
-    <div title="click here to add a trip">
-      <img src="media/add.svg" alt="add trip icon" id="add-trip-link">
-    </div>
-  </div> 
-  {% if trips is empty %} <!--empty|null|false-->
-  <div> Too Clean space, create some trips 
-    <a>HERE
-    </a>
-  </div>
-  {% endif %}
-  <div id="dynamic-trips-container">
-    <div class="d-none form-success d-none justify-content-center align-items-center p-fixe" >
-    </div>
-    <!-- The following forms will float and change their parents depending on the calling section (which trip, which destination....)-->
+     <!-- The following forms will float and change their parents depending on the calling section (which trip, which destination....)-->
     <div id="form-add-trip" class="d-none">
       <form action="" method="post" id="add-trip">
         <div class="form-error d-none">
@@ -98,10 +83,10 @@
           <div class="input d-flex flex-column">
             <label for="pack">What?
             </label>
-            <input type="text" name="" id="pack" placeholder="TASK" required>
+            <input type="text" name="" id="pack" placeholder="TASK item" required>
           </div>
           <div class="input">
-            <input type="submit" value="Submit" id="input-task">
+            <input type="submit" value="Submit" id="input-pack">
           </div>
         </div>
         <div class="d-none overlay">
@@ -109,7 +94,26 @@
         </div>
       </form>
     </div>
+  <div class="container d-flex align-items-center">
+    <h4 class="title">My Trips
+    </h4>
+    <div title="click here to add a trip">
+      <img src="media/add.svg" alt="add trip icon" id="add-trip-link">
+    </div>
+        <div class="form-success d-none justify-content-center align-items-center p-fixe" >
+        <div class="error d-none justify-content-center align-items-center p-fixe" ></div>
+    </div>
+  </div> 
+   <!--empty|null|false-->
+  {% if trips is empty %} 
+  <div class="container d-flex align-items-center"> Too Clean space, create some trips </div>
+  {% endif %}
+  <div id="dynamic-trips-container">
+
+ 
     {% set idx_t = 0 %}
+    {% set idx_d = idx_t %}
+
     {% for trip in trips %} 
     <!-- for incremental id of country info and weather-info -->
     {% set idx_t = idx_t + 1 %}
@@ -156,10 +160,11 @@
             <img src="media/print.svg" alt="print trip icon" title="print" id="print-link-{{idx_t}}">
           </div>
           <div title="delete trip">
-            <img src="media/delete.svg" alt="delete trip icon" title="delete trip" id="delete-trip-link-{{idx_t}}">
+            <img src="media/delete.svg" alt="delete trip icon" title="delete trip" id="delete-trip-link-{{idx_t}}" data-delete-trip-info="{{trip._id}}">
           </div>
         </div>
       </div>
+      <div class="result d-none"></div>
     </div>
     <div class="container accordion">
       <h5>Destinations
@@ -171,11 +176,10 @@
         </a>
       </div>
       {% endif %}
-      {% set idx_d = idx_t %}
       {% for d in trip.destinations %} 
       <!-- looping over trip's destinations -->
       {% set idx_d = idx_d + 1 %}
-      <div class="d-card" id="d-card-{{idx_d}}" data-trip-db-id="{{trip._id}}" data-d-db-id="{{d._id}}">
+      <div class="d-card" id="d-card-{{idx_d}}" data-trip-db-id="{{trip._id}}" data-d-db-id="{{d._id}}" data-d-db-lng="{{d.lng}}" data-d-db-lat="{{d.lat}}">
         <div class="d-card-header">
           <p>
             <span class="entry-name">Name:
@@ -188,10 +192,10 @@
               <img src="media/add-place.svg" alt="delete task icon"  title="add place" id="add-place-link-{{idx_d}}">
             </div>
             <div>
-              <img src="media/add-task.svg" alt="delete task icon" title="add task" id="delete-task-link-{{idx_d}}">
+              <img src="media/add-task.svg" alt="add task icon" title="add task" id="add-pack-link-{{idx_d}}">
             </div>
             <div>
-              <img src="media/delete.svg" alt="delete dest icon" title="delete destination" id="delete-dest-link-{{idx_d}}">
+              <img src="media/delete.svg" alt="delete dest icon" title="delete destination" id="delete-dest-link-{{idx_d}}" data-delete-d-info="{{d._id}}">
             </div>
           </div>
           <div class="tabs d-flex">
@@ -307,34 +311,59 @@
             {% endif %}
             {% if d.places is not empty %}
             <ul id="places">
-              {% for k,p in d.places %}
-              <li class="item" id="place-{{idx_d + k}}">p
+              {% for k,p in d.places.places %}
+              <li class="item">
+                <span class="type"> {{p.type}}: 
+                </span> &lt;
+                <span class="value">{{p.place}} 
+                </span>&gt;
+               <div class="icon"> <img src="media/delete-small.svg" alt="delete place" id="delete-place-{{idx_p + k}}" data-delete-p-info="{{p._id}}"> </div>
               </li>
               {% endfor %}
               {% endif %}
             </ul>
           </div>
           <div class="tab-content d-none" id="pack-info-{{idx_d}}">
-            <div class="tab-content" id="place-info-{{idx_d}}">
-              {% if  d.packs is empty %}
-              <div>Too Clean space!!, add some items to your to dolist
-              </div>
-              {% endif %}
-              {% if d.packs is not empty %}
-              <ul id="packs">
-                {% for k,p in d.packs %}
-                <li class="item" id="pack-{{idx_d + k}}">p
-                </li>
-                {% endfor %}
-                {% endif %}
-              </ul>
+            {% if  d.tasks is empty %}
+            <div>Too Clean space!!, add some items to your to dolist
             </div>
+            {% endif %}
+            {% if d.tasks is not empty %}
+            
+                <table class="table" id="packs">
+                    <thead><tr><th>Task item</th><th>Done</th><th>Delete</th></tr></thead><tbody>
+              {% for k,p in d.tasks.tasks %}
+            
+              
+              
+                    <tr  class="item" id="pack-{{idx_d + k}}"><td>
+                <span>{{p.description}}
+                </span> </td><td>
+                <div class="form-check form-switch d-flex">
+                  <input class="form-check-input" type="checkbox" id="task-{{idx_d+k}}" {{p.done ? 'checked' : ''}} >
+                  <label class="form-check-label" for="task-{{idx_d+k}}"> {{p.done ? 'Yes' : 'No'}}
+                  </label>
+                </div>
+                <td>
+               <div class="icon"> <img src="media/delete-small.svg" alt="" id="delete-pack-{{idx_p + k}}" data-p-db-id="{{p._id}}"> </div></td>
+             
+            
+              {% endfor %}
+              {% endif %}
+              </tbody>
+               </table>
+       
           </div>
         </div>
+      
+           <div class="result d-none"></div>
+
       </div>
-      {% endfor %}
+       {% endfor %}
     </div>
-    {% endfor %}
+   
+  </div>
+  {% endfor %}
   </div>
 </section>
 {% endblock %}

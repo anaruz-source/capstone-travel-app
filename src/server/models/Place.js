@@ -9,7 +9,7 @@ const { Schema } = mongoose
 
 const UniquePlaceSchema = new Schema({
 
-    name: {
+    place: {
         type: String,
         required: true
     },

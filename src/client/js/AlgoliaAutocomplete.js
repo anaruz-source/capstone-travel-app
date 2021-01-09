@@ -12,35 +12,41 @@
 * *
 */
 
-let options = location.href.indexOf('trips') > -1 ?[ ['address', 'busStop','trainStation', 'townhall','airport'], true, 'value']: ['city', false,'city']
-    
-let types = options[0],
-    aroundLatLngViaIP = options[1]
 
-const  autoCompleter = () => {
+const  autoCompleter = (input, types, around) => { // only cities (no nearby places)
     
-        console.log(types, aroundLatLngViaIP)
-        let placesAutocomplete = places({
+
+    console.log('entries in order', input, types, around)
+      
+        if( Client.hasClassName(input, 'ap-input')) return // element has alread autocompleter so return and do nothing
+
+    const reconfigurableOptions = {
+      
+         aroundLatLng: '',
+        aroundLatLngViaIP: false // disable the extra search/boost around the source IP
+    },
+
+        options = {
             appId: 'pl07W6O6HDCD',
             apiKey: '64096c88230064d3a7acd3a334a5b17c',
-            container: document.getElementsByClassName('autocomplete')[0],
-            type: 'city'|| types,
+            container: input,
+            type: types,
             templates: {
                 value: function (suggestion) {
 
-                   
-                    return  location.href.indexOf('trips') > -1 ? suggestion.name : suggestion.city;
+
+                    return around ? suggestion.name + '|' + suggestion.type : suggestion.name
                 }
             },
-            aroundLatLngViaIP: aroundLatLngViaIP // disable the extra search/boost around the source IP
+            aroundLatLngViaIP: around // disable the extra search/boost around the source IP
 
-    })
+        }
+
+        let placesAutocomplete = places(options).configure(reconfigurableOptions)
 
     return placesAutocomplete
 
 },
-
-
 
 
 

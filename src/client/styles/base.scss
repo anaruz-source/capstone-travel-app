@@ -26,6 +26,7 @@ h6 {
   font-weight: 500;
 }
 section {
+    min-height: 100vh;
 .bg-white {
 
  background: rgba(255, 255, 255, 0.2)!important;
@@ -161,4 +162,9 @@ article:nth-of-type(2) {
 .row {
 
     margin: 0;
+}
+
+footer {
+
+    height: 20em;
 }

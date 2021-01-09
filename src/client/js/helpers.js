@@ -180,7 +180,7 @@ function isEmptyObj(obj) {
 
 // Copied from the previous project weather app
 
-const hide = (elm, className = 'd-block') => { 
+const hide = (elm, className = 'd-block') => {  // hide with d-block or equivalent className d-flex
 
     if (elm.className.indexOf(className) > -1) {
 
@@ -192,7 +192,7 @@ const hide = (elm, className = 'd-block') => {
 
 },
 
-show = (elm, className='d-block') => {
+show = (elm, className='d-block') => { // show with d-block or another equivalent className, d-flex for example
 
 
     if (elm.className.indexOf('d-none') > -1) {
@@ -207,12 +207,14 @@ show = (elm, className='d-block') => {
 
  hasClassName = (elem, className) => {
     
+    if(!elem) return false // element is null/undefined
+
     return elem.className.indexOf(className) > -1 // element has className (we can pass it just a fragment of className lik qs of qs-datepicker for exampl)
 },
 
 hasFullClassName = (elem, className) => { //  this returns true if element has a a complete className, here we should pass qs-datepicker
 
-    return elem.classList.contains(className)
+    return !!elem && elem.classList.contains(className) // element is not null and is defined
 },
 
 getParentOfChild = (child, parent) => { // look parent of tag and its grandparent  until we get the parent passed as arg (name or classNme) and return it
@@ -223,7 +225,7 @@ getParentOfChild = (child, parent) => { // look parent of tag and its grandparen
         
       try {
 
-                   while(  (parentTag.nodeName.toLowerCase() != parent  && !hasFullClassName(parentTag, parent))){
+                   while(  parentTag.nodeName.toLowerCase() != parent  && !hasFullClassName(parentTag, parent) ){
                  
            
                  parentTag = parentTag.parentNode
@@ -243,16 +245,6 @@ getRndInteger = (min, max)  => { // it generates random number to used as datepi
     return Math.floor(Math.random() * (max - min + 1)) + min;
 },
 
-// using https://www.npmjs.com/package/js-datepicker
-
-    handleDate = (e) => { // id (number) to link datepickers and it's position
-
-       const id = getRndInteger(1, 100)   
-        const start = dtPicker('#start-date', new Date(), id, 'bl')
-        const end = dtPicker('#end-date', new Date(), id, 'bl')
-
-
-    },
     
 
 countDays = (start, now) => {
@@ -321,6 +313,27 @@ handleFormError = (tag, err) => { // tag will be pass as e.target and eventually
     hide(errTag)
 
 },
+
+handleErrors = (elm, options = { msg: 'some error occured!', className : d-blocke, clear : false, center : false}) => { // handle errors with options (defaults are there)
+
+  if(options.clear){ // clear error from the page
+
+    elm.textContent = ''
+     elm.className = 'd-none error' // replace all with 'd-none error'!
+
+  }
+  
+    show(elm, options.className)
+    elm.textContent = options.msg
+  
+  if(options.center){
+
+    elm.classList.add('justify-content-center')
+    elm.classList.add('align-items-center')
+  }
+  
+   
+},
 getAdjacentNodes = adj => {
 
     const adjs = adj.parentNode.childNodes,
@@ -383,104 +396,159 @@ addClassWithTimeout = (tag, className, timeout) => { // adding a className then 
   }, timeout);
 },
 
-destHTMLCodeToAppend = (d, idx) => { // for reuse in adding only destination to trip
+destHTMLCodeToAppend = (d, idx,_tripId) => { // for reuse in adding only destination to trip
 
 
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+   
 
-
-    const daysName = d.weatherInfos.forecasts.map( (w) => days[ new Date(w.date).getDay()]  ) // name of the day retur!
-    
-
-    const destHTMLCodeTemplate = `<div class="container accordion">
-        <h5>Destinations</h5>
-
-        <div class="d-card" id="d-card-${idx}">
-            <div class="d-card-header">
-                <p><span class="entry-name">Name</span><span class="entry-details">${d.name}</span></p>
+    const destHTMLCodeTemplate = `
+            <div class="d-card" id="d-card-${idx_d}" data-trip-db-id="${_tripId}" data-d-db-id="${d._id}" data-d-db-lng="${d.lng}" data-d-db-lat="${d.lat}">
+        <div class="d-card-header">
+          <p>
+            <span class="entry-name">Name:
+            </span>
+            <span class="entry-details">${d.name}
+            </span>
+          </p>
+          <div class="flex-nowrap d-none  settings-d">
+            <div>
+              <img src="media/add-place.svg" alt="delete task icon"  title="add place" id="add-place-link-${idx}">
             </div>
-            <div class="flex-nowrap d-none  settings-d">
-
-                <div><img src="media/delete.svg" alt="delete dest icon" id="delete-dest-link-${idx}"></div>
-                    <div id="dest-id-info-${idx}" data-dest-id-info="${d._id}"></div>
-
-                </div>
-
-                <div class="tabs d-flex  justify-content-center">
-                    <div class="tab" data-tab-id="country-info-${idx}">Country Info</div> <div class="tab  active" data-tab-id="weather-info-${idx}">Weather forecast</div>
-                </div>
-
-                <div class="d-card-body tab-content" id="country-info-${idx}">
-
-                    <div class="d-flex flex-wrap">
-                        <p><span class="entry-name">Name</span><span class="entry-details">${d.countryInfos.name}</p>
-                            <p><span class="entry-name">Language</span><span class="entry-details">${d.countryInfos.language}</span></p>
-                            <p><span class="entry-name">Region</span><span class="entry-details">${d.countryInfos.region}</span></p>
-                            <p><span class="entry-name">Timezone</span><span class="entry-details">${d.countryInfos.timezone}</span></p>
-                            <p><span class="entry-name">Capital</span><span class="entry-details">${d.countryInfos.capital}</span></p>
-                            <p><span class="entry-name">Currency</span><span class="entry-details">${d.countryInfos.currency}</span></p>
-                            <p><span class="entry-name">Borders</span><span class="entry-details">
-                                ${
-                                    // returning string from borders table template and join them
-
-                                    d.countryInfos.borders.map(b => b).join('|')
-
-
-                                }
-
-
-                            </span>
-                            </p>
-                            <p> <span class="entry-name">Flag</span> <span class="entry-details"><img src="${d.countryInfos.flag}" alt="country flag"></span></span></p>
-            
-             </div>
-
-                    </div>
-                </div>
-         
-                <div class="d-card">
-                    <div class="d-card-body tab-content  d-block" id="weather-info-${idx}">
-                        <div class="entries d-flex justify-content-around flex-wrap">
-                            ${d.weatherInfos.forecasts.map((w,i) => `
-                       <div class="entry">
-
-
-
-             <div class="entry-body d-flex">
-
+            <div>
+              <img src="media/add-task.svg" alt="add task icon" title="add task" id="add-pack-link-${idx}">
+            </div>
+            <div>
+              <img src="media/delete.svg" alt="delete dest icon" title="delete destination" id="delete-dest-link-${idx}">
+            </div>
+          </div>
+          <div class="tabs d-flex">
+            <div class="tab" data-tab-id="country-info-${idx}">Country Info
+            </div>
+            <div class="tab active" data-tab-id="weather-info-${idx}">Weather forecast
+            </div>
+            <div class="tab" data-tab-id="place-info-${idx}">places
+            </div>
+            <div class="tab" data-tab-id="pack-info-${idx}">todo list
+            </div>
+          </div>
+        </div>
+        <div class="d-card-body">
+          <div class="tab-content d-none" id="country-info-${idx}">
+            <div class="d-flex flex-wrap">
+              <p>
+                <span class="entry-name">Name:
+                </span>
+                <span class="entry-details">&lt;${d.countryInfos.name}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Language:
+                </span>
+                <span class="entry-details">&lt;${d.countryInfos.language}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Region:
+                </span>
+                <span class="entry-details">&lt;${d.countryInfos.region}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Timezone:
+                </span>
+                <span class="entry-details">&lt;${d.countryInfos.timezone}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Capital:
+                </span>
+                <span class="entry-details">&lt;${d.countryInfos.capital}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Currency:
+                </span>
+                <span class="entry-details">&lt;${d.countryInfos.currency}&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Borders
+                </span>
+                <span class="entry-details">
+                  &lt;${ d.countryInfos.borders.join('|') }&gt;
+                </span>
+              </p>
+              <p>
+                <span class="entry-name">Flag
+                  <>
+                </span>
+                  <span class="entry-details">
+                    <img src="${d.countryInfos.flag}" alt="country flag">
+                  </span>
+                  </span>
+                  </p>
+            </div>
+          </div>
+          <div class="tab-content  d-block" id="weather-info-${idx}">
+            <div class="entries d-flex justify-content-around flex-wrap">
+              ${ d.weatherInfos.forecasts.map( w => {`
+              <div class="entry">
+                <div class="entry-body d-flex">
                   <div class="forecast-vals">
-                     <div class="entry-title">${daysName[i]}(${revertDate(toEnUSDate(new Date(w.date)))})</div> <!-- getting name of the day-->
-                  <p><span class="entry-name">Temp</span><span class="entry-details"> ${w.avgTemp}</p>
-                 <p><span class="entry-name">Wind(km/h)</span><span class="entry-details"> ${(w.windSpd * 36).toFixed(0)}</span></p> <!-- convert to km/h-->
-                 <p><span class="entry-name">Precips(mm)</span><span class="entry-details"> ${w.precip.toFixed(2)}</span></p>
-           
+                    <div class="entry-title">${days[new Date(w.date).getDay()]} (${Client.revertDate(Client.toEnUSDate(new Date(w.date)))})
+                    </div>
+                    <!-- getting name of the day-->
+                    <p>
+                      <span class="entry-name">Temp
+                      </span>
+                      <span class="entry-details"> ${w.avgTemp}
+                        </p>
+                    <p>
+                      <span class="entry-name">Wind(km/h)
+                      </span>
+                      <span class="entry-details"> ${(w.windSpd * 36).toFixed(0)}
+                      </span>
+                    </p>
+                 
+                    <p>
+                      <span class="entry-name">Precips(mm)
+                      </span>
+                      <span class="entry-details"> ${w.precip.toFixed(2)}
+                      </span>
+                    </p>
                   </div>
                   <div class="forecast-icon">
-                     <img src=" https://www.weatherbit.io/static/img/icons/${w.icon}.png " alt="forecast icon">
-                     <div class="desc">${w.description}</div>
-                  </div>
-           
-         
-             </div>
-        
-            </div>
-            
-            
-            `).join('')}
-
-
-
-
-
-                        </div>
+                    <img src=" https://www.weatherbit.io/static/img/icons/${w.icon}.png " alt="forecast icon">
+                    <div class="desc">${w.description}
                     </div>
+                  </div>
                 </div>
-            </div> `
+              </div>
+             `} ).join('')}
+            </div>
+          </div>
+          <div class="tab-content d-none" id="place-info-${idx}">
+
+            <div>Too Clean space, add some places to visit
+            </div>
+     
+
+          </div>
+          <div class="tab-content d-none" id="pack-info-${idx}">
+           
+            <div>Too Clean space!!, add some items to your to dolist
+            </div>
+          
+       
+          </div>
+        </div>
+      </div> `
     
             return destHTMLCodeTemplate
 },
 
-tripHTMLCodeToAppend =   (trip, idx) => { // applied only in dedicated page for image
+tripHTMLCodeToAppend =   (trip, idx, idx_d) => { // applied only in dedicated page for image
 
     if(location.href.indexOf('/trips/') <= -1) return // in case we're in the index page, no need to append the added trip a success message is okey!
    const t = trip[0]
@@ -508,7 +576,7 @@ tripHTMLCodeToAppend =   (trip, idx) => { // applied only in dedicated page for 
     </div>
 `
 
-       return tripHTMLCodeTemplate + destHTMLCodeToAppend(t.destinations[0], 1) // new trip means first destination
+       return tripHTMLCodeTemplate + destHTMLCodeToAppend(t.destinations[0], idx_d, t._id) // new trip means first destination
         }
 
 export {
@@ -525,11 +593,12 @@ export {
     removeTag,
     show,
     hide,
+    getRndInteger,
     handleFormError,
+    handleErrors,
     getAdjacentNodes,
     hasClassName,
     hasFullClassName,
-    handleDate,
     countDays,
     getMaxLikesEntry,
     shortenToSeven,

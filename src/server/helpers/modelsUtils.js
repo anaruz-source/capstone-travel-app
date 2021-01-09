@@ -14,12 +14,13 @@ const ToDo = require('../models/ToDoList')
 const createDestination = async (info) => { // this will create a destination collection with its dependencies (code linting)
                                             // It will be reused in creating futher destinations
   
-  console.log(info)
 
     const destination = new Destination({
 
         tripId: info.id,
         name: info.title,
+        lng: info.geo.lng,
+        lat: info.geo.lat,
         step: 1, // the destination created while creating trip will have step = 1 others => step = 0, will be reorder by their time of creation
 
     })
@@ -55,7 +56,7 @@ findTrips = async (userId) => { // trips of a signle user
 
             populate: {
 
-                path: 'countryInfos weatherInfos' // in Trip.destinations.weahterInfos and .countryInfos fields
+                path: 'countryInfos weatherInfos places tasks' // in Trip.destinations.weahterInfos and .countryInfos fields
             }
             //  refs to WeatherInfo and CountryInfo => Real objs of previous
         })

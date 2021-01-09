@@ -1,8 +1,13 @@
 const path = require('path')
 const Trip = require('../models/Trip')
 const {countDays} = require('../helpers/helpers')
-const { createDestination, findTrips, findOneTrip} = require('../helpers/modelsUtils')
+const { createDestination, findTrips, findOneTrip, findOneDestination} = require('../helpers/modelsUtils')
 const User = require('../models/User')
+const Destination = require('../models/Destination')
+const Place = require('../models/Place')
+const Pack = require('../models/ToDoList')
+const CountryInfo = require('../models/CountryInfo')
+const WeatherInfo = require('../models/WeatherInfo')
 
 
 
@@ -104,7 +109,8 @@ getTripsController = async (req, resp) => {
                                                 //more formatting could be added later one using the same principle (with else if or switch (case))
        resp.send(trips)
     } else {
-
+       
+        console.log(trips)
        resp.render(path.resolve(__dirname + '/../../../dist/templates/trips.html.twig'), { trips: trips, js: '<script src="app.bundle.js"></script>', css: '<link rel="stylesheet" href="app.bundle.css">', base: `<base href="http://${req.headers.host}/">` })
 
 
@@ -135,7 +141,93 @@ getTripController = async (req, resp) => {
     }
 
    
+},
+deleteTrip = (req, resp) => {
+
+// https://mongoosejs.com/docs/models.html#deleting
+
+// https://www.geeksforgeeks.org/mongoose-deletemany-function/
+
+    const trip = await findOneTrip(req.params.tripId)
+
+    if(!!trip) return // nothing found (trip is null)
+
+    trip.destinations.forEach(d => { // delete children of destinations before deleting these latters
+        
+        Place.deleteOne({ destinationId: d._id },  function (err) {
+            if (err) return handleError(err);
+            // deleted at most one  document
+        })
+        Pack.deleteOne({ destinationId: d._id }, function (err) {
+            if (err) return handleError(err);
+            // deleted at most one tank document
+        })
+        CountryInfo.deleteOne({ destinationId: d._id }, function (err) {
+            if (err) return handleError(err);
+            // deleted at most one tank document
+        })
+        WeatherInfo.deleteOne({ destinationId: d._id }, function (err) {
+            if (err) return handleError(err);
+            // deleted at most one tank document
+        })
+         
+        
+    });
+
+    Destination.deleteMany({ tripId: trip._id }, function (err) {
+        if (err) return handleError(err);
+        // deleted at least one  document
+    })
+
+    Trip.deleteOne({ _id: trip._id}, function (err) {
+        if (err) return handleError(err);
+        // deleted at most one  document
+    })
+
+    resp.send({del: 'success'})
+},
+
+deleteDestination = (req, resp) => {
+
+
+    // https://mongoosejs.com/docs/models.html#deleting
+
+    // https://www.geeksforgeeks.org/mongoose-deletemany-function/
+
+    const d = await findOneDestination(req.params.destId)
+
+    if (!!d) return // nothing found (d is null)
+
+    
+    // delete children//related documents of destinations before deleting these latters
+
+        Place.deleteOne({ destinationId: d._id }, function (err) {
+            if (err) return handleError(err);
+            // deleted at most one  document
+        })
+        Pack.deleteOne({ destinationId: d._id }, function (err) {
+            if (err) return handleError(err);
+            // deleted at most one tank document
+        })
+        CountryInfo.deleteOne({ destId: d._id }, function (err) {
+            if (err) return handleError(err);
+            // deleted at most one tank document
+        })
+        WeatherInfo.deleteOne({ destId: d._id }, function (err) {
+            if (err) return handleError(err);
+            // deleted at most one tank document
+        })
+
+
+
+    Destination.deleteOne({ _id: d._id }, function (err) {
+        if (err) return handleError(err);
+        // deleted at most one  document
+    })
+
+    resp.send({ del: 'success' })
+
 }
 
 
-module.exports = {addTripsController, getTripsController, getTripController}
+module.exports = {addTripsController, getTripsController, getTripController, deleteTrip, deleteDestination}

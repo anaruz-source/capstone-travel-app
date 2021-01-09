@@ -207,6 +207,7 @@
     background: white;
     position: relative;
     top: 1em;
+    z-index: 200;
   }
 
   input[type="submit"],
@@ -343,3 +344,7 @@ input {
       font-size: 0.8em;
     }
 }
+
+/*algolia The dropdown style */
+.ap-dropdown-menu { position: absolute; z-index: 300!important;}
+

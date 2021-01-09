@@ -30,6 +30,16 @@ const DestinationSchema = new Schema({ // Schema instantiation
         default: 0
     },
 
+    lat: {
+        type: String,
+        required: true
+    },
+
+    lng: {
+        type: String,
+        required: true
+    },
+
     tripId: {
 
         // owner id of the destination

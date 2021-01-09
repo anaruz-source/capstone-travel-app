@@ -3,11 +3,11 @@ import {
       findReplace,
       fetchAny,
       dtPicker,
-      handleDate,
       appendTag,
       removeTag,
       show,
       hide,
+      getRndInteger,
       handleFormError,
       getAdjacentNodes,
       hasClassName,
@@ -22,11 +22,13 @@ import {
       getParentOfChild,
       tripHTMLCodeToAppend,
       destHTMLCodeToAppend,
-      addClassWithTimeout
+      addClassWithTimeout,
+      handleErrors
 } from './js/helpers';
 import {
       handleFormSubmission,
       documentLoadedListener,
+      handleDate,
       windowLoadedListener,
       handleUserSession,
       handleTabsSwitching,
@@ -34,7 +36,9 @@ import {
       handleEmailValidation,
       handleShowHideDynamicForms,
       addTripDynamicCode,
-      showHideAccordion
+      showHideAccordion,
+      handleAddPlacesTasksForm,
+      deleteEventListener
 } from './js/app.js';
 import {
       googleSignInLib as Glib,
@@ -83,7 +87,8 @@ import './media/edit.svg'
 import './media/print.svg'
 import './media/delete.svg'
 import './media/pulse-loader.gif' // https://loading.io/spinner/pulse/-facebook-bar-pulse
-
+import './media/delete-small.svg'
+import './media/wrench.svg'
 
 
 window.addEventListener('DOMContentLoaded', documentLoadedListener) // make sure that DOM is loaded before manipulating it, attachEvent function won't work in this case
@@ -150,6 +155,18 @@ const tripCards = document.getElementsByClassName('trip-card')
 
 attachEvent(tripCards, 'click', showHideAccordion)
 
+
+
+const  inputPlace = document.getElementById('input-place')
+const  inputPack = document.getElementById('input-pack')
+
+attachEvent(inputPack, 'click',handleAddPlacesTasksForm)
+
+attachEvent(inputPlace,'click', handleAddPlacesTasksForm)
+
+const delLinks = document.querySelectorAll('img[id=^"delete"]') // all images that their ids start with delete
+
+attachEvent(delLinks, 'click', deleteEventListener ) // add to all images with delete as starting of their ids!
 addItem('user')
 addItem('userId', '5fea479cb59a4b30df27ac39') // set here for the sake of the reviewer
 
@@ -166,9 +183,11 @@ export {
       show,
       hide,
       handleFormError,
+      handleErrors,
       hasClassName,
       hasFullClassName,
       handleDate,
+      getRndInteger,
       attachEvent,
       getParentOfChild,
       addItem,
