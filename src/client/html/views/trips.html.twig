@@ -163,8 +163,9 @@
             <img src="media/delete.svg" alt="delete trip icon" title="delete trip" id="delete-trip-link-{{idx_t}}" data-delete-trip-info="{{trip._id}}">
           </div>
         </div>
+         <div class="result alert d-none"></div>
       </div>
-      <div class="result d-none"></div>
+     
     </div>
     <div class="container accordion">
       <h5>Destinations
@@ -317,7 +318,7 @@
                 </span> &lt;
                 <span class="value">{{p.place}} 
                 </span>&gt;
-               <div class="icon"> <img src="media/delete-small.svg" alt="delete place" id="delete-place-{{idx_p + k}}" data-delete-p-info="{{p._id}}"> </div>
+               <div class="icon"> <img src="media/delete-small.svg" alt="delete place" id="delete-place-{{idx_d + k}}" data-delete-p-info="{{p._id}}"> </div>
               </li>
               {% endfor %}
               {% endif %}
@@ -345,7 +346,7 @@
                   </label>
                 </div>
                 <td>
-               <div class="icon"> <img src="media/delete-small.svg" alt="" id="delete-pack-{{idx_p + k}}" data-p-db-id="{{p._id}}"> </div></td>
+               <div class="icon"> <img src="media/delete-small.svg" alt="" id="delete-pack-{{idx_d + k}}" data-p-db-id="{{p._id}}"> </div></td>
              
             
               {% endfor %}
@@ -355,11 +356,14 @@
        
           </div>
         </div>
-      
-           <div class="result d-none"></div>
-
+         
+           <div class="result alert d-none"></div>
+     
       </div>
        {% endfor %}
+
+          
+
     </div>
    
   </div>

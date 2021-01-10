@@ -204,7 +204,21 @@ show = (elm, className='d-block') => { // show with d-block or another equivalen
     }
 
 },
+dataAttrName = (elem) => { // returns first data-xxx attribute
+   
 
+     if (!elem) return 
+
+     for ( let idx = 0; idx < elem.attributes.length; idx++ ){
+
+         if(elem.attributes[idx].name.indexOf('data-') > -1) {
+
+          return elem.attributes[idx].name
+         }
+     }
+     return undefined // not found
+  
+},
  hasClassName = (elem, className) => {
     
     if(!elem) return false // element is null/undefined
@@ -314,12 +328,13 @@ handleFormError = (tag, err) => { // tag will be pass as e.target and eventually
 
 },
 
-handleErrors = (elm, options = { msg: 'some error occured!', className : d-blocke, clear : false, center : false}) => { // handle errors with options (defaults are there)
+handleErrors = (elm, options = { msg: 'some error occured!', className : 'd-block', clear : false, center : false}) => { // handle errors with options (defaults are there)
 
+  if(!elm) return // elem null/undefined, do nothing return 
   if(options.clear){ // clear error from the page
 
     elm.textContent = ''
-     elm.className = 'd-none error' // replace all with 'd-none error'!
+    elm.className = 'result d-none alert' // replace all with 'result d-none alert'!
 
   }
   
@@ -593,6 +608,7 @@ export {
     removeTag,
     show,
     hide,
+    dataAttrName,
     getRndInteger,
     handleFormError,
     handleErrors,

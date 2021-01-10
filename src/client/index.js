@@ -7,6 +7,7 @@ import {
       removeTag,
       show,
       hide,
+      dataAttrName,
       getRndInteger,
       handleFormError,
       getAdjacentNodes,
@@ -88,7 +89,7 @@ import './media/print.svg'
 import './media/delete.svg'
 import './media/pulse-loader.gif' // https://loading.io/spinner/pulse/-facebook-bar-pulse
 import './media/delete-small.svg'
-import './media/wrench.svg'
+import './media/gear-loader.gif'
 
 
 window.addEventListener('DOMContentLoaded', documentLoadedListener) // make sure that DOM is loaded before manipulating it, attachEvent function won't work in this case
@@ -164,7 +165,7 @@ attachEvent(inputPack, 'click',handleAddPlacesTasksForm)
 
 attachEvent(inputPlace,'click', handleAddPlacesTasksForm)
 
-const delLinks = document.querySelectorAll('img[id=^"delete"]') // all images that their ids start with delete
+const delLinks = document.querySelectorAll('img[id^="delete"]') // all images that their ids start with delete
 
 attachEvent(delLinks, 'click', deleteEventListener ) // add to all images with delete as starting of their ids!
 addItem('user')
@@ -182,6 +183,7 @@ export {
       signOut,
       show,
       hide,
+      dataAttrName,
       handleFormError,
       handleErrors,
       hasClassName,

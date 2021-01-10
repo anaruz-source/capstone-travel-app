@@ -4,15 +4,15 @@ const express = require('express')
 
 const Router = express.Router()
 
-const { addTripsController, getTripsController, getTripController, deleteTrip} = require('../controllers/tripsController')
+const { addTripsController, getTripsController, getTripController, deleteTrip, deleteDestination} = require('../controllers/tripsController')
 
-Router.post('/', addTripsController )
+Router.post('/add', addTripsController )
 
 Router.get('/userId/:userId', getTripsController )
 
 Router.get('/tripId/:tripId', getTripController)
 
-Router.delete('/trip/:tripId', deleteTrip)
-Router.delete('/destination/:tripId', deleteTrip)
+Router.delete('/del/tripId/:tripId', deleteTrip)
 
+Router.delete('/del/destId/:destId', deleteDestination)
 module.exports = Router

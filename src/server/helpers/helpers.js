@@ -58,7 +58,12 @@ const toEnUSDate = (d) => {
 
         return datepicker.setMin(minDate)  // prevents selecting passed dates, so we set the date to current
 
+    },
+
+    removeIfDefined  = async (doc) => { // remove document if defined
+
+        if(!!doc) await doc.remove()
     }
 
 
-module.exports = {isEmptyObj,  toEnUSDate, countDays, dtPicker}
+module.exports = {isEmptyObj,  toEnUSDate, countDays, dtPicker, removeIfDefined}

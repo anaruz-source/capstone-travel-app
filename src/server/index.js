@@ -25,6 +25,8 @@ app.use('/trips', tripsRoutes)
 
 app.use('/trip', tripsRoutes)
 
+app.use('/destination', tripsRoutes)
+
 app.use('/users', usersRoutes) 
 
 app.use('/places-packs', ppRoutes) 

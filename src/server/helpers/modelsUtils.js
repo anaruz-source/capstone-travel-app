@@ -101,21 +101,35 @@ findOneDestination = async (destId) => { // single trip
 
     return d
 },
+    findOneCInfo = async (destId) => {
 
-findOnePlace = async (destId) => {
+        const c = await CountryInfo.findOne({ destId })
 
-    const p = await Place.findOne({destId})
+        return c
+    },
+
+    findOneWInfo = async (destId) => {
+
+        const w = await WeatherInfo.findOne({ destId })
+
+        return w
+    },
+
+
+findOnePlace = async (destinationId) => {
+
+    const p = await Place.findOne({destinationId})
 
     return p
     },
 
-findOneToDo = async (destId) => {
+findOneToDo = async (destinationId) => {
 
-        const p = await Pack.findOne({ destId })
+        const t = await ToDo.findOne({ destinationId })
 
-        return p
+        return t
     }
 
 
 
-module.exports = { createDestination, findOneDestination, findTrips, findOneTrip, findOnePlace, findOneToDo }
+module.exports = { createDestination, findOneDestination, findTrips, findOneTrip, findOnePlace, findOneToDo, findOneCInfo, findOneWInfo }

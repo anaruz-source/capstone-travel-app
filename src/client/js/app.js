@@ -1,6 +1,8 @@
 // http://www.geonames.org/export/geonames-search.html 
 
-import { fetchAny, show } from "./helpers"
+import { attachEvent, dataAttrName } from "./helpers"
+
+// all vars defined here will be in closure, available for all the function defined in this module
 
 let dataHolder = {}, // to store data of the trip
 
@@ -15,7 +17,9 @@ let dataHolder = {}, // to store data of the trip
             'Content-Type': 'application/json'
         },
         body: undefined
-    }
+    },
+
+    notif = true
 
 const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
 
@@ -106,7 +110,7 @@ const weatherBitKey = '16cf41ca3b3b47efb9eeb123cb640fd2',
             
           
             
-            const dataN = await Client.fetchAny('http://localhost:3030/trips', options) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
+            const dataN = await Client.fetchAny('http://localhost:3030/trips/add', options) // pushing trip data to the node server, which will push them to Mongo DB Atlas using Mongoose
             
             console.log(dataN)
 
@@ -459,7 +463,7 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
             idx = 0
        
 
-       for (;idx <forms.length; ){
+       for (;idx <forms.length; ) {
           
         if(Client.hasClassName(forms[idx], 'd-block')) { // only if form has d-block className (visible display:block) 
            
@@ -526,7 +530,7 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
         if(!form) return // nothing if we're not in trips page
    
 
-        if( id.indexOf('add') > -1  || id.indexOf('delete') >-1 || id.indexOf('edit') > -1 || id.indexOf('print') > -1) {    
+        if( id.indexOf('add') > -1  || id.indexOf('edit') > -1 || id.indexOf('print') > -1) {    
             
             const splitedId = id.split('-')
 
@@ -657,6 +661,11 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
 
     showHideAccordion = (e) => {  // function used as event listener and a normal function to show and hide accordion
 
+     e.preventDefault()
+
+    if(e.target.id && (e.target.id.indexOf('proceed') > -1 || e.target.id.indexOf('cancel') > -1 ))  return // do nothing of following if a cancel pr proceed links are clicked
+
+
         const el = e.target || e  // if e.target undefined, means a tag is passed instead of event
         const pNode = Client.getParentOfChild(el, 'form') // get parent abd check if it's a form =>
 
@@ -697,94 +706,131 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
 
     deleteEventListener = async (e) => {
 
+        e.preventDefault()
+
         const t = e.target // t for target (not trip), this is a multipurpose event listener! applied to elements with id = 'delete*****'
-       
-
-
+        
         let res = null,
-            url = null,
-            notif = true // notify before delete
+            url = null
+
+        const parent = Client.getParentOfChild(e.target, 'd-card') || Client.getParentOfChild(e.target, 'trip-card') || Client.getParentOfChild(e.target, 'section') 
+
+        const result = parent.getElementsByClassName('result')[0]
+        const error = parent.getElementsByClassName('error')[0]
+        const previousAlert = document.getElementsByClassName('alert-danger')
 
         // for some reason this is added to not a delete link!!! (security measure!)
         // then do nothing, just exit
-        if(t.id.indexOf('delete') <= -1) return 
-       
+        if (t.id.indexOf('delete') <= -1 || t.id.indexOf('cancel') > -1) {
 
-        options.method = 'delete' // deleting element from Mongo DB
+            Client.hide(result, 'alert-danger')          // className => d-none! 
+
+            notif = true
+
+            return // do nothing, just return 
+        }
+
+        
+        if(previousAlert.length > 0 && !notif && e.target.id.indexOf('proceed') <= -1) { // already shown delete alert, hide =>
+
+                Client.hide(previousAlert[0], 'alert-danger')
+                notif = true // 
+        }
+
+        if(notif) { // notify before delete
+                 
+             Client.show(result, 'alert-danger') // showit with alert-danger Bootstrap's className
+            
+             // &#x26A0; warning sign
+            result.innerHTML = `<span>&#x26A0; DANGER: this will delete document from DATABASE</span><a href="#" id="proceed-${t.id}" class="${t.id}">proceed</a> <a href="#" id="cancel-${t.id}" class="${t.id}">Cancel</a>`
+           
+
+            const tempLinks = result.getElementsByClassName(t.id)
+
+
+            tempLinks[0].setAttribute(Client.dataAttrName(t), t.getAttribute(Client.dataAttrName(t)))
+
+            // attach event listener to newly added elemets
+
+            Client.attachEvent(tempLinks,'click', deleteEventListener)
+
+            notif = false
+          
+            return // do nothing, just return 
+        }
+  
+
+        options.method = 'DELETE' // delete method, delete handle in expres , deleting element from Mongo DB
 
         if(t.id.indexOf('trip') > -1) {
 
          
-            url = `/trips/${t.getAttribute('data-delete-d-info')}`
+            url = `/trip/del/tripId/${t.getAttribute('data-delete-trip-info')}`
 
             res = 'trip delete: '
         
 
-        } else if (t.id.indexOf('dest')) {
+        } else if (t.id.indexOf('dest') > -1) {
 
 
-            url = `/del/destination/${t.getAttribute('data-delete-p-info')}`
+            url = `/destination/del/destId/${t.getAttribute('data-delete-d-info')}`
             res = 'destination delete: '
         
         
-        } else if (t.id.indexOf('place')) {
+        } else if (t.id.indexOf('place') > -1) {
             
-           
-            url = `/del/place/${t.getAttribute('data-delete-p-info')}`
+            url = `/del/place/placeId/${t.getAttribute('data-delete-p-info')}`
             res = 'place delete: '
 
-        } else if (t.id.indexOf('pack')){
+        } else if (t.id.indexOf('pack') > -1) {
 
          
-            url = `/del/pack/${t.getAttribute('data-delete-p-info')}`
+            url = `/del/pack/packId/${t.getAttribute('data-delete-p-info')}`
             res = 'list item delete: '
         } 
 
 
-     
-
         if( !!res && !!url) {
 
           // section parent, trip card as parent , or a destination card as parent 
-
-            const parent = Client.getParentOfChild(e.target, 'section') || Client.getParentOfChild(e.target, 'trip-card') || Client.getParentOfChild(e.target, 'd-card')
-         
-        
-
-              const result = parent.getElementsByClassName('result')[0]
-              const error = parent.getElementsByClassName('error')[0]
-
-              Client.handErrors(error, {clear: true}) // clear any found error element
+             
+             
+              Client.handleErrors(result, {clear: true, className: 'alert-primary'}) // clear any found error element
               
               // show by changing 'd-none' with 'ongoing' className
             
-              Client.show(result, 'ongoing') 
+        
              
-              result.innerHTML = '<p class="d-flex align-items-center"><span>Processing...<span><img src="media/wrench.svg"></p>'
+              result.innerHTML = '<p class="d-flex align-items-center"><span>Processing...<span><img src="media/gear-loader.gif"></p>'
             
-              res += await fetchAny(url, options)
+              res += await Client.fetchAny(url, options)
               
-              Client.hide(result, 'ongoing') // change ongoing with d-none again
-              result.textContent = res
+            result.textContent = res + ' &#x2714;' 
+
+              Client.hide(result, 'alert-primary') // change ongoing with d-none again
+            
+              // check sign hex
+
+            
+           
               // then replace d-none with 'success' className
-              Client.show(result, 'success')
+              Client.show(result, 'alert-success')
 
               // time 'success' className out
-
-              Client.addClassWithTimeout(result, 'success', 10000) // 10 secs
+              Client.addClassWithTimeout(result, 'alert-success', 10000) // 10 secs
 
               // hide element again 
-
-              Client.hide(result, 'success') // 'success' => d-none
+              Client.hide(result, 'alert-success') // 'success' => d-none
            
-          
-        } else {
+              notif = true
+        
+            } else {
 
 
 
             Client.handleErrors(result)
                          
-
+            notif = true
         }
     
     }
