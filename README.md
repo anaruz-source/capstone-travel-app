@@ -114,9 +114,14 @@ Adding places or tasks, makes two operations: it adds them to the mongodb server
 - multipage app using twig templates engine
 - using noSQL DB (mongodb) with compass to hold user data, trips, destinations... 
 
--email validation, error message shows below text input using regex
--password validation, error message shows below text input using regex
+-email validation, error message shows below text input using regex when user creation, indication error will appear below the input, disapears when email is set correctly
+-password validation, error message shows below text input using regex, a Strong password should contain, Maj, Mins, digits, specials and it should be bigger or equal to 8 characters. (this indication error will appear just below input)
 
+these latter doesn't prevent account from being created with weak and incorrectly formatted email addess. Improvements are to use same function to throw errors if password is weak or email isn't correctly formatted.
+
+- places are shown on a map, click ``'put places on map'`` on 'places on map' destination tap, as below
+
+![Captrip DB ERD](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/map.png?raw=true)
  
  ## MongoDB ERD (Entity Relationship Diagram)
 

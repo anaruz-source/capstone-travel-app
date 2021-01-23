@@ -197,9 +197,10 @@ const delLinks = document.querySelectorAll('img[id^="delete"]') // all images th
 
 attachEvent(delLinks, 'click', deleteEventListener ) // add to all images with delete as starting of their ids!
 
-const upMap = document.getElementById('put-on-map')
+const upMaps = document.getElementsByClassName('put-on-map')
 
-attachEvent(upMap, 'click', handleMapMarkers)
+attachEvent(upMaps, 'click', handleMapMarkers)
+
 
 const printLinks = document.querySelectorAll('img[id^="print"]') // all images that their ids start with delete
 

@@ -1051,15 +1051,14 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
 
          e.preventDefault()
          const t = e.target
-
+         Client.handleOnClear()
         
-
         const d = Client.getParentOfChild(t, 'd-card')
-        const places =  document.getElementsByTagName('ul')[0]
+        const places =  d.getElementsByTagName('ul')[0]
 
+         console.log('dataset', t.dataset.map)
 
-
-       const map = Client.initMap({lat:d.dataset.dDbLat, lng: d.dataset.dDbLng}, 'map' )
+       const map = Client.initMap({lat:d.dataset.dDbLat, lng: d.dataset.dDbLng}, t.dataset.map )
 
         places.childNodes.forEach(async el => {
                 
@@ -1067,6 +1066,8 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
                     
                 
                 const  latLng = await Client.mapQuestCall(mapQuestUrl, mapQuestKey, el.dataset.pItem)
+
+                console.log(latLng)
                 
                 Client.addMarker(latLng, map).bindPopup(el.dataset.pItem).openPopup()
                     
