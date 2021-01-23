@@ -14,9 +14,7 @@
 
 
 const  autoCompleter = (input, types, around) => { // only cities (no nearby places)
-    
 
-    console.log('entries in order', input, types, around)
       
         if( Client.hasClassName(input, 'ap-input')) return // element has alread autocompleter so return and do nothing
 

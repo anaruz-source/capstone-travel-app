@@ -18,47 +18,43 @@ const addTripsController = async (req, resp) => {
 
     let  trip = null
 
-    if( !!req.body.tripId){ // updating trip with a new destination 
-    
-        try {               // (existing one as req.body.tripId contains and Id => !!req.body.tripId resolves to true)
-        
-         trip = await findOneTrip(req.body.tripId)
-          
-      } catch (err) {
-
-        resp.send({err})
-          
-      }
-
-        
-
-
-    } else {
-
-
-        trip = new Trip({  // instantiate Trip Schema Object 
-
-            title: req.body.title,
-
-            description: req.body.description,
-
-            startDate: req.body.startDate,
-
-            endDate: req.body.endDate,
-
-            duration: duration,
-
-            userId: req.body.userId
-        })
-
-        trip = await trip.save() // saving in Mongodb Atlas (remote) || local, captrip database, trips collection
-
-  
-    }
-    
+    console.log('here!!')
 
     try {
        
+
+
+        if (!!req.body.tripId) { // updating trip with a new destination 
+
+            // (existing one as req.body.tripId contains and Id => !!req.body.tripId resolves to true)
+
+            trip = await findOneTrip(req.body.tripId)
+
+
+
+
+        } else {
+
+
+            trip = new Trip({  // instantiate Trip Schema Object 
+
+                title: req.body.title,
+
+                description: req.body.description,
+
+                startDate: req.body.startDate,
+
+                endDate: req.body.endDate,
+
+                duration: duration,
+
+                userId: req.body.userId
+            })
+
+            trip = await trip.save() // saving in Mongodb Atlas (remote) || local, captrip database, trips collection
+
+
+        }
         
         const user =  await User.findById({_id: req.body.userId})
         
@@ -76,6 +72,8 @@ const addTripsController = async (req, resp) => {
         await user.save()
 
         const t = await findOneTrip(trip._id)
+
+        console.log(t)
               
        resp.send(t)
 
@@ -141,6 +139,19 @@ getTripController = async (req, resp) => {
 
    
 },
+getDestController = async(req, resp) => {
+
+      try {
+          
+          const d = await findOneDestination(req.params.destId)
+
+          console.log(d)
+
+          resp.render(__dirname + '/../../../dist/templates/destination.html.twig', { d , js: '<script src="app.bundle.js"></script>', css: '<link rel="stylesheet" href="app.bundle.css">', base: `<base href="http://${req.headers.host}/">` })
+      } catch (err) {
+          
+      }
+},
 deleteTrip = async (req, resp) => {
 
 // https://mongoosejs.com/docs/models.html#deleting
@@ -179,7 +190,7 @@ deleteTrip = async (req, resp) => {
     })
 
 
-    resp.send({del: 'success'})
+    resp.send({del: 'success', code: 200, type: 'trip'})
 },
 
 deleteDestination = async (req, resp) => {
@@ -217,7 +228,7 @@ deleteDestination = async (req, resp) => {
 
         await d.remove()
 
-     resp.send({ del: 'success' })
+     resp.send({ del: 'success', code: 200, type: 'dest' })
      
  } catch (error) {
 
@@ -230,4 +241,4 @@ deleteDestination = async (req, resp) => {
 }
 
 
-module.exports = {addTripsController, getTripsController, getTripController, deleteTrip, deleteDestination}
+module.exports = {addTripsController, getTripsController, getTripController, getDestController, deleteTrip, deleteDestination}

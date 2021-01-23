@@ -44,6 +44,7 @@ onSignIn = async (googleUser) => {
             name: profile.getName(),
             email: profile.getEmail(),
             avatar: profile.getImageUrl(),
+            userId: Client.getItem('userId'),
             idToken: idToken
         })
     }
@@ -54,6 +55,8 @@ onSignIn = async (googleUser) => {
 
         Client.addItem('user', data) // saving user locally
         Client.addItem('userId', data._id) // saving Id for trips bindings
+
+       Client.handleSession()
         
     } catch (error) {
         console.log(error)

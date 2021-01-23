@@ -1,7 +1,23 @@
 # Capstone travel app
-This app structure is built from scratch piece by piece, brick by brick
-## References
-1. [zimmo twig loader](https://github.com/zimmo-be/twig-loader)
-2. [twig npmjs](https://github.com/twigjs/twig.js/)
-3. [twig template inheritance](https://symfonycasts.com/screencast/twig/layout-template-inheritance#template-inheritance)
-4. [js in twig template|stackoverflow](https://stackoverflow.com/questions/31366629/including-js-in-twig-template)  
+Named it CAPTRIP, This app is built from scratch piece by piece, brick by brick, using MVC (Model Vue Controller) pattern. Model interacts with Mongodb documents, vue based on twig template engine, controller is the leader of the orchestra, fetching data from database using models, building vues using twig template engine.
+# How app works
+
+This app pulls data from several APIs:
+
+1. [geoNames](http://www.geonames.org/) The GeoNames geographical database covers all countries and contains over eleven million placenames that are available for download free of charge.
+
+2. [weatherbit](https://www.weatherbit.io/api/weather-forecast-16-day)
+16 days forecast , This API returns a 16 day forecast in 1 day intervals from any point on the planet.
+
+3. [pixabay API](https://pixabay.com/api/docs/) Pixabay API, which gives you access to over 2,1 million photos, illustrations, vector graphics, and videos - for free.
+
+4. [rest countries](https://restcountries.eu/) Information about countries via a RESTful API
+
+5. [Algolia autocompleter](//community.algolia.com/places/documentation.html#api-options-container) Algolia Places is a geocoder providing a fast, distributed and easy way to use an address search autocomplete on your website
+
+6. [Leaflet](https://leafletjs.com/) Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps. scripts based on [algolia examples](https://community.algolia.com/places/examples.html)
+
+7. [Geocoding API](https://developer.mapquest.com/documentation/geocoding-api/address/get/) The geocoding service enables you to take an address and get the associated latitude and longitude.
+
+8. [oAuth2](https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow) from google client and server side. server side using [google-auth-library](https://www.npmjs.com/package/google-auth-library)
+

@@ -3,7 +3,8 @@ const path = require('path')
 const Place = require('../models/Place')
 const Task = require('../models/ToDoList')
 const {findOneDestination, findOnePlace, findOneToDo} = require('../helpers/modelsUtils')
-
+const { findIndexInArrOfObjs} = require('../helpers/helpers')
+const mongoose = require('mongoose')
 
 const addPP = async (req, resp) => {
 
@@ -25,7 +26,7 @@ const addPP = async (req, resp) => {
 
                 const savedPlace = await p.save()
                 
-                console.log('svd', savedPlace)
+                
                 d.places = savedPlace._id
 
                 await d.save()
@@ -36,6 +37,7 @@ const addPP = async (req, resp) => {
                const p = await findOnePlace(d._id)
 
                p.places.push({type: req.body.type, place: req.body.place})
+               await p.save()
                 resp.send(p)
             }
      
@@ -63,7 +65,9 @@ const addPP = async (req, resp) => {
 
                 const p = await findOneToDo(d._id)
 
-                p.tasks.push({description: req.body.task })
+                p.tasks.push({description: req.body.pack })
+
+                await p.save()
 
                 resp.send(p)
             }
@@ -91,32 +95,54 @@ const deletePP = async (req, resp) => {
 
         const type = req.params.type // pack list or Place
 
-        const p = await findOneToDo(req.params.ppId) // Place Or Pack ID
+        const id = req.params.ppId
 
-        if (!!p) return // nothing found (d is null)
+    
 
-        if( type == 'pack'){
+          try {
+
+              if (type == 'pack') {
+
+                  const t = await Task.findOne({ 'tasks._id': id })
+
+                  if (!t) return // undefined tasks( toDo List) doc, do nothing
+
+                  if (!t.tasks) return  // undefined/null, do nothing
+
+                  const pos = t.tasks.findIndex(findIndexInArrOfObjs, { id }) // {id} is this object used in callback
+
+                  t.tasks.splice(pos, 1) // delete item found in pos
+
+                  t.save() // save after delete
+
+                  resp.send({ del: 'success', code: 200, type: 'pack' })
+
+              } else if (type == 'place') {
+
+                  const p = await Place.findOne({ 'places._id': id })
+
+                  if (!p) return // undefined places doc, do nothing
+
+                  if (!p.places) return // undefineddd places do nothing
+
+                  const pos = p.places.findIndex(findIndexInArrOfObjs, { id }) // {id} is this object used in callback
+
+                  p.places.splice(pos, 1) // delete item found in pos
+
+                  p.save() // save after delete
+
+                  resp.send({ del: 'success', code: 200, type: 'place' })
+              }
 
 
-
-            Task.deleteOne({ _id: p._id }, function (err) {
-                if (err) return handleError(err);
-                // deleted at most one  document
-            })
-
-
-
-        }else if (type == 'place'){
               
+          } catch (err) {
+           
+            {err:  err.message}
+          }
+      
 
-            Place.deleteOne({ _id: p._id }, function (err) {
-                if (err) return handleError(err);
-                // deleted at most one  document
-            })
-
-        }
-
-        resp.send({ del: 'success' })
+      
 
     
 }

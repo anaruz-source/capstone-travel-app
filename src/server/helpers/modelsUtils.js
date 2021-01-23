@@ -59,7 +59,7 @@ findTrips = async (userId) => { // trips of a signle user
                 path: 'countryInfos weatherInfos places tasks' // in Trip.destinations.weahterInfos and .countryInfos fields
             }
             //  refs to WeatherInfo and CountryInfo => Real objs of previous
-        })
+        }).sort({startDate: 1}) // countdown sorting by date
 
         return trips
 },
@@ -89,15 +89,11 @@ findOneDestination = async (destId) => { // single trip
 
     const d = await Destination.findById(destId)// compound mongoose query to populate _id references with real objects in Trip.destinations
         .populate({
-            path: 'destinations', // array of refs => array of Destination objs
+            path: 'countryInfos weatherInfos  places packs tripId', // array of refs => array of Destination objs ,// in Trip.destinations.weahterInfos and .countryInfos fields, .places , .packs, trips
 
-            populate: {
-
-                path: 'countryInfos weatherInfos  places packs' ,// in Trip.destinations.weahterInfos and .countryInfos fields, .places , .packs
-                
-            }
+    
             //  refs to WeatherInfo and CountryInfo => Real objs of previous
-        })
+ })
 
     return d
 },

@@ -10,11 +10,15 @@
     padding: 0.5em;
     position: relative;
     z-index: 5;
-    .form-error {
 
-      background: rgba(255, 0, 0, 0.2);
-      color: darkorchid;
-      border: 2px solid darkorchid
+      .form-error {
+
+        position: absolute;
+        top: -30px;
+        height: 3em;
+        width: 100%;
+        z-index: 10;
+      
     }
     .overlay {
 
@@ -138,19 +142,13 @@
   }
 }
 
-#sign,
+#forms,
 #add-trip,
 #add-dest,
 #add-place,
 #add-pack { // this form will popup dynamiccally
 
-      .form-error {
 
-      background: rgba(255, 0, 0, 0.2);
-      color: darkred;
-      border: 2px solid darkred;
-      border-radius: 6px;
-    }
   border: 1px solid yellow;
   padding: 0.5em 0;
   border-radius: 0.8em;
@@ -182,7 +180,7 @@
   transform: translate(-50%, -50%);
         height: 2em;
 
-        
+        z-index: 15;
       }
     }
 

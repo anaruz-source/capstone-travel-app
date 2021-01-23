@@ -1,0 +1,48 @@
+{% extends "./layout.html.twig" %}
+{% block head  %}
+{{parent()}}
+<title>Capstone trip travel app home page
+</title>
+{% endblock %}}
+{% block body %}
+{{parent()}}
+<section>
+  <div class="d-flex flex-column justify-content-center align-items-center avatar"><img src="{{u.avatar}}" alt="avatar"><p>{{u.name}}</p></div>
+  <div class="container entries">
+      <div class="d-flex  align-items-center">
+        <span class="p-entry">username: </span>
+        <span class="p-value">{{u.username}}</span>
+      </div>
+      <div class="d-flex  align-items-center">
+        <span  class="p-entry">email: </span>
+        <span class="p-value">{{u.email}}</span>
+      </div>
+      <div class="d-flex  align-items-center">
+        <span  class="p-entry">Role: </span>
+        <span class="p-value">{{u.role}}</span>
+      </div>
+      <div class="d-flex  align-items-center">
+        <span  class="p-entry">Group: </span>
+        <span class="p-value">{{u.group}}</span>
+      </div>
+      <div class="d-flex  align-items-center">
+        <span  class="p-entry">AuthType: </span>
+        <span class="p-value">{{u.authType}}</span>
+      </div>
+      <div class="d-flex  align-items-center">
+        <span  class="p-entry">Inscription date: </span>
+        <span class="p-value">{{u.inscriptionDate}}</span>
+      </div>
+  </div>
+
+  <div class="container danger-zone">
+
+    <div class="del-account">
+      <p>DANGER ZONE: Delete User account</p>
+      <form action="" method="DELETE" class="d-zone  d-flex justify-content-center align-items-center">
+        <input type="submit" value="delete account">
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

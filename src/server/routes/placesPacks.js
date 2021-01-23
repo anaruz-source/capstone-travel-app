@@ -4,6 +4,6 @@ const Router = express.Router()
 const {addPP, deletePP } = require('../controllers/placesPacksController')
 
 Router.post('/add/', addPP)  // ading using destinations ids
-Router.post('/delete/:type/:ppId', deletePP) // delete using places/packs ids
+Router.delete('/delete/:userId/:type/:ppId', deletePP) // delete using places/packs ids (stored in type and ppId in req.params.type and req.params.ppId rescpectivly)
 
 module.exports = Router

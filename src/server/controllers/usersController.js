@@ -1,11 +1,12 @@
 const User = require('../models/User')
 
+const path = require('path')
 
 const verifyToken = require('../auth/googleServerSide')
 
-const hasher = require('crypto') // to hash password using SHA1, server side usage for security reason
+const {findInUsrsPlaceHolders} = require('../helpers/helpers')
 
-const placeHolders = {} // this will contain active users connection info 
+const hasher = require('crypto') // to hash password using SHA1, server side usage for security reason
 
 const outerUserController = async (req, res) => {
 
@@ -18,9 +19,11 @@ const outerUserController = async (req, res) => {
 
             usr.status = 'online'
 
-            placeHolders[usr._id] = usr
+            placeHolders[usr._id] = {user:usr, connDate: new Date()}
+
 
             res.send(usr)
+        
         } else { // sign up if not found by precedent query
 
             const user = new User({ // Instantiate User Schema Object 
@@ -32,6 +35,10 @@ const outerUserController = async (req, res) => {
             })
 
             const savedUser = await user.save() // save to Mongodb Atlas
+
+            savedUser.status = 'online'
+
+            placeHolders[savedUser._id] = { user: savedUser, connDate: new Date() }
 
             res.send(savedUser) // send back to user to store locally
         }
@@ -47,15 +54,15 @@ const outerUserController = async (req, res) => {
 
 innerUserController = async (req, res) => {
     // https://www.npmjs.com/package/password-hash
+    // createHmac defaults to SHA1 hash function
+    // Storing password token instead of clear password
 
-
-    const hashed = hasher    // createHmac defaults to SHA1 hash function
+    const hashed = hasher 
         .createHmac('sha1', 'password')
         .update(req.body.password)
         .digest('hex')
 
     try {
-
 
         if (Object.keys(req.body).length == 2) { // email or username and password
 
@@ -66,13 +73,17 @@ innerUserController = async (req, res) => {
 
             if (hashed === user.password) {
 
-                user.password = undefined // delete password token
                 user.status = 'online'
+
+                placeHolders[user._id] = { user, connDate: new Date() }
+                 
+
+                user.password = undefined // delete password token,(sending a password token to a user is a fatal security breach!)
 
                 res.send(user)
 
             } else {
-
+                
                 throw new Error('Wrong Credentials!!')
             }
 
@@ -88,18 +99,60 @@ innerUserController = async (req, res) => {
 
 
             const savedUser = await user.save() // save to Mongodb Atlas
-            savedUser.password = undefined // deleting user token from being sent back to the user (security breach)
+            
+
             savedUser.status = 'online'
+
+            placeHolders[user._id] = { user, connDate: new Date() } // date for connection date
+
+     
+
+            savedUser.password = undefined // deleting user token from being sent back to the user (security breach)
+           
             res.send(savedUser) // send back to user to store locally
         }
 
     } catch (err) {
-
-        res.send({ err })
+      
+        res.send({ err : err.message })
     }
 
 
+},
+
+sessionTearingDownController = (req, resp) => {
+
+      try {
+
+          const p = findInUsrsPlaceHolders(placeHolders, req.body.userId)
+
+          if (p){
+
+              placeHolders[p.user._id] = undefined
+              resp.send({ teared: true })
+
+          } else {
+
+              resp.send({userFound: false} )
+          }
+          
+      } catch (err) {
+          
+       
+              resp.send({ err: err.message})
+          
+      }
+
+},
+
+profileController = (req, resp) => {
+
+    const u = findInUsrsPlaceHolders(placeHolders, req.params.userId)
+  
+    if(!u.user.avatar) u.user.avatar = 'media/avatar.svg'
+
+    resp.render(path.resolve(__dirname + '/../../../dist/templates/profile.html.twig'), { u: u.user, js: '<script src="app.bundle.js"></script>', css: '<link rel="stylesheet" href="app.bundle.css">', base: `<base href="http://${req.headers.host}/">` })
 }
 
 
-module.exports = { outerUserController, innerUserController}
+module.exports = { outerUserController, innerUserController, sessionTearingDownController, profileController}

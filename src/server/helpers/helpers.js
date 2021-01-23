@@ -1,14 +1,11 @@
+const SESSION_TIMEOUT = 60 // mins
+
 // JQuery3.5.1 IsEmptyObject
 // https://code.jquery.com/jquery-3.5.1.js
 
 function isEmptyObj(obj) {
 
-// for NodeList and HTMLCollection there're some props even when empty,
-// So let's add this check to make this function more general purpose
-
- const toString = Object.prototype.toString // shortcut to Object.protoype method, we need to change its 'this' context to reveal type of object
-
-if( obj.length == 0 && (toString.call(obj) === '[object NodeList]'|| toString.call(obj) == '[object HTMLCollection]' )) return true
+ 
 
     for (let prop in obj) { // if object has one property then it's not empty
 
@@ -38,32 +35,97 @@ const toEnUSDate = (d) => {
     },
 
 
-    dtPicker = (selector, minDate) => {
+    removeIfDefined = async (doc) => { // remove document if defined
 
-
-        const datepicker = datepickr(selector, {
-
-            formatter: (input, date, instance) => {
-                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
-                // convert to en-US format MM-DD-YYYY
-                // then convert to suited format to weatherbit.com YYYY-MM-DD
-
-                const value = toEnUSDate(date)
-
-                input.value = value
-            },
-
-            id: 1 // id used to link start and end dates 
-        })
-
-        return datepicker.setMin(minDate)  // prevents selecting passed dates, so we set the date to current
-
+        if (!!doc) await doc.remove()
     },
 
-    removeIfDefined  = async (doc) => { // remove document if defined
+    findInUsrsPlaceHolders = (placeHolders, id) => {
 
-        if(!!doc) await doc.remove()
+        if (!placeHolders || isEmptyObj(placeHolders)) return void 0 // undefined
+         
+        for (let u in placeHolders) {
+
+            let p = placeHolders[u]
+
+           if(!p || isEmptyObj(p)) return void 0  // nothing found (return undefind, void 0)
+        
+            if (p.user._id == id) {
+
+                return p
+            }
+        }
+
+        return void 0 // undefined
+    },
+
+    // used to tear down a user session after a certain period
+    // sessionId or userId is the same, as a user intiate a session when connects
+    isToTearDownSession = (usr, sessionId) => {
+
+        if (!usr || isEmptyObj(usr)) return false
+
+        if (usr.user._id == sessionId) {
+
+            const nowTime = (new Date()).getTime()
+            const conTime = (new Date(usr.connDate)).getTime()
+
+            console.log('dates', nowTime, conTime)
+            const elapsed = parseInt((nowTime - conTime) / 1000 / 60) /* 1000 to sec, 60 to min */
+
+            console.log('elapsed', elapsed)
+            if (elapsed > SESSION_TIMEOUT) return true // 
+
+        }
+
+        return false
+    },
+
+    sessionTearingDownHelper = (placeHolders, userId) => {
+
+        
+        const p = findInUsrsPlaceHolders(placeHolders, userId)
+
+         if(!p || isEmptyObj(p.user)) return true
+         
+        if (isToTearDownSession(p, userId)) {
+
+            placeHolders[p.user._id] = undefined
+
+            return true
+        }
+
+        return false
+    },
+
+    redirect = (req, resp) => {
+
+        // https://www.tutorialspoint.com/redirecting-requests-in-node-js
+
+        resp.statusCode = 302;
+        resp.tearDownSession = true
+        resp.setHeader('Location', '/');
+        return resp.end();
     }
+// this a callback for Array.prototype.findIndex method, {id} will be passed so that we can compared it to the Id of elements
+
+// if equality, index of object in array is returned
+
+// ARROW FUNCTIONS DON'T WORK IN SUCH USE CASE (this resolved syntactically)
+
+function findIndexInArrOfObjs(obj) {
+    return obj._id == this.id
+}
 
 
-module.exports = {isEmptyObj,  toEnUSDate, countDays, dtPicker, removeIfDefined}
+module.exports = {
+    isEmptyObj,
+    toEnUSDate,
+    countDays,
+    removeIfDefined,
+    findIndexInArrOfObjs,
+    isToTearDownSession,
+    findInUsrsPlaceHolders,
+    sessionTearingDownHelper,
+    redirect
+}
