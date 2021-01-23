@@ -109,7 +109,7 @@ Adding places or tasks, makes two operations: it adds them to the mongodb server
 
 ## More standing out assets:
 
-- Logo and favicon is there
+- Logo and favicon are there
 - MVC Pattern
 - multipage app using twig templates engine
 - using noSQL DB (mongodb) with compass to hold user data, trips, destinations... 
@@ -126,6 +126,8 @@ Some items are not displayed for simplification
 
 ![Captrip DB ERD](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/captrip-db-erd.png?raw=true)
 
+-- 1 >* one-to-many relationship
+-- 1<>1 one-to-one
 # testing
 
 # Licence
