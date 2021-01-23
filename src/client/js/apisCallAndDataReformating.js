@@ -116,7 +116,6 @@ if (Client.countDays(start, Client.revertDate(Client.toEnUSDate(new Date()))) <=
         newEnd = Client.revertDate(Client.toEnUSDate(newEnd)) // convert it to weatherbit required format
 
         const url = Client.findReplace.call(hUrl, `key=${key}`, `lon=${lng}`, `lat=${lat}`, `start_date=${start}`, `end_date=${newEnd}`)
-    console.log(url)
 
         const data = await Client.fetchAny(url)
          
