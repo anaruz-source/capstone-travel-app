@@ -124,7 +124,7 @@ Adding places or tasks, makes two operations: it adds them to the mongodb server
 
 Some items are not displayed for simplification
 
-![Captrip DB ERD](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/captrip-erd.png?raw=true)
+![Captrip DB ERD](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/captrip-db-erd.png?raw=true)
 
 # testing
 
