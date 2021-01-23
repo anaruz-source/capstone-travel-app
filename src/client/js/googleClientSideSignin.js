@@ -66,8 +66,25 @@ onSignIn = async (googleUser) => {
 
 signOut = () => {
 
-    const auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
+    let auth2 = null
+
+    console.log(gapi.auth2)
+
+    if(!gapi.auth2) { // if we're in a page where gapi auth isn't initiated! but should click two times to get disconnected 
+
+        gapi.load('auth2', function () {
+            gapi.auth2.init({ client_id: '1067451132113-699bn9q2edbva9rc8grh3nk45tm0d0ia.apps.googleusercontent.com' })
+              
+            auth2 = gapi.auth2.getAuthInstance()
+        
+        });    
+    } else {
+
+        auth2 = gapi.auth2.getAuthInstance();
+
+    }
+
+        auth2.signOut().then(function () {
         console.log('User signed out.');
     });
 }

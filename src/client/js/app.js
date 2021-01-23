@@ -43,7 +43,7 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
 
         event.preventDefault()
         
-        const location = document.getElementById('destination').value || document.getElementById('dest').value
+        const destination = document.getElementById('destination').value || document.getElementById('dest').value
          // trip form or destination form (only one field)
       
 
@@ -78,20 +78,20 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
 
 
             // al least one input is empty
-            if((!!tripId && !location) || !tripId &&  (!start || !end || !location)) throw new Error('inputs shouldn\'t be empty (please fill them all)') 
+            if((!!tripId && !destination) || !tripId &&  (!start || !end || !location)) throw new Error('inputs shouldn\'t be empty (please fill them all)') 
 
             if(!Client.getItem('userId')) throw new Error('Please sign in!') // no user session yet
             
             dataHolder = {} // reinit dataHolder
 
-            const geo = await Client.geonamesAPICall(geoUrl, location)
+            const geo = await Client.geonamesAPICall(geoUrl, destination)
             dataHolder.geo = {}
             dataHolder.geo.lat = geo.lat
             dataHolder.geo.lng = geo.lng
 
             dataHolder.countryInfo = await Client.restCountriesAPICall(restCountriesUrl, geo.name) // rest countries API
 
-            dataHolder.pixa = await Client.pixaAPICall(pixaUrl, pixaKey, location, geo.name) // fetching pixabay.com
+            dataHolder.pixa = await Client.pixaAPICall(pixaUrl, pixaKey, destination, geo.name) // fetching pixabay.com
 
             dataHolder.weather = await Client.weatherbitAPICall(weatherBitCurUrl, weatherBitHistUrl, weatherBitKey, start, geo.lng, geo.lat) // fetching weatherbit
             
@@ -101,9 +101,9 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
         
             options.body = JSON.stringify({
 
-                title: location,
+                title: destination,
 
-                description: `Trip to ${location} starting from ${start} and ending in ${end}`, // default could be updated later on by the owner end user
+                description: `Trip to ${destination} starting from ${start} and ending in ${end}`, // default could be updated later on by the owner end user
 
                 startDate: start,
 
@@ -150,7 +150,13 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
                 // form will be hidde, or not depends on calling link, details in js/helpers.handleFormError
                 Client.handleFormError(event.target, false)
             
-            
+                // redirect in case we're in the index/home page
+                
+             
+            if(location.pathname.length == 1) {  
+
+                location.pathname = '/trips/userId/'+Client.getItem('userId')
+            }
            
             return dataN
 
@@ -318,7 +324,7 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
         appendTag(Glib.script, document.head)
 
         const onSignInScript = document.createElement('script')
-        onSignInScript.textContent = 'function onSignIn(googleUser){ Client.onSignIn(googleUser)}' // appending Google auth script on the head to be Global
+        onSignInScript.textContent = 'function onSignIn(googleUser){ Client.onSignIn(googleUser)};' // appending Google auth script on the head to be Global
         // onSignIn function should be global
         appendTag(onSignInScript, document.head)
 
@@ -333,7 +339,7 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
 
         appendTag(base, document.head)
 
-        Client.handleSession() // check if used is connected then show links, hide connection/registering forms, 
+        Client.handleSession() // check if user is connected then show links, hide connection/registering forms, 
                                // otherwise hide links, show forms
     },
 

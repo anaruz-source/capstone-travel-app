@@ -21,3 +21,13 @@ This app pulls data from several APIs:
 
 8. [oAuth2](https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow) from google client and server side. server side using [google-auth-library](https://www.npmjs.com/package/google-auth-library)
 
+
+## usage 
+> step 1
+Only homepage is available for offline visitors, to create trip, destinations, places, to add tasks to a todo List a connection is required
+
+available for all
+![home page](https://github.com/anaruz-source/captrip/blob/[branch]/image.jpg?raw=true)
+
+
+> homepage
