@@ -127,6 +127,7 @@ Some items are not displayed for simplification
 ![Captrip DB ERD](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/captrip-db-erd.png?raw=true)
 
 -- 1 >* one-to-many relationship
+
 -- 1<>1 one-to-one
 # testing
 
