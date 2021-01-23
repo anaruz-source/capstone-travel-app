@@ -35,7 +35,7 @@ Two connection method exist: with an email or using Google oAuth2 for both sign 
 
 
 
-* Available for connected user (trips, profile show up)
+* Available for connected user (trips, profile show up, logout icon)
 
 
 ![home connected](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/connected.png?raw=true)
