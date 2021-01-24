@@ -261,7 +261,7 @@ attachEvent(img, 'click', sessionHandler)
 
       const urlFrags = url.split('/')
 
-      if (url.length <= 2) return
+      if (!url.length) return
 
       addItem('userId', urlFrags[3] || urlFrags[1])
 }()
