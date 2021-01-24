@@ -55,7 +55,7 @@ Adding a trip
 
 * trying to add trip offline (error! please sign in)
 
-![please sign in error](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/anyvisitors.png?raw=true)
+![please sign in error](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/please.png?raw=true)
 
 * User is connected
 
