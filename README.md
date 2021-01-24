@@ -51,6 +51,8 @@ to Visualize profile, click on the link
 
 ![home connected](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/profile.png?raw=true)
 
+```delete account ``` link not implemented!!!
+
 Avatar from google, there's also a default one for email users!
 
 A ```session is of 60min duration```, after that it will be shutdown from server side no matter what is user is active or not (it would be good to reinit that countdown later on)

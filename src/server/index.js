@@ -1,4 +1,5 @@
-const placeHolders = {} // this will contain active users connection info  (online users)
+// for jest testing please add const, let or var to that endpoint, otherwise it will throw error
+placeHolders = {} // this will contain active users connection info  (online users)
 
 const Twig = require('twig')
 

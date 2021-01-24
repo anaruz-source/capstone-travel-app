@@ -461,10 +461,9 @@ const hide = (elm, className = 'd-block') => { // hide with d-block or equivalen
 
   destHTMLCodeToAppend = (d, idx, _tripId) => { // for reuse in adding only destination to trip
 
-
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-    const forcasts = d.weatherInfos.forecasts.map(w => {
+    const forecasts = d.weatherInfos.forecasts.map(w => {
       return `<div class="entry">
                 <div class="entry-body d-flex">
                   <div class="forecast-vals">
@@ -499,6 +498,8 @@ const hide = (elm, className = 'd-block') => { // hide with d-block or equivalen
               </div>`
     }).join('')
 
+
+
     const destHTMLCodeTemplate = `
             <div class="d-card" id="d-card-${idx}" data-trip-db-id="${_tripId}" data-d-db-id="${d._id}" data-d-db-lng="${d.lng}" data-d-db-lat="${d.lat}">
         <div class="d-card-header">
@@ -531,9 +532,9 @@ const hide = (elm, className = 'd-block') => { // hide with d-block or equivalen
             </div>
             <div class="tab" data-tab-id="pack-info-${idx}">todo list
             </div>
-                        <div class="tab" data-tab-id="pic-info-${idx_d}">picture
+                        <div class="tab" data-tab-id="pic-info-${idx}">picture
             </div>
-                   <div class="tab" data-tab-id="map-info-${idx_d}">places on map
+                   <div class="tab" data-tab-id="map-info-${idx}">places on map
             </div>
           </div>
         </div>
@@ -596,7 +597,7 @@ const hide = (elm, className = 'd-block') => { // hide with d-block or equivalen
           </div>
           <div class="tab-content  d-block" id="weather-info-${idx}">
             <div class="entries d-flex justify-content-around flex-wrap">
-           ${forcasts}
+           ${forecasts}
             </div>
           </div>
           <div class="tab-content d-none" id="place-info-${idx}">

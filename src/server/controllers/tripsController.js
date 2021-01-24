@@ -87,7 +87,6 @@ const addTripsController = async (req, resp) => {
 
         const t = await findOneTrip(trip._id)
 
-        console.log(t)
 
         resp.send(t)
 

@@ -689,7 +689,7 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
         e.preventDefault()
         try {
 
-            const trips = await Client.fetchAny('http://localhost:3030/trips/userId/' + Client.getItem('userId'), {
+            const trips = await Client.fetchAny('/trips/userId/' + Client.getItem('userId'), {
                 headers: new Headers({
                     'X-Custom-Resp-Type': 'json'
                 })
@@ -700,8 +700,9 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
 
             const trip = await handleFormSubmission(e)
 
+
             // number of destinations of all trips of this user (displayed) + 1 (new to be added)
-            let idx_d = document.getElementsByClassName('d-card').length + 1
+            const idx_d = document.getElementsByClassName('d-card').length + 1
 
 
             if (e.target.id == 'input-trip') { // new trip added
@@ -724,7 +725,7 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
                     tripContainer.innerHTML = html
                 }
 
-                // add showHideAccordion event listener to newly created trip
+                // add showHideAccordion eventlistener to newly created trip
 
                 Client.attachEvent(tripContainer.firstElementChild, 'click', showHideAccordion)
 
@@ -738,7 +739,9 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
                 const destTag = document.getElementById('d-card-' + idx_d)
 
                 // added tabSwitching events to tabs of newly created destination
+                
                 Client.attachEvent(destTag.getElementsByClassName('tab'), 'click', handleTabsSwitching)
+                
                 // here this is used as function rather than event listener
                 // just to trick this function, passed in firstElementCHild of trip card,
                 // as getParentOfChild will seach for trip-card as parent,
@@ -766,8 +769,10 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
             }
             else { // new destination added of an existing trip
 
-
+                console.log('dest', trip.destinations[trip.destinations.length - 1])
                 const html = Client.destHTMLCodeToAppend(trip.destinations[trip.destinations.length - 1], idx_d, trip._id) // the last added
+
+                console.log(html)
 
                 const inputDest = document.getElementById('input-dest')
 
@@ -1068,7 +1073,7 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
 
         e.preventDefault()
         const t = e.target
-        Client.handleOnClear()
+
 
         const d = Client.getParentOfChild(t, 'd-card')
         const places = d.getElementsByTagName('ul')[0]

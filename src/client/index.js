@@ -242,7 +242,7 @@ attachEvent(img, 'click', sessionHandler)
 
 !async function () {
 
-      const url = getItem('userId') && `trips/userId/${getItem('userId')}`
+      const url = getItem('userId') && `/trips/userId/${getItem('userId')}`
 
       const nUrl = url || location.pathname
 
@@ -261,7 +261,7 @@ attachEvent(img, 'click', sessionHandler)
 
       const urlFrags = url.split('/')
 
-      if (!url.length) return
+      if (url.length <= 2) return
 
       addItem('userId', urlFrags[3] || urlFrags[1])
 }()
