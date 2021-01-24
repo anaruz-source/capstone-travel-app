@@ -161,7 +161,6 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
             return dataN
 
         } catch (err) {
-                console.log(err)
 
                 Client.handleFormError(event.target, err)
                  
@@ -419,7 +418,7 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
 
       } catch (err) {
 
-           console.log(err)
+
               
             Client.handleFormError(e.target, err)
 
@@ -1009,8 +1008,7 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
                  } else {
 
                      const pp = Client.getParentOfChild(document.getElementById(e.target.className), 'li') || Client.getParentOfChild(document.getElementById(e.target.className), 'tr') // remove place or task
-                    
-                    console.log(pp)
+                  
                     pp.remove()
                  }
                  result.textContent = data.del + ' &#x2714;' // check sign hex
@@ -1056,7 +1054,6 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
         const d = Client.getParentOfChild(t, 'd-card')
         const places =  d.getElementsByTagName('ul')[0]
 
-         console.log('dataset', t.dataset.map)
 
        const map = Client.initMap({lat:d.dataset.dDbLat, lng: d.dataset.dDbLng}, t.dataset.map )
 
@@ -1067,7 +1064,6 @@ handleDate = (e) => { // id (number) to link datepickers and it's position
                 
                 const  latLng = await Client.mapQuestCall(mapQuestUrl, mapQuestKey, el.dataset.pItem)
 
-                console.log(latLng)
                 
                 Client.addMarker(latLng, map).bindPopup(el.dataset.pItem).openPopup()
                     
