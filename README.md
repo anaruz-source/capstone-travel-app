@@ -6,6 +6,8 @@
 [![license](https://img.shields.io/badge/licence-MIT-brightgreen)](https://opensource.org/licenses/MIT) 
 
 Named it CAPTRIP, This app is built from scratch piece by piece, brick by brick, using MVC (Model Vue Controller) pattern. Model interacts with Mongodb documents, vue based on twig template engine, controller is the leader of the orchestra, fetching data from database (noSQL Mongodb) using models, building vues using twig template engine.
+# Deployment
+[captrip on herokuapp](https://captrip.herokuapp.com/)
 # How app works
 
 This app pulls data from several APIs: (defintions from APIs' websites)
@@ -90,6 +92,8 @@ destination icons: add place, add task, print and delete
 Each destination have 6 tabs. for places on map, click ``'put places on map'`` to show places marker on the map. (leaflet API).
 
 There'are dynamic forms that displays on clicking their link (add trip, dest, place, task), hides when clicking outside or if the request completed successfully, otherwise the form remains displayed with an error on its head!
+
+``note : newly added trip or destination have a green background that vanishs after 15secs``
 
 # Standing out addons!
 
