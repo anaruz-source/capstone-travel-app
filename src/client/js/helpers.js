@@ -21,10 +21,8 @@ function findReplace(...args) { // inserts parameters on required place in the u
 
 const  fetchAny = async (url, options) => {
      
-
-     const fetching = fetch || require ('node-fetch') // node-fetch library, used only for jest, where fetch API is not available
-
-    const response = await fetching(url, options);
+    
+    const response = await fetch(url, options);
 
     try {
 
