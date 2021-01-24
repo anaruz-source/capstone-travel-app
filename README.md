@@ -119,9 +119,9 @@ Adding places or tasks, makes two operations: it adds them to the mongodb server
 
 these latter doesn't prevent account from being created with weak and incorrectly formatted email addess. Improvements are to use same function to throw errors if password is weak or email isn't correctly formatted.
 
-- places are shown on a map, click ``'put places on map'`` on 'places on map' destination tap, as below
+- places are shown on a map as marker with a hideable tooltip, click ``'put places on map'`` on 'places on map' destination tap, as below
 
-![Captrip DB ERD](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/map.png?raw=true)
+![Map markers](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/map.png?raw=true)
  
  ## MongoDB ERD (Entity Relationship Diagram)
 
