@@ -55,7 +55,7 @@ to Visualize profile, click on the link
 
 Avatar from google, there's also a default one for email users!
 
-A ```session is of 60min duration```, after that it will be shutdown from server side no matter what is user is active or not (it would be good to reinit that countdown later on)
+A ```session is of 60min duration```, after that it will be shutdown from server side no matter what  user is active or not (it would be good to reinit that countdown later on)
 
 > step 2 
 
