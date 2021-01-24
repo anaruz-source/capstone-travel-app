@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin')
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -14,18 +15,18 @@ module.exports = {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
     },
-  
+
     module: {
         rules: [
-            {   
+            {
                 test: /\.twig$/,
                 use: [
                     {
-                    loader: 'twig-loader',
-                    options: {
-                        // See options section below
-                    },
-                }]
+                        loader: 'twig-loader',
+                        options: {
+                            // See options section below
+                        },
+                    }]
             },
             {
                 test: '/\.js$/',
@@ -44,7 +45,7 @@ module.exports = {
             }
         ]
     },
-    
+
     plugins: [
         // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
         new CleanWebpackPlugin({
@@ -67,19 +68,20 @@ module.exports = {
                 {
                     from: path.resolve(__dirname, 'src/client/html/views'),
                     to: path.resolve(__dirname, 'dist/templates'),
-               
-               
+
+
                     globOptions: {
                         dot: true,
                         ignore: ['**/index.*']
                     },
-             
+
                 }
             ]
-        })
+        }),
+        new WorkboxPlugin.GenerateSW()
     ],
     node: {
         fs: "empty" // avoids error messages
     }
- 
+
 };

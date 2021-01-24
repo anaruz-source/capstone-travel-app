@@ -144,6 +144,7 @@ Some items are not displayed for simplification
 -- 1<>1 one-to-one
 # testing [![build](https://img.shields.io/badge/build-passing-brightgreen)]() 
  tests passed
+
 ![Jest build](https://github.com/anaruz-source/capstone-travel-app/blob/master/readmeassets/jest.png?raw=true)
 
 # License

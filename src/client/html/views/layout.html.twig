@@ -45,6 +45,15 @@
       <p class="text-warning"> Captrip: Capstone travel project &copy; 2021
       </p>
     </footer>
-    {{js}}
+           {{js}}
+            <script>
+            // Check that service workers are supported, udacity code
+            if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js');
+                });
+            }
+        </script>
   </body>
 </html>
