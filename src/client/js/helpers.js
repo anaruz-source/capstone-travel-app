@@ -641,7 +641,7 @@ const hide = (elm, className = 'd-block') => { // hide with d-block or equivalen
          </div>
      </div>  
      <div class="flex-nowrap d-none settings">
-       <div><img src="media/add.svg" alt="add trip icon" id="add-trip-link-${idx}"></div>
+       <div><img src="media/add.svg" alt="add dest icon" id="add-dest-link-${idx}"></div>
        <div><img src="media/edit.svg" alt="edit trip icon" id="edit-trip-link-${idx}"></div>
        <div><img src="media/print.svg" alt="print trip icon" id="print-link-${idx}"></div>
        <div><img src="media/delete.svg" alt="delete trip icon" id="delete-trip-link-${idx}"></div>

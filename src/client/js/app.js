@@ -851,11 +851,12 @@ const weatherBitKey = '13937474fc8343809b612f4ebdc9c032',
         if (Client.hasClassName(nxtSibl, 'active')) return
 
         if (Client.hasClassName(nxtSibl, 'accordion')) {
-
-            nxtSibl.style.maxHeight = nxtSibl.scrollHeight + 60 + 'px'
-            nxtSibl.style.height = nxtSibl.scrollHeight + 60 + 'px'
+        
             nxtSibl.classList.add('active') // show nextsibling of clicked trip-card element
             current.classList.add('active') // added to change + sign to - sign in the clicked element with trip-card className
+            nxtSibl.style.maxHeight = nxtSibl.scrollHeight + 60 + 'px'
+            nxtSibl.style.height = nxtSibl.scrollHeight + 60 + 'px'
+           
         }
 
         const accs = document.getElementsByClassName('accordion')
