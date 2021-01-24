@@ -1,4 +1,10 @@
 # Capstone travel app
+
+[![version](https://img.shields.io/badge/version-v1.1.0-brightgreen)]() 
+[![build](https://img.shields.io/badge/build-passing-brightgreen)]() 
+
+[![license](https://img.shields.io/badge/licence-MIT-brightgreen)](https://opensource.org/licenses/MIT) 
+
 Named it CAPTRIP, This app is built from scratch piece by piece, brick by brick, using MVC (Model Vue Controller) pattern. Model interacts with Mongodb documents, vue based on twig template engine, controller is the leader of the orchestra, fetching data from database (noSQL Mongodb) using models, building vues using twig template engine.
 # How app works
 
@@ -136,4 +142,6 @@ Some items are not displayed for simplification
 -- 1<>1 one-to-one
 # testing
 
-# Licence
+
+# License
+[MIT License](https://opensource.org/licenses/MIT)
