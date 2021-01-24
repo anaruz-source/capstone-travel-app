@@ -1,87 +1,195 @@
 .search-bar {
-  display: flex;
-  position: relative;
-  form {
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    max-width: fit-content;
-    margin: 2em auto;
-    border-radius: 3em;
-    font-weight: 300;
-    padding: 0.5em;
+    display: flex;
     position: relative;
-    z-index: 5;
+    form {
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        max-width: fit-content;
+        margin: 2em auto;
+        border-radius: 3em;
+        font-weight: 300;
+        padding: 0.5em;
+        position: relative;
+        z-index: 5;
+        .form-error {
+            position: absolute;
+            top: -30px;
+            height: 3em;
+            width: 100%;
+            z-index: 10;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.01);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            img {
+                //https://www.w3schools.com/css/css_align.asp  center element using position and transform
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                height: 2em;
+            }
+        }
+        .input {
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 2em;
+            margin: 0.2em 0;
+            label {
+                color: #5555ff;
+                font-weight: 300;
+                font-size: 0.8em;
+                text-align: left;
+                /* display: inline; */
+                width: max-content;
+            }
+            padding: 0.6em;
+            &:hover,
+            &:focus {
+                background: #eee;
+                border-radius: 2em;
+                input {
+                    background: #eee;
+                }
+            }
+            &:last-child {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #search-button {
+                border-radius: 50%;
+                background: #ff0;
+                height: 2.5em;
+                width: 2.5em;
+                border: none;
+                overflow: hidden;
+                outline: none;
+                position: relative;
+                img {
+                    height: 2.8em;
+                    width: 2.8em;
+                    position: absolute;
+                    top: 3px;
+                    left: 5px;
+                }
+            }
+            input {
+                border: none;
+                outline: none;
+                font-size: 0.8em;
+                color: #ddd;
+                height: auto;
+            }
+            @media screen and (min-width: 768px) {
+                &:not(:last-child)::after {
+                    content: "";
+                    position: absolute;
+                    height: 50%;
+                    width: 0;
+                    border-right: 1px solid rgba(0, 0, 0, 0.04);
+                    left: 100%;
+                    top: 1em;
+                }
+            }
+        }
+        @media screen and(min-width:768px) {
+            .input {
+                border: none;
+                margin: 0;
+            }
+            &:hover div::after {
+                display: none;
+            }
+        }
+    }
+    @media screen and (min-width: 768px) {
+        form {
+            padding: 0;
+        }
+    }
+}
 
-      .form-error {
-
-        position: absolute;
-        top: -30px;
-        height: 3em;
-        width: 100%;
-        z-index: 10;
-      
+#forms,
+#add-trip,
+#add-dest,
+#add-place,
+#add-pack {
+    // this form will popup dynamiccally
+    border: 1px solid yellow;
+    padding: 0.5em 0;
+    border-radius: 0.8em;
+    max-width: 25em;
+    margin: 0 auto;
+    background: white;
+    position: relative;
+    .in-container {
+        display: flex;
+        flex-direction: column;
     }
     .overlay {
-
-      background: rgba(0, 0, 0, 0.01);
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
-
-      img { //https://www.w3schools.com/css/css_align.asp  center element using position and transform
-          margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-        height: 2em;
-
-        
-      }
-    }
-
-    .input {
-      position: relative;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      border-radius: 2em;
-      margin: 0.2em 0;
-
-      label {
-    
-    color: #5555ff;
-    font-weight: 300;
-    font-size: 0.8em;
-    text-align: left;
-    /* display: inline; */
-    width: max-content;
- 
-
-
-      }
-
-      padding: 0.6em;
-
-      &:hover,
-      &:focus {
-        background: #eee;
-        border-radius: 2em;
-
-        input {
-          background: #eee;
+        background: rgba(0, 0, 0, 0.01);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        img {
+            //https://www.w3schools.com/css/css_align.asp  center element using position and transform
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 2em;
+            z-index: 15;
         }
-      }
-
-      &:last-child {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #search-button {
+    }
+    input:not([type="submit"]):not([type="reset"]) {
+        border: none;
+        border: 1px solid #eee;
+        padding: 0.3em;
+        border-radius: 6px;
+        width: 15em;
+        margin: 0.2em 0 0.5em 0;
+    }
+    label {
+        padding: 0.5em 0.5em 0.1em 0;
+        color: #5555ff;
+        font-weight: 300;
+        font-size: 0.8em;
+        text-align: left;
+        /* display: inline; */
+        width: max-content;
+        background: white;
+        position: relative;
+        top: 1em;
+        z-index: 200;
+    }
+    input[type="submit"],
+    input[type="reset"] {
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 0.5em 1em;
+        color: black;
+        font-size: 0.8em;
+        border: none;
+        margin: 0.1em;
+        &:hover {
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+        }
+    }
+    #search-button {
         border-radius: 50%;
         background: #ff0;
         height: 2.5em;
@@ -90,259 +198,103 @@
         overflow: hidden;
         outline: none;
         position: relative;
-
         img {
-    height: 2.8em;
-    width: 2.8em;
-    position: absolute;
-    top: 3px;
-    left: 5px;
-
+            height: 2.8em;
+            width: 2.8em;
+            position: absolute;
+            top: 0.2em;
+            left: 0.3em;
         }
-      }
-
-      input {
-        border: none;
-        outline: none;
+    }
+    .signin,
+    .signup {
+        padding: 0.5em;
+        border-top-right-radius: 6px;
+        border-top-left-radius: 6px;
+        color: blue;
         font-size: 0.8em;
-        color: #ddd;
-        height: auto;
-
-
-      }
-
-      @media screen and (min-width: 768px) {
-        &:not(:last-child)::after {
-          content: "";
-          position: absolute;
-          height: 50%;
-          width: 0;
-          border-right: 1px solid rgba(0, 0, 0, 0.04);
-          left: 100%;
-          top: 1em;
+        text-transform: uppercase;
+        &.active {
+            background: yellow;
         }
-      }
     }
-    @media screen and(min-width:768px) {
-      .input {
-        border: none;
-        margin: 0;
-      }
-
-      &:hover div::after {
-        display: none;
-      }
+    .form-header {
+        text-align: center;
+        padding: 0.5em;
+        border-bottom: 2px solid yellow;
+        color: darkgray;
     }
-  }
-
-  @media screen and (min-width: 768px) {
-    form {
-      padding: 0;
+    hr {
+        opacity: 0;
     }
-  }
-}
-
-#forms,
-#add-trip,
-#add-dest,
-#add-place,
-#add-pack { // this form will popup dynamiccally
-
-
-  border: 1px solid yellow;
-  padding: 0.5em 0;
-  border-radius: 0.8em;
-  max-width: 25em;
-  margin: 0 auto;
-  background: white;
-  position: relative;
-  .in-container {
-    display: flex;
-    flex-direction: column;
-  }
-      .overlay {
-
-      background: rgba(0, 0, 0, 0.01);
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
-
-      img { //https://www.w3schools.com/css/css_align.asp  center element using position and transform
-          margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-        height: 2em;
-
-        z-index: 15;
-      }
+    // Google sign in button Re-styling
+    .abcRioButtonContents {
+        font-size: 0.8em !important;
+        line-height: 34px;
+        text-transform: uppercase;
+        font-family: inherit;
     }
-
-  input:not([type="submit"]):not([type="reset"]) {
-    border: none;
-    border: 1px solid #eee;
-    padding: 0.3em;
-    border-radius: 6px;
-    width: 15em;
-    margin: 0.2em 0 0.5em 0;
-
-  }
-
-  label {
-    padding: 0.5em 0.5em 0.1em 0;
-    color: #5555ff;
-    font-weight: 300;
-    font-size: 0.8em;
-    text-align: left;
-    /* display: inline; */
-    width: max-content;
-    background: white;
-    position: relative;
-    top: 1em;
-    z-index: 200;
-  }
-
-  input[type="submit"],
-  input[type="reset"] {
-    text-transform: uppercase;
-    display: inline-block;
-    padding: 0.5em 1em;
-    color: black;
-    font-size: 0.8em;
-    border: none;
-    margin: 0.1em;
-
-    &:hover {
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+    #errEmail,
+    #errPwd,
+    #errConf,
+    #errEmailIn {
+        font-size: 0.6em;
+        color: red;
+        background: rgba(255, 0, 0, 0.2);
     }
-  }
-
-  #search-button {
-    border-radius: 50%;
-    background: #ff0;
-    height: 2.5em;
-    width: 2.5em;
-    border: none;
-    overflow: hidden;
-    outline: none;
-    position: relative;
-
-    img {
-      height: 2.8em;
-      width: 2.8em;
-      position: absolute;
-      top: 0.2em;
-      left: 0.3em;
+    #strongPwd {
+        font-size: 0.6em;
+        color: greenyellow;
+        background: rgba(0, 255, 0, 0.1);
     }
-  }
-
-  .signin,
-  .signup {
-    padding: 0.5em;
-    border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
-    color: blue;
-    font-size: 0.8em;
-    text-transform: uppercase;
-
-    &.active {
-      background: yellow;
-    }
-  }
-
-  .form-header {
-    text-align: center;
-
-    padding: 0.5em;
-    border-bottom: 2px solid yellow;
-    color: darkgray;
-  }
-
-  hr {
-    opacity: 0;
-  }
-
-  // Google sign in button Re-styling
-
-  .abcRioButtonContents {
-    font-size: 0.8em !important;
-    line-height: 34px;
-    text-transform: uppercase;
-    font-family: inherit;
-  }
-
-  #errEmail,
-  #errPwd,
-  #errConf,
-  #errEmailIn {
-    font-size: 0.6em;
-    color: red;
-    background: rgba(255, 0, 0, 0.2);
-  }
-
-  #strongPwd {
-    font-size: 0.6em;
-    color: greenyellow;
-    background: rgba(0, 255, 0, 0.1);
-  }
 }
 
 #form-add-trip,
 #form-add-dest,
 #form-add-place,
 #form-add-pack {
-  
-  position: absolute;
-  min-width: 18em;
-  top: -1em;
-  left: calc(50vw - 9em); // centering the form
-  z-index: 30;
-  border: none
+    position: absolute;
+    min-width: 18em;
+    top: -1em;
+    left: calc(50vw - 9em); // centering the form
+    z-index: 30;
+    border: none
 }
 
 input {
-
-
-     // https://css-tricks.com/almanac/selectors/p/placeholder/
-
+    // https://css-tricks.com/almanac/selectors/p/placeholder/
     &::-webkit-input-placeholder {
-      /* Chrome/Opera/Safari */
-      color: #ddd;
-      font-size: 0.8em;
+        /* Chrome/Opera/Safari */
+        color: #ddd;
+        font-size: 0.8em;
     }
     &::-moz-placeholder {
-      /* Firefox 19+ */
-      color: #ddd;
-      
-
-      font-size: 0.8em;
+        /* Firefox 19+ */
+        color: #ddd;
+        font-size: 0.8em;
     }
     &:-ms-input-placeholder {
-      /* IE 10+ */
-      color: #ddd;
-
-      font-size: 0.8em;
+        /* IE 10+ */
+        color: #ddd;
+        font-size: 0.8em;
     }
     &:-moz-placeholder {
-      /* Firefox 18- */
-      color: #ddd;
-
-      font-size: 0.8em;
+        /* Firefox 18- */
+        color: #ddd;
+        font-size: 0.8em;
     }
     &::placeholder {
-      /* Newer*/
-      color: #ddd;
-
-      font-size: 0.8em;
+        /* Newer*/
+        color: #ddd;
+        font-size: 0.8em;
     }
 }
 
-/*algolia The dropdown style */
-.ap-dropdown-menu { position: absolute; z-index: 300!important; width: 14em;}
 
+/*algolia The dropdown style */
+
+.ap-dropdown-menu {
+    position: absolute;
+    z-index: 300!important;
+    width: 14em;
+}

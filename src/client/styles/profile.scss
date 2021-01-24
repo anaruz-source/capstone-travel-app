@@ -1,62 +1,46 @@
 section {
-
     .avatar {
- 
-           img {
-
-                    height: 10em;
-        width: 10em;
-        border-radius: 50%;
-           }
-
-           border-bottom: 1px solid rgba(0, 0, 0, 0.05)
-    }
-
-    .entries {
-
-        .p-entry {
-
-    width: 8.5em;
-    display: inline-block;
-    background: #efefef;
-    padding: 0.5em;
-    margin: .5em;
-    border-radius: 6px;
+        img {
+            height: 10em;
+            width: 10em;
+            border-radius: 50%;
         }
-
-        
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05)
     }
-
+    .entries {
+        .p-entry {
+            width: 8.5em;
+            display: inline-block;
+            background: #efefef;
+            padding: 0.5em;
+            margin: .5em;
+            border-radius: 6px;
+        }
+    }
     .del-account {
-
         border-top: 1px solid rgba(0, 0, 0, 0.05);
         padding: .5em;
-
         p {
-
             color: red;
             text-transform: uppercase;
         }
     }
     .d-zone {
-
         border: 1px solid red;
-    height: 6em;
-    width: 100%;
-
-    input {
-
+        height: 6em;
+        width: 100%;
+        input {
             text-transform: uppercase;
-    display: inline-block;
-    padding: .5em 1em;
-    color: red;
-    font-size: .8em;
-    border: none;
-    margin: .1em;
-    background: rgba(255, 0, 0, 0.4);
-     &:hover {
-      box-shadow: 0 2px 4px 0 rgba(255, 0, 0, 0.6);
+            display: inline-block;
+            padding: .5em 1em;
+            color: red;
+            font-size: .8em;
+            border: none;
+            margin: .1em;
+            background: rgba(255, 0, 0, 0.4);
+            &:hover {
+                box-shadow: 0 2px 4px 0 rgba(255, 0, 0, 0.6);
+            }
+        }
     }
 }
-    }
-    }

@@ -7,116 +7,110 @@
 {% block body %}
 {{parent()}}
 <section class="trips">
-     <!-- The following forms will float and change their parents depending on the calling section (which trip, which destination....)-->
-    <div id="form-add-trip" class="d-none">
-      <form action="" method="post" id="add-trip">
-        <div class="form-error d-none alert">
+  <!-- The following forms will float and change their parents depending on the calling section (which trip, which destination....)-->
+  <div id="form-add-trip" class="d-none">
+    <form action="" method="post" id="add-trip">
+      <div class="form-error d-none alert">
+      </div>
+      <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+        <div class="input d-flex flex-column">
+          <label for="destination">Where?
+          </label>
+          <input type="text" name="" id="destination" placeholder="DESTINATION" required>
         </div>
-        <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
-          <div class="input d-flex flex-column">
-            <label for="destination">Where?
-            </label>
-            <input type="text" name="" id="destination" placeholder="DESTINATION" required>
-          </div>
-          <div class="input d-flex flex-column">
-            <label for="start-date">Trip start
-            </label>
-            <input type="text" name="" id="start-date" placeholder="MM/DD/YYYY" required>
-          </div>
-          <div class="input d-flex flex-column">
-            <label for="end-date">Trip end
-            </label>
-            <input type="text" name="" id="end-date" placeholder="MM/DD/YYYY" required>
-          </div>
-          <div class="input">
-            <input type="submit" value="Submit" id="input-trip">
-          </div>
+        <div class="input d-flex flex-column">
+          <label for="start-date">Trip start
+          </label>
+          <input type="text" name="" id="start-date" placeholder="MM/DD/YYYY" required>
         </div>
-        <div class="d-none overlay">
-          <img src="media/pulse-loader.gif" alt="">
+        <div class="input d-flex flex-column">
+          <label for="end-date">Trip end
+          </label>
+          <input type="text" name="" id="end-date" placeholder="MM/DD/YYYY" required>
         </div>
-      </form>
-    </div>
-    <div id="form-add-dest" class="d-none">
-      <form action="" method="post" id="add-dest">
-        <div class="form-error d-none alert">
+        <div class="input">
+          <input type="submit" value="Submit" id="input-trip">
         </div>
-        <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
-          <div class="input d-flex flex-column">
-            <label for="dest">Where?
-            </label>
-            <input type="text" name="" id="dest" placeholder="DESTINATION" required>
-          </div>
-          <div class="input">
-            <input type="submit" value="Submit" id="input-dest">
-          </div>
+      </div>
+      <div class="d-none overlay">
+        <img src="media/pulse-loader.gif" alt="">
+      </div>
+    </form>
+  </div>
+  <div id="form-add-dest" class="d-none">
+    <form action="" method="post" id="add-dest">
+      <div class="form-error d-none alert">
+      </div>
+      <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+        <div class="input d-flex flex-column">
+          <label for="dest">Where?
+          </label>
+          <input type="text" name="" id="dest" placeholder="DESTINATION" required>
         </div>
-        <div class="d-none overlay">
-          <img src="media/pulse-loader.gif" alt="">
+        <div class="input">
+          <input type="submit" value="Submit" id="input-dest">
         </div>
-      </form>
-    </div>
-    <div id="form-add-place" class="d-none">
-      <form action="" method="post" id="add-place">
-        <div class="form-error d-none alert">
+      </div>
+      <div class="d-none overlay">
+        <img src="media/pulse-loader.gif" alt="">
+      </div>
+    </form>
+  </div>
+  <div id="form-add-place" class="d-none">
+    <form action="" method="post" id="add-place">
+      <div class="form-error d-none alert">
+      </div>
+      <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+        <div class="input d-flex flex-column">
+          <label for="place">Where?
+          </label>
+          <input type="text" name="" id="place" placeholder="PLACE" required>
         </div>
-        <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
-          <div class="input d-flex flex-column">
-            <label for="place">Where?
-            </label>
-            <input type="text" name="" id="place" placeholder="PLACE" required>
-          </div>
-          <div class="input">
-            <input type="submit" value="Submit" id="input-place">
-          </div>
+        <div class="input">
+          <input type="submit" value="Submit" id="input-place">
         </div>
-        <div class="d-none overlay">
-          <img src="media/pulse-loader.gif" alt="">
+      </div>
+      <div class="d-none overlay">
+        <img src="media/pulse-loader.gif" alt="">
+      </div>
+    </form>
+  </div>
+  <div id="form-add-pack" class="d-none">
+    <form action="" method="post" id="add-pack">
+      <div class="form-error d-none alert">
+      </div>
+      <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
+        <div class="input d-flex flex-column">
+          <label for="pack">What?
+          </label>
+          <input type="text" name="" id="pack" placeholder="TASK item" required>
         </div>
-      </form>
-    </div>
-    <div id="form-add-pack" class="d-none">
-      <form action="" method="post" id="add-pack">
-        <div class="form-error d-none alert">
+        <div class="input">
+          <input type="submit" value="Submit" id="input-pack">
         </div>
-        <div class="inputs-container d-flex flex-column align-items-center justify-content-center flex-wrap">
-          <div class="input d-flex flex-column">
-            <label for="pack">What?
-            </label>
-            <input type="text" name="" id="pack" placeholder="TASK item" required>
-          </div>
-          <div class="input">
-            <input type="submit" value="Submit" id="input-pack">
-          </div>
-        </div>
-        <div class="d-none overlay">
-          <img src="media/pulse-loader.gif" alt="">
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="d-none overlay">
+        <img src="media/pulse-loader.gif" alt="">
+      </div>
+    </form>
+  </div>
   <div class="container d-flex align-items-center">
     <h4 class="title">My Trips
     </h4>
     <div title="click here to add a trip">
       <img src="media/add.svg" alt="add trip icon" id="add-trip-link">
     </div>
-  
-     <div class="result  d-none alert"></div>
-
+    <div class="result  d-none alert">
+    </div>
   </div>
-  
-
   <div id="dynamic-trips-container">
-
     <!--empty|null|false-->
-  {% if trips is empty %} 
-  
-      <div class="container d-flex align-items-center default"> Too Clean space, create some trips </div>
-  
-  {% endif %}
+    {% if trips is empty %} 
+    <div class="container d-flex align-items-center default"> Too Clean space, create some trips 
+    </div>
+    {% endif %}
     {% set idx_t = 0 %}
     {% set idx_d = idx_t %}
-
     {% for trip in trips %} 
     <!-- for incremental id of country info and weather-info -->
     {% set idx_t = idx_t + 1 %}
@@ -166,16 +160,16 @@
             <img src="media/delete.svg" alt="delete trip icon" title="delete trip" id="delete-trip-link-{{idx_t}}" data-delete-trip-info="{{trip._id}}">
           </div>
         </div>
-         <div class="result  d-none alert"></div>
+        <div class="result  d-none alert">
+        </div>
       </div>
-     
     </div>
     <div class="container accordion">
-      <h5>Destinations</h5>
+      <h5>Destinations
+      </h5>
       {% if  trip.destinations is empty %} 
       <!-- Check if object is empty/null/false -->
       <div class="default">Destinations space too clean, create some 
-     
       </div>
       {% endif %}
       {% for d in trip.destinations %} 
@@ -212,9 +206,9 @@
             </div>
             <div class="tab" data-tab-id="pack-info-{{idx_d}}">todo list
             </div>
-                   <div class="tab" data-tab-id="pic-info-{{idx_d}}">picture
+            <div class="tab" data-tab-id="pic-info-{{idx_d}}">picture
             </div>
-                   <div class="tab" data-tab-id="map-info-{{idx_d}}">places on map
+            <div class="tab" data-tab-id="map-info-{{idx_d}}">places on map
             </div>
           </div>
         </div>
@@ -319,7 +313,6 @@
             <div class="default">Too Clean space, add some places to visit
             </div>
             {% endif %}
-            
             <ul id="places-{{idx_d}}">
               {% if d.places.places is not empty %}
               {% for k,p in d.places.places %}
@@ -328,7 +321,9 @@
                 </span> &lt;
                 <span class="value">{{p.place}} 
                 </span>&gt;
-               <div class="icon"> <img src="media/delete-small.svg" alt="delete place" id="delete-place-{{idx_d + k}}" data-delete-p-info="{{p._id}}"> </div>
+                <div class="icon"> 
+                  <img src="media/delete-small.svg" alt="delete place" id="delete-place-{{idx_d + k}}" data-delete-p-info="{{p._id}}"> 
+                </div>
               </li>
               {% endfor %}
               {% endif %}
@@ -339,61 +334,63 @@
             <div class="default">Too Clean space!!, add some items to your todo list
             </div>
             {% endif %}
-           
-            
-                <table class="table" id="packs-{{idx_d}}">
-                    <thead><tr><th>Task item</th><th>Done</th><th>Delete</th></tr></thead><tbody>
-                       {% if d.tasks.tasks is not empty %}
-              {% for k,p in d.tasks.tasks %}
-            
-              
-              
-                    <tr  class="item" id="pack-{{idx_d + k}}"><td>
-                <span>{{p.description}}
-                </span> </td><td>
-                <div class="form-check form-switch d-flex">
-                  <input class="form-check-input" type="checkbox" id="task-{{idx_d+k}}" {{p.done ? 'checked' : ''}} >
-                  <label class="form-check-label" for="task-{{idx_d+k}}"> {{p.done ? 'Yes' : 'No'}}
-                  </label>
-                </div>
-                </td><td>
-               <div class="icon"> <img src="media/delete-small.svg" alt="" id="delete-pack-{{idx_d + k}}" data-delete-p-info="{{p._id}}"> </div></td></tr>
-             
-            
-              {% endfor %}
-              {% endif %}
+            <table class="table" id="packs-{{idx_d}}">
+              <thead>
+                <tr>
+                  <th>Task item
+                  </th>
+                  <th>Done
+                  </th>
+                  <th>Delete
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if d.tasks.tasks is not empty %}
+                {% for k,p in d.tasks.tasks %}
+                <tr  class="item" id="pack-{{idx_d + k}}">
+                  <td>
+                    <span>{{p.description}}
+                    </span> 
+                  </td>
+                  <td>
+                    <div class="form-check form-switch d-flex">
+                      <input class="form-check-input" type="checkbox" id="task-{{idx_d+k}}" {{p.done ? 'checked' : ''}} >
+                      <label class="form-check-label" for="task-{{idx_d+k}}"> {{p.done ? 'Yes' : 'No'}}
+                      </label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="icon"> 
+                      <img src="media/delete-small.svg" alt="" id="delete-pack-{{idx_d + k}}" data-delete-p-info="{{p._id}}"> 
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
               </tbody>
-               </table>
-       
+            </table>
           </div>
-
           <div class="tab-content d-none"  id="pic-info-{{idx_d}}">
-
             <div class="dest-image">
               <img src="{{d.countryInfos.largeImageURL}}" alt="{{d.name}} picture">
             </div>
-
-
           </div>
           <div class="tab-content d-none"  id="map-info-{{idx_d}}">
-             <div> <a href="#" class="put-on-map" data-map="map-{{idx_d}}">put places on map</a></div>
+            <div> 
+              <a href="#" class="put-on-map" data-map="map-{{idx_d}}">put places on map
+              </a>
+            </div>
             <div id="map-{{idx_d}}">
-
             </div>
           </div>
         </div>
-         
-           <div class="result  d-none alert"></div>
-     
+        <div class="result  d-none alert">
+        </div>
       </div>
-       {% endfor %}
-
-          
-
+      {% endfor %}
     </div>
-   
   </div>
   {% endfor %}
-  
 </section>
 {% endblock %}

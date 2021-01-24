@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 
-
 // https://www.youtube.com/watch?v=vjf774RKrLc&t=1s
 
 //https://mongoosejs.com/docs/guide.html
@@ -10,7 +9,10 @@ const mongoose = require('mongoose')
 
 
 /// -> {Schema, model } to alleviate burdern of  writing long names
-const { Schema, model } = mongoose
+const {
+    Schema,
+    model
+} = mongoose
 
 const CountryInfoSchema = new Schema({ // Schema instantiation
 
@@ -86,4 +88,4 @@ const CountryInfoSchema = new Schema({ // Schema instantiation
 })
 
 
-module.exports = model('countryinfos', CountryInfoSchema )
+module.exports = model('countryinfos', CountryInfoSchema)

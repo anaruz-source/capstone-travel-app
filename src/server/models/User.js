@@ -5,7 +5,10 @@ const mongoose = require('mongoose')
 // create a Mongodb schema of the collection that will hold our trip data
 /// -> {Schema, model }  to alleviate writing burdern of long names
 
-const { Schema, model } = mongoose
+const {
+    Schema,
+    model
+} = mongoose
 
 const UserSchema = new Schema({ // Schema instantiation
 
@@ -66,6 +69,6 @@ const UserSchema = new Schema({ // Schema instantiation
         ref: 'trips'
     }]
 
-}) 
+})
 
 module.exports = model('users', UserSchema)

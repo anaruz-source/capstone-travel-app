@@ -5,7 +5,9 @@ const mongoose = require('mongoose')
 // create a Mongodb schema of the collection that will hold our Places data
 /// -> Schema alias to alleviate burdern of  writing long names
 
-const { Schema } = mongoose
+const {
+    Schema
+} = mongoose
 
 const UniquePlaceSchema = new Schema({
 
@@ -22,19 +24,19 @@ const UniquePlaceSchema = new Schema({
     expired: {
         type: Boolean,
         default: false,
-        
+
     }
 
 })
 
 const PlaceSchema = new Schema({ // Schema instantiation
-    
+
     places: [UniquePlaceSchema],
- 
+
     destinationId: {
-  // owner id of the trip
-            type: Schema.Types.ObjectId,
-            ref: 'destinations'
+        // owner id of the trip
+        type: Schema.Types.ObjectId,
+        ref: 'destinations'
 
     }
 

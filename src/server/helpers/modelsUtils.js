@@ -12,8 +12,8 @@ const ToDo = require('../models/ToDoList')
 
 
 const createDestination = async (info) => { // this will create a destination collection with its dependencies (code linting)
-                                            // It will be reused in creating futher destinations
-  
+    // It will be reused in creating futher destinations
+
 
     const destination = new Destination({
 
@@ -27,10 +27,17 @@ const createDestination = async (info) => { // this will create a destination co
 
     const savedDestination = await destination.save()
 
-    const cInfo = { destId: savedDestination._id, ...info.countryInfo, ...info.pixaInfo } // using rest parameters ES6
+    const cInfo = {
+        destId: savedDestination._id,
+        ...info.countryInfo,
+        ...info.pixaInfo
+    } // using rest parameters ES6
 
-   
-    const wInfo = { destId: savedDestination._id, forecasts: info.weatherInfo }
+
+    const wInfo = {
+        destId: savedDestination._id,
+        forecasts: info.weatherInfo
+    }
 
     const countryInfo = new CountryInfo(cInfo)
     const weatherInfo = new WeatherInfo(wInfo)
@@ -42,33 +49,36 @@ const createDestination = async (info) => { // this will create a destination co
     savedDestination.weatherInfos = wInfoSaved._id
 
     const saved = await savedDestination.save()
-    
+
     return saved._id
 },
 
 
-findTrips = async (userId) => { // trips of a signle user
+    findTrips = async (userId) => { // trips of a signle user
 
 
-    const trips = await Trip.find({ userId }) // compound mongoose query to populate _id references with real objects in Trip.destinations/ES6 Syntax for obj creatiion
-        .populate({
-            path: 'destinations', // array of refs => array of Destination objs
+        const trips = await Trip.find({
+            userId
+        }) // compound mongoose query to populate _id references with real objects in Trip.destinations/ES6 Syntax for obj creatiion
+            .populate({
+                path: 'destinations', // array of refs => array of Destination objs
 
-            populate: {
+                populate: {
 
-                path: 'countryInfos weatherInfos places tasks' // in Trip.destinations.weahterInfos and .countryInfos fields
-            }
-            //  refs to WeatherInfo and CountryInfo => Real objs of previous
-        }).sort({startDate: 1}) // countdown sorting by date
+                    path: 'countryInfos weatherInfos places tasks' // in Trip.destinations.weahterInfos and .countryInfos fields
+                }
+                //  refs to WeatherInfo and CountryInfo => Real objs of previous
+            }).sort({
+                startDate: 1
+            }) // countdown sorting by date
 
         return trips
-},
+    },
 
     findOneTrip = async (tripId) => { // single trip 
 
-        
 
-        const trip = await Trip.findById( tripId)// compound mongoose query to populate _id references with real objects in Trip.destinations
+        const trip = await Trip.findById(tripId) // compound mongoose query to populate _id references with real objects in Trip.destinations
             .populate({
                 path: 'destinations', // array of refs => array of Destination objs
 
@@ -83,49 +93,64 @@ findTrips = async (userId) => { // trips of a signle user
     },
 
 
-findOneDestination = async (destId) => { // single trip 
+    findOneDestination = async (destId) => { // single trip 
 
 
+        const d = await Destination.findById(destId) // compound mongoose query to populate _id references with real objects in Trip.destinations
+            .populate({
+                path: 'countryInfos weatherInfos  places packs tripId', // array of refs => array of Destination objs ,// in Trip.destinations.weahterInfos and .countryInfos fields, .places , .packs, trips
 
-    const d = await Destination.findById(destId)// compound mongoose query to populate _id references with real objects in Trip.destinations
-        .populate({
-            path: 'countryInfos weatherInfos  places packs tripId', // array of refs => array of Destination objs ,// in Trip.destinations.weahterInfos and .countryInfos fields, .places , .packs, trips
 
-    
-            //  refs to WeatherInfo and CountryInfo => Real objs of previous
- })
+                //  refs to WeatherInfo and CountryInfo => Real objs of previous
+            })
 
-    return d
-},
+        return d
+    },
     findOneCInfo = async (destId) => {
 
-        const c = await CountryInfo.findOne({ destId })
+        const c = await CountryInfo.findOne({
+            destId
+        })
 
         return c
     },
 
     findOneWInfo = async (destId) => {
 
-        const w = await WeatherInfo.findOne({ destId })
+        const w = await WeatherInfo.findOne({
+            destId
+        })
 
         return w
     },
 
 
-findOnePlace = async (destinationId) => {
+    findOnePlace = async (destinationId) => {
 
-    const p = await Place.findOne({destinationId})
+        const p = await Place.findOne({
+            destinationId
+        })
 
-    return p
+        return p
     },
 
-findOneToDo = async (destinationId) => {
+    findOneToDo = async (destinationId) => {
 
-        const t = await ToDo.findOne({ destinationId })
+        const t = await ToDo.findOne({
+            destinationId
+        })
 
         return t
     }
 
 
-
-module.exports = { createDestination, findOneDestination, findTrips, findOneTrip, findOnePlace, findOneToDo, findOneCInfo, findOneWInfo }
+module.exports = {
+    createDestination,
+    findOneDestination,
+    findTrips,
+    findOneTrip,
+    findOnePlace,
+    findOneToDo,
+    findOneCInfo,
+    findOneWInfo
+}

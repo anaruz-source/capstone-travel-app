@@ -7,20 +7,20 @@
 
 // Whether or not to first search around the geolocation of the user found via his IP address. This is true by default.
 /*
-* *   
-* * * Note: If you restrict the search to 'city' or 'airport', you probably want to disable the aroundLatLngViaIP option as well. This will make sure you don't get only nearby results.
-* *
-*/
+ * *   
+ * * * Note: If you restrict the search to 'city' or 'airport', you probably want to disable the aroundLatLngViaIP option as well. This will make sure you don't get only nearby results.
+ * *
+ */
 
 
-const  autoCompleter = (input, types, around) => { // only cities (no nearby places)
+const autoCompleter = (input, types, around) => { // only cities (no nearby places)
 
-      
-        if( Client.hasClassName(input, 'ap-input')) return // element has alread autocompleter so return and do nothing
+
+    if (Client.hasClassName(input, 'ap-input')) return // element has alread autocompleter so return and do nothing
 
     const reconfigurableOptions = {
-      
-         aroundLatLng: '',
+
+        aroundLatLng: '',
         aroundLatLngViaIP: false // disable the extra search/boost around the source IP
     },
 
@@ -40,24 +40,27 @@ const  autoCompleter = (input, types, around) => { // only cities (no nearby pla
 
         }
 
-        let placesAutocomplete = places(options).configure(reconfigurableOptions)
+    let placesAutocomplete = places(options).configure(reconfigurableOptions)
 
     return placesAutocomplete
 
 },
 
 
+    Places = {
+        script: (function () {
+            const script = document.createElement('script')
+            script.src = 'https://cdn.jsdelivr.net/npm/places.js@1.19.0'
+            script.defer = false
+            script.async = false
+            return script
+        })()
 
-Places = { script : (function () {
-        const script = document.createElement('script')
-        script.src = 'https://cdn.jsdelivr.net/npm/places.js@1.19.0'
-        script.defer = false
-        script.async = false
-        return script
-    })()
+
+    }
 
 
+module.exports = {
+    Places,
+    autoCompleter
 }
-
-
-module.exports = {Places, autoCompleter}

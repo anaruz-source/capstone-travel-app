@@ -18,7 +18,10 @@ const usersRoutes = require('./routes/users')
 
 const ppRoutes = require('./routes/placesPacks')
 
-const {sessionTearingDownHelper, redirect} = require('./helpers/helpers')
+const {
+    sessionTearingDownHelper,
+    redirect
+} = require('./helpers/helpers')
 
 const dotenv = require('dotenv')
 
@@ -27,7 +30,9 @@ dotenv.config()
 
 app.use(express.static('dist'))
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
 
 app.use(bodyParser.json())
 
@@ -40,29 +45,28 @@ app.all('*/:userId', async (req, resp, next) => { // check if user is connected
 
 
     const oUrl = req.originalUrl
-     
+
     const u = oUrl.split('/')
 
 
-    
-     // userId contained in body,  after delete in a req originalUrl, or params
-    let userId =  req.body && req.body.userId || u.indexOf('delete') != -1 && u[u.indexOf('delete') + 1] || req.params.userId
+    // userId contained in body,  after delete in a req originalUrl, or params
+    let userId = req.body && req.body.userId || u.indexOf('delete') != -1 && u[u.indexOf('delete') + 1] || req.params.userId
 
-    
-   
-    if(!sessionTearingDownHelper(placeHolders, userId, req, resp) || oUrl.indexOf('logout') > -1) { 
-       
-        
+
+    if (!sessionTearingDownHelper(placeHolders, userId, req, resp) || oUrl.indexOf('logout') > -1) {
+
+
         next() // execute next instructions
-    
-    } else {
 
-        
+    }
+    else {
+
+
         redirect(req, resp) //|// to home/index page
 
     }
 
-    })
+})
 
 app.get('/', (req, res) => res.send('dist/index.html'))
 
@@ -73,17 +77,21 @@ app.use('/trip', tripsRoutes)
 
 app.use('/destination', tripsRoutes)
 
-app.use('/user', usersRoutes) 
+app.use('/user', usersRoutes)
 
 app.use('/profile', usersRoutes)
 
-app.use('/places-packs', ppRoutes) 
+app.use('/places-packs', ppRoutes)
 
 
 // Local mongodb connection (.env for details)
 
 mongoose.connect(process.env.MONGO_LOCAL_CONNECT, {
-    useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true}, ()=>{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+}, () => {
 
     console.log('Local mongodb connection established!')
 })
@@ -98,9 +106,9 @@ mongoose.connect(process.env.MONGO_LOCAL_CONNECT, {
 
 // for test pupose
 
-app.listen(process.env.PORT||3030, function() {
+app.listen(process.env.PORT || 3030, function () {
 
-    console.log('NODE SERVER RUNNING ON: ', process.env.PORT||3030)
+    console.log('NODE SERVER RUNNING ON: ', process.env.PORT || 3030)
 })
 
 

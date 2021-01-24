@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 
-
 // https://www.youtube.com/watch?v=vjf774RKrLc&t=1s
 
 //https://mongoosejs.com/docs/guide.html
@@ -11,7 +10,10 @@ const mongoose = require('mongoose')
 
 /// -> {Schema, model } to alleviate writing burdern of long names
 
-const { Schema, model } = mongoose
+const {
+    Schema,
+    model
+} = mongoose
 
 const DestinationSchema = new Schema({ // Schema instantiation
 
@@ -61,7 +63,7 @@ const DestinationSchema = new Schema({ // Schema instantiation
 
     places: {
         type: Schema.Types.ObjectId,
-        ref : 'places'
+        ref: 'places'
     },
     tasks: {
         type: Schema.Types.ObjectId,

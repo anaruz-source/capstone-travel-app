@@ -6,29 +6,34 @@ const session = window.sessionStorage
 
 const addItem = (key, value) => {
 
-    
+
     const item = JSON.parse(session.getItem(key))
 
-     
-   key && value && session.setItem(key, JSON.stringify(value))
+
+    key && value && session.setItem(key, JSON.stringify(value))
 },
 
-removeItem = (key) => {
+    removeItem = (key) => {
 
-    if(!key) return null
-    return session.removeItem(key)
-},
+        if (!key) return null
+        return session.removeItem(key)
+    },
 
-getItem = (key) => {
+    getItem = (key) => {
 
-    if(!key) return null
+        if (!key) return null
 
-    return JSON.parse(session.getItem(key))
-},
+        return JSON.parse(session.getItem(key))
+    },
 
-clearAll = () => {
+    clearAll = () => {
 
-    session.clear()
+        session.clear()
+    }
+
+export {
+    addItem,
+    removeItem,
+    getItem,
+    clearAll
 }
-
-export { addItem, removeItem, getItem, clearAll }

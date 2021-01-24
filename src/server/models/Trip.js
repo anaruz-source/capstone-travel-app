@@ -8,7 +8,10 @@ const mongoose = require('mongoose')
 /// -> {Schema, model }  to alleviate writing burdern of long names
 
 
-const { Schema, model } = mongoose
+const {
+    Schema,
+    model
+} = mongoose
 
 const TripSchema = new Schema({ // Schema instantiation
 
@@ -57,6 +60,6 @@ const TripSchema = new Schema({ // Schema instantiation
         ref: 'destinations'
     }]
 
-}) 
+})
 
 module.exports = model('trips', TripSchema)

@@ -7,65 +7,68 @@ import L from 'leaflet'
 const markers = [],
 
 
+    initMap = (latLng, identifier) => {
 
-initMap = (latLng, identifier) => {
+        const map = L.map(identifier, {
+            scrollWheelZoom: true,
+            zoomControl: true
+        });
 
-    const map = L.map(identifier, {
-        scrollWheelZoom: true,
-        zoomControl: true
-    });
+        const osmLayer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 1,
+            maxZoom: 13,
+            attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+        });
 
-    const osmLayer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        minZoom: 1,
-        maxZoom: 13,
-        attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
-    });
+        // centering the map around the destination found in attributes data- of d-card
 
-    // centering the map around the destination found in attributes data- of d-card
-    
-    map.setView(new L.LatLng(latLng.lat, latLng.lng), 1);
-    
-    map.addLayer(osmLayer);
+        map.setView(new L.LatLng(latLng.lat, latLng.lng), 1);
 
-    return map
+        map.addLayer(osmLayer);
 
-
-}, 
-
-handleOnClear = (map) => {
-    
-    map.setView(new L.LatLng(0, 0), 1);
-
-    markers.forEach(removeMarker);
-},
-
- addMarker = (latLng, map) => {
-
-    const marker = L.marker(latLng, { opacity: .8 });
-    
-    marker.addTo(map);
-    
-    markers.push(marker);
+        return map
 
 
-     findBestZoom(map);
+    },
 
-     return marker
-},
+    handleOnClear = (map) => {
 
-removeMarker =  (marker) => {
-    
-    map.removeLayer(marker);
-},
+        map.setView(new L.LatLng(0, 0), 1);
 
-findBestZoom = (map) => {
+        markers.forEach(removeMarker);
+    },
 
-    console.log('markers', markers)
-    
-    const featureGroup = L.featureGroup(markers);
-    
-    map.fitBounds(featureGroup.getBounds().pad(0.5), { animate: true });
-}
+    addMarker = (latLng, map) => {
+
+        const marker = L.marker(latLng, {
+            opacity: .8
+        });
+
+        marker.addTo(map);
+
+        markers.push(marker);
+
+
+        findBestZoom(map);
+
+        return marker
+    },
+
+    removeMarker = (marker) => {
+
+        map.removeLayer(marker);
+    },
+
+    findBestZoom = (map) => {
+
+        console.log('markers', markers)
+
+        const featureGroup = L.featureGroup(markers);
+
+        map.fitBounds(featureGroup.getBounds().pad(0.5), {
+            animate: true
+        });
+    }
 
 export {
 

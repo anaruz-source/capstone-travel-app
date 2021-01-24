@@ -5,7 +5,6 @@ const SESSION_TIMEOUT = 60 // mins
 
 function isEmptyObj(obj) {
 
- 
 
     for (let prop in obj) { // if object has one property then it's not empty
 
@@ -43,13 +42,13 @@ const toEnUSDate = (d) => {
     findInUsrsPlaceHolders = (placeHolders, id) => {
 
         if (!placeHolders || isEmptyObj(placeHolders)) return void 0 // undefined
-         
+
         for (let u in placeHolders) {
 
             let p = placeHolders[u]
 
-           if(!p || isEmptyObj(p)) return void 0  // nothing found (return undefind, void 0)
-        
+            if (!p || isEmptyObj(p)) return void 0 // nothing found (return undefind, void 0)
+
             if (p.user._id == id) {
 
                 return p
@@ -83,11 +82,11 @@ const toEnUSDate = (d) => {
 
     sessionTearingDownHelper = (placeHolders, userId) => {
 
-        
+
         const p = findInUsrsPlaceHolders(placeHolders, userId)
 
-         if(!p || isEmptyObj(p.user)) return true
-         
+        if (!p || isEmptyObj(p.user)) return true
+
         if (isToTearDownSession(p, userId)) {
 
             placeHolders[p.user._id] = undefined

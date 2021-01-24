@@ -9,7 +9,10 @@ const mongoose = require('mongoose')
 
 /// -> {Schema, model }  to alleviate burdern of  writing long names
 
-const { Schema, model } = mongoose
+const {
+    Schema,
+    model
+} = mongoose
 
 const WeatherInfoSchema = new Schema({ // Schema instantiation
 
@@ -50,7 +53,7 @@ const WeatherInfo = new Schema({
 
     destId: {
         type: Schema.Types.ObjectId,
-        ref:'destinations'
+        ref: 'destinations'
     },
 
     forecasts: {

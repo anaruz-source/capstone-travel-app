@@ -5,11 +5,18 @@ const express = require('express')
 
 const Router = express.Router()
 
-const { addTripsController, getTripsController, getTripController, getDestController, deleteTrip, deleteDestination} = require('../controllers/tripsController')
+const {
+    addTripsController,
+    getTripsController,
+    getTripController,
+    getDestController,
+    deleteTrip,
+    deleteDestination
+} = require('../controllers/tripsController')
 
-Router.post('/add', addTripsController )
+Router.post('/add', addTripsController)
 
-Router.get('/userId/:userId', getTripsController )
+Router.get('/userId/:userId', getTripsController)
 
 Router.get('/tripId/:tripId', getTripController)
 

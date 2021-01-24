@@ -8,7 +8,9 @@ const mongoose = require('mongoose')
 
 
 /// -> Schema alias to alleviate writing burdern of long names
-const { Schema } = mongoose
+const {
+    Schema
+} = mongoose
 
 const UniqueItem = new Schema({
 
@@ -26,7 +28,7 @@ const UniqueItem = new Schema({
 })
 
 const TodoSchema = new Schema({ // Schema instantiation
-    
+
     tasks: [UniqueItem],
 
     destinationId: {

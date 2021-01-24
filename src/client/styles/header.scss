@@ -1,60 +1,41 @@
 header {
-  
-     background: white;
-     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-   
-
-    img { 
-
+    background: white;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    img {
         height: 80px;
     }
-
-    nav > div > {
-
-
-
+    nav>div> {
         div {
-
             margin: 0 0.5em;
             padding: 0.5em;
             color: #5555ff;
             font-weight: 300;
             text-transform: uppercase;
             font-size: .8em;
-
-            a { 
+            a {
                 text-decoration: none;
             }
-
-        img {    
-        height: 2.8em;
-        width: 2.8em;
-    }
-
+            img {
+                height: 2.8em;
+                width: 2.8em;
+            }
         }
-         div:last-child {
-
-             margin: 0 1em;
-             padding: 0.5em;
-             border-left: 1px solid rgba(0, 0, 0, 0.04);
-            
-
-    #search-link {
-
-    height: 2.5em;
-    width: 2.5em;
-    border: none;
-    overflow: hidden;
-    outline: none;
-    display: inline-block;
-
-      img {    
-        height: 2.8em;
-        width: 2.8em;
-    }
-   }
+        div:last-child {
+            margin: 0 1em;
+            padding: 0.5em;
+            border-left: 1px solid rgba(0, 0, 0, 0.04);
+            #search-link {
+                height: 2.5em;
+                width: 2.5em;
+                border: none;
+                overflow: hidden;
+                outline: none;
+                display: inline-block;
+                img {
+                    height: 2.8em;
+                    width: 2.8em;
+                }
+            }
         }
-
-
     }
 }
