@@ -1,4 +1,4 @@
-placeHolders = {} // this will contain active users connection info  (online users)
+const placeHolders = {} // this will contain active users connection info  (online users)
 
 const Twig = require('twig')
 
@@ -38,27 +38,26 @@ app.use('/users', usersRoutes)
 
 app.all('*/:userId', async (req, resp, next) => { // check if user is connected
 
-    console.log('params', req.params.userId)
+
     const oUrl = req.originalUrl
      
     const u = oUrl.split('/')
 
 
-    console.log(oUrl)
     
      // userId contained in body,  after delete in a req originalUrl, or params
     let userId =  req.body && req.body.userId || u.indexOf('delete') != -1 && u[u.indexOf('delete') + 1] || req.params.userId
 
-    console.log(userId)
+    
    
     if(!sessionTearingDownHelper(placeHolders, userId, req, resp) || oUrl.indexOf('logout') > -1) { 
        
-        console.log('here1')
+        
         next() // execute next instructions
     
     } else {
 
-        console.log('here2')
+        
         redirect(req, resp) //|// to home/index page
 
     }

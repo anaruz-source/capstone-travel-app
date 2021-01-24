@@ -9,7 +9,7 @@
 import 'regenerator-runtime/runtime'
 
 
-const {
+import {
     findReplace,
     fetchAny,
     dtPicker,
@@ -36,7 +36,7 @@ const {
     addClassWithTimeout,
     handleErrors,
     scrollToElement
-} = require('./../src/client/js/helpers');
+} from './../src/client/js/helpers';
 
 describe('testing helpers module functions', () => {
      
@@ -59,7 +59,7 @@ describe('testing helpers module functions', () => {
 
 
     test('testing of  remaining function if they are defined', () => {
-        expect(fetchAny).toBeDefined()
+           expect(fetchAny).toBeDefined()
            expect(dtPicker).toBeDefined()
            expect(appendTag).toBeDefined()
            expect(removeTag).toBeDefined()

@@ -9,9 +9,9 @@ const app = require('./../src/server/index')
 describe('requesting express server using the route /trip/tripId/:tripId, which will call the getTripController and return tripId', () => {
     it('should create a new post', async () => { // it alias of test
         const res = await request(app)
-            .get('/trip/tripId/6000742abe06614038be0bad')
+            .get('/trip/tripId/60045af19242772e201e709a')
             
-        expect(res.statusCode).toEqual(200)
-        expect(res.body).toMatchObject({_id: '6000742abe06614038be0bad'})
+        expect(res.statusCode).toEqual(302) // redirection received user isn't connected
+      
     })
 })
